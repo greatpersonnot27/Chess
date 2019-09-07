@@ -1,4 +1,5 @@
 from libs.exceptions import InvalidMoveException
+from libs.utils import Vector2
 from libs.figures import (
 	Figure, Pawn, Knight, Bishop, Rook, Queen, King
 )
@@ -35,16 +36,6 @@ class ChessBoard:
 		self.board[0] = self.__setup_first_row(Figure.Color.WHITE)
 		self.board[7] = self.__setup_first_row(Figure.Color.BLACK)
 	
-	def get_piece_coordinates(piece):
-		"""
-		Get the coordinates of the current piece
-		"""
-		for i in range(8):
-			for k in range(8):
-				if self.board[i][k] == piece:
-					return (i, k)
-		return None
-	
 	def get_piece_at_coordinates(self, coordinates):
 		"""
 		Get piece on given coordinates. If the coordinates is empty
@@ -74,7 +65,7 @@ class ChessBoard:
 		"""
 
 		# check coordinate sanity
-		for coordinate in _from + to:
+		for coordinate in list(_from) + list(to):
 			if 0 > coordinate > 8:
 				raise InvalidMoveException()
 
@@ -115,43 +106,9 @@ class ChessBoard:
 			
 	def __apply_move(self, figure, _from, to):
 
-		from_x, from_y = _from
-		to_x, to_y = to
-		self.board[from_x][from_y] = None
-		self.board[to_x][to_y] = figure
+		_from = Vector2(_from)
+		to = Vector2(to)
 
-			
-	
-	def move_pawn(self, color, _from, to):
-
-		from_x, from_y = _from
-		to_x, to_y = to
-
-		if color == Color.WHITE:
-			diff = (to_x - from_x, to_y - from_y)
-		else:
-			diff = (from_x - to_x, from_y - to_y)
-
-		if diff == (1, 0):
-			if self.get_piece_at_coordinates(to) is None:
-				self.board[from_x][from_y] = None
-				self.board[to_x][to_y] = (Figure.PAWN, color)
-			else:
-				raise InvalidMoveException()
-
-		elif diff == (2, 0):
-			# if pawn are not on the initial position raise InvalidMove
-			if (color == Color.BLACK and from_y != 6) or (color == Color.WHITE and from_y != 1):
-				raise InvalidMoveException()
-
-			if self.get_piece_at_coordinates(to) is None:
-				self.board[from_x][from_y] = None
-				self.board[to_x][to_y] = (Figure.PAWN, color)
-			else:
-				raise InvalidMoveException()
-
-		elif diff == (1, -1) or diff == (1, 1):
-			pass
-		else:
-			raise InvalidMoveException()
+		self.board[_from.x][_from.y] = None
+		self.board[to.x][to.y] = figure
 
