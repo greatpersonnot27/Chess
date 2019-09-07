@@ -15,7 +15,7 @@ class Figure:
 		return color + ' ' + self.__class__.__name__
 	
 	@args_to_vector
-	def __return_path(self, fro, to):
+	def _return_path(self, fro, to):
 
 		diff = to - fro
 
@@ -72,11 +72,11 @@ class Knight(Figure):
 	def __init__(self, *arg, **kwarg):
 		super().__init__(*arg, **kwarg)
 	
+	@args_to_vector
 	def path(self, fro, to):
 
-		abs_diff = (abs(to[0] - fro[0]), abs(to[1] - fro[1]))
+		abs_diff = abs(fro - to)
 
-		print(abs_diff)
 		if abs_diff != (2, 1) and abs_diff != (1, 2):
 			raise InvalidMoveException()
 
@@ -90,16 +90,17 @@ class Bishop(Figure):
 	def __norm(self, num):
 		return 1 if num > 0 else -1
 	
+	@args_to_vector
 	def path(self, fro, to):
 		
-		diff = (to[0] - fro[0], to[1] - fro[1])
+		diff = to - fro
 
 		# if absolute values of diff equal each other
 		# it's a valid move for bishop
-		if abs(diff[0]) != abs(diff[1]):
+		if abs(diff.x) != abs(diff.y):
 			raise InvalidMoveException()
 		
-		return super().__return_path(_From, to)
+		return self._return_path(fro, to)
 
 
 
@@ -108,40 +109,43 @@ class Rook(Figure):
 	def __init__(self, *arg, **kwarg):
 		super().__init__(*arg, **kwarg)
 
+	@args_to_vector
 	def path(self, fro, to):
 		
-		diff = (to[0] - fro[0], to[1] - fro[1])
+		diff = to - fro
 
 		# if absolute values of diff equal each other
 		# it's a valid move for bishop
 		if 0 not in diff:
 			raise InvalidMoveException()
 		
-		return super().__return_path(_From, to)
+		return self._return_path(fro, to)
 
 class Queen(Figure):
 
 	def __init__(self, *arg, **kwarg):
 		super().__init__(*arg, **kwarg)
 
+	@args_to_vector
 	def path(self, fro, to):
 		
-		diff = (to[0] - fro[0], to[1] - fro[1])
+		diff = to - fro
 
 		# check for diagonal and (horizontal,vertical)
-		if abs(diff[0]) != abs(diff[1]) and 0 not in diff:
+		if abs(diff.x) != abs(diff.y) and 0 not in diff:
 			raise InvalidMoveException()
 		
-		return super().__return_path(_From, to)
+		return self._return_path(fro, to)
 
 class King(Figure):
 
 	def __init__(self, *arg, **kwarg):
 		super().__init__(*arg, **kwarg)
 
+	@args_to_vector
 	def path(self, fro, to):
 		
-		abs_diff = (abs(to[0] - fro[0]), abs(to[1] - fro[1]))
+		abs_diff = abs(to - fro)
 
 		if abs_diff != (1, 1) and abs_diff != (1, 0) and abs_diff != (0, 1):
 			raise InvalidMoveException()

@@ -12,6 +12,9 @@ class ChessBoard:
 
 		# current turn
 		self.turn = Figure.Color.WHITE
+
+		self.board = None
+		self.history = []
 	
 	def __setup_first_row(self, color):
 		row = [None] * 8

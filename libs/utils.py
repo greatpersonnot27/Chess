@@ -30,9 +30,20 @@ class Vector2:
 	def __floordiv__(self, value):
 		return Vector2([i // value for i in self.data])
 	
+	def __eq__(self, value):
+		if len(self.data) != len(value):
+			return False
+		return tuple(value) == self.data
+
+	def __ne__(self, value):
+		return not self.__eq__(self, value)
+	
 	def __sub__(self, value):
 		invert = tuple(i * -1  for i in value)
 		return self.__add__(Vector(invert))
+	
+	def __contains__(self, value):
+		return value in self.data
 	
 	def __len__(self):
 		return len(self.data)
