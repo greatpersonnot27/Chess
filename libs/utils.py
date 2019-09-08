@@ -1,10 +1,3 @@
-def args_to_vector(func):
-	def _func(self, fro, to):
-		fro = Vector2(fro)
-		to = Vector2(to)
-		func(self, fro, to)
-	return _func
-
 class Vector2:
 	def __init__(self, data):
 		if len(data) != 2:
@@ -16,10 +9,10 @@ class Vector2:
 			if len(value) != len(self.data):
 				raise RuntimeError("unssuported operation on Vector")
 			else:
-				return [sum(i) for i in zip(value, self.data)]
+				return Vector2([sum(i) for i in zip(value, self.data)])
 
 		elif isinstance(value, int):
-			return tuple(i + value for i in self.data)
+			return Vector2(tuple(i + value for i in self.data))
 
 		else:
 			raise RuntimeError("unssuported operation on Vector")
@@ -34,13 +27,22 @@ class Vector2:
 		if len(self.data) != len(value):
 			return False
 		return tuple(value) == self.data
+	
+	def __getitem__(self, key):
+		return self.data[key]
+	
+	def __setitem__(self, key, data):
+		self.data[key] =  data
+	
+	def __getitem__(self, key):
+		return self.data[key]
 
 	def __ne__(self, value):
-		return not self.__eq__(self, value)
+		return not self.__eq__(value)
 	
 	def __sub__(self, value):
 		invert = tuple(i * -1  for i in value)
-		return self.__add__(Vector(invert))
+		return self.__add__(Vector2(invert))
 	
 	def __contains__(self, value):
 		return value in self.data
@@ -49,7 +51,7 @@ class Vector2:
 		return len(self.data)
 	
 	def __abs__(self):
-		return Vector([abs(i) for i in self.data])
+		return Vector2([abs(i) for i in self.data])
 	
 	def __iter__(self):
 		for i in self.data:
