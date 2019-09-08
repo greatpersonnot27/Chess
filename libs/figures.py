@@ -34,11 +34,6 @@ class Figure:
 		
 	
 class Pawn(Figure):
-
-	def __init__(self, *arg, **kwarg):
-		super().__init__(*arg, **kwarg)
-	
-		
 	def path(self, fro, to):
 
 		diff = to - fro
@@ -65,9 +60,6 @@ class Pawn(Figure):
 		return []
 
 class Knight(Figure):
-	def __init__(self, *arg, **kwarg):
-		super().__init__(*arg, **kwarg)
-	
 	def path(self, fro, to):
 		abs_diff = abs(fro - to)
 
@@ -77,12 +69,6 @@ class Knight(Figure):
 		return []
 
 class Bishop(Figure):
-	def __init__(self, *arg, **kwarg):
-		super().__init__(*arg, **kwarg)
-	
-	def __norm(self, num):
-		return 1 if num > 0 else -1
-	
 	def path(self, fro, to):
 		diff = to - fro
 
@@ -95,9 +81,6 @@ class Bishop(Figure):
 
 
 class Rook(Figure):
-	def __init__(self, *arg, **kwarg):
-		super().__init__(*arg, **kwarg)
-
 	def path(self, fro, to):
 		diff = to - fro
 
@@ -109,9 +92,6 @@ class Rook(Figure):
 		return self._return_path(fro, to)
 
 class Queen(Figure):
-	def __init__(self, *arg, **kwarg):
-		super().__init__(*arg, **kwarg)
-
 	def path(self, fro, to):
 		diff = to - fro
 
@@ -122,9 +102,6 @@ class Queen(Figure):
 		return self._return_path(fro, to)
 
 class King(Figure):
-	def __init__(self, *arg, **kwarg):
-		super().__init__(*arg, **kwarg)
-
 	def path(self, fro, to):
 		abs_diff = abs(to - fro)
 
