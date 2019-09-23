@@ -18,6 +18,14 @@ from libs.chessboard import ChessBoard
 """
 
 class test_figures(unittest.TestCase):
+    
+    @classmethod
+    def setUpClass(cls):
+        return super().setUpClass()
+
+    @classmethod
+    def tearDownClass(cls):
+        return super().tearDownClass()
 
     def test_return_path(self):
         figure = Figure(Figure.Color.WHITE)
@@ -28,6 +36,7 @@ class test_figures(unittest.TestCase):
             (Vector2([0,0]), Vector2([5,5]), [(1,1),(2,2),(3,3),(4,4)]),
             (Vector2([5,5]), Vector2([0,0]), [(4,4), (3,3), (2,2), (1,1)])
             ]
+
         [self.assertEqual(figure._return_path(path[0],path[1]), path[2]) for path in paths]
 
     def test_pawn(self):
