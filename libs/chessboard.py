@@ -64,7 +64,7 @@ class ChessBoard:
 			board.append('  '.join(row_content))
 		return '\n'.join(board) + '\n'
 	
-	def move_algebr(self, fro, to):
+	def move_algebra(self, fro, to):
 		new_from = (int(fro[1]) - 1, ord(fro[0].lower()) - ord('a'))
 		new_to =   (int(to[1]) - 1, ord(to[0].lower()) - ord('a'))
 		self.move(new_from, new_to)
@@ -139,5 +139,3 @@ class ChessBoard:
 		self.board[to[0]][to[1]] = killer
 
 		self.dead_figures.append(killee)
-		
-

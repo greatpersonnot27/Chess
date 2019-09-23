@@ -8,7 +8,5 @@ class test_chessboard(unittest.TestCase):
     def create_chessboard():
         return libs.chessboard.ChessBoard()
 
-    
-
 if __name__ == '__main__':
     unittest.main()
