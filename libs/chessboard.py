@@ -73,7 +73,7 @@ class ChessBoard:
 		"""
 		Move piece from "_from" coordinates to "to"
 		"""
-
+		print("moving")
 		# check coordinate sanity
 		for coordinate in list(_from) + list(to):
 			if 0 > coordinate > 8:

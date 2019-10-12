@@ -1,3 +1,6 @@
 moves.input
 *.swp
 
+.vscode/launch.json
+.vscode/settings.json
+*.pyc
