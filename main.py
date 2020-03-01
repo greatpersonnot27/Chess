@@ -4,24 +4,27 @@ from libs.exceptions import InvalidMoveException
 
 def main():
 	board = ChessBoard()
-	print(board.draw_board())
+	board_mapping = {'a': 0, 'b': 1, 'c': 2, 'd': 3, 'e': 4, 'f': 5, 'g': 6, 'h': 7}
 
 	while True:
 		# coordinate parsing
-		_input = input("move: ")
+		_input = input()
 		if _input == "":
-			print(board.draw_board())
 			continue
-		c = _input.split()
-
-		# moving
-		try:
-			board.move_algebr(c[0], c[1])
-			print(board.draw_board())
-				
-		except InvalidMoveException as e:
-			print(e)
-			continue
+		if _input == "uci":
+			print("uciok")
+		if _input =="isready":
+			print("readyok")
+		if _input == "ucinewgame":
+			board = ChessBoard()
+		if _input.startswith("position"):
+			c = _input.split()
+			c = c[-1]
+			try:
+				board.move_algebra(c[:2], c[2:4])
+			except InvalidMoveException as e:
+				print(e)
+				continue
 
 
 if __name__ == '__main__':
