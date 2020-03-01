@@ -66,14 +66,14 @@ class ChessBoard:
 	
 	def move_algebra(self, fro, to):
 		new_from = (int(fro[1]) - 1, ord(fro[0].lower()) - ord('a'))
-		new_to =   (int(to[1]) - 1, ord(to[0].lower()) - ord('a'))
+		new_to = (int(to[1]) - 1, ord(to[0].lower()) - ord('a'))
 		self.move(new_from, new_to)
 		
 	def move(self, _from, to):
 		"""
 		Move piece from "_from" coordinates to "to"
 		"""
-		print("moving")
+		#print("moving")
 		# check coordinate sanity
 		for coordinate in list(_from) + list(to):
 			if 0 > coordinate > 8:

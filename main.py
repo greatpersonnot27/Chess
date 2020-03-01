@@ -1,9 +1,11 @@
+from libs.chessBot import ChessBot
 from libs.chessboard import ChessBoard
 from libs.exceptions import InvalidMoveException
 
 
 def main():
 	board = ChessBoard()
+	bot = ChessBot()
 	board_mapping = {'a': 0, 'b': 1, 'c': 2, 'd': 3, 'e': 4, 'f': 5, 'g': 6, 'h': 7}
 
 	while True:
@@ -12,6 +14,8 @@ def main():
 		if _input == "":
 			continue
 		if _input == "uci":
+			print("id name AIengine")
+			print("id author ika&shota")
 			print("uciok")
 		if _input =="isready":
 			print("readyok")
@@ -22,6 +26,8 @@ def main():
 			c = c[-1]
 			try:
 				board.move_algebra(c[:2], c[2:4])
+				bot.make_move(board)
+
 			except InvalidMoveException as e:
 				print(e)
 				continue
