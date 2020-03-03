@@ -1,16 +1,13 @@
-# Chess
+# Chess Engine
 
+## Algorithm
+The MinMax Algorithm
+## Moves
+The method of recording and describing the chess moves is ""Algebric Notation (AN)"".
+Examples:
 ```
-python main.py
-```
-
-## Input
-
-Moves are given in algebraic notaion. Example:
-```
-a2 a3
-a7 a5
-d2 d4
-c7 c5
+Be5 - move a bishop to e5
+Nf3 - move a knight to f3 
+c5 - move a pawn to c5
 
 ```
