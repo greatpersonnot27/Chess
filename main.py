@@ -34,8 +34,11 @@ class GameEngine:
         self.board = ChessBoard()
         moves = position.split()[3:]
         for move in moves:
-            self.board.move_algebra(move[:2], move[2:4])
-        print(self.board.draw_board())
+            self.board.move_algebra(move)
+
+        all_moves = self.board.get_all_possible_moves()
+        for _from, to in all_moves:
+            print(str(self.board.board[_from[0]][_from[1]]), to)
 
     def handle_go(self, go):
         if self.board is not None:

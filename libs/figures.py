@@ -31,9 +31,44 @@ class Figure:
 	
 	def path(self, fro, to):
 		raise NotImplementedError()
+
+	def get_all_moves(self, position):
+		raise NotImplementedError
+
+	def _get_all_moves(self, pos, vectors):
+		moves = []
+
+		for x, y in vectors:
+			move_list = []
+			move = (pos[0] + x, pos[1] + y)
+			while 0 <= move[0] <= 7 and 0 <= move[1] <= 7:
+				move_list.append(move)
+				move = (move[0] + x, move[1] + y)
+			if move_list != []:
+				moves.append(move_list)
+
+		return moves
 		
 	
 class Pawn(Figure):
+	def get_all_moves(self, pos):
+		if self.color == Figure.Color.WHITE:
+
+			move1 = (pos[0] + 1, pos[1])
+			move2 = (pos[0] + 2, pos[1])
+
+			if pos[0] == 1:
+				return [[move1, move2]]
+			return [[move1]]
+
+		elif self.color == Figure.Color.BLACK:
+			move1 = (pos[0] - 1, pos[1])
+			move2 = (pos[0] - 2, pos[1])
+
+			if pos[0] == 6:
+				return [[move1, move2]]
+			return [[move1]]
+
 	def path(self, fro, to):
 
 		diff = to - fro
@@ -60,6 +95,18 @@ class Pawn(Figure):
 		return []
 
 class Knight(Figure):
+	def get_all_moves(self, pos):
+		moves = []
+		vectors = [(1, 2), (-1, 2), (1, -2), (-1, -2),
+				 (2, 1), (-2, 1), (2, -1), (-2, -1)]
+
+		for x, y in vectors:
+			move = (pos[0] + x, pos[1] + y)
+			if 0 <= move[0] <= 7 and 0 <= move[1] <= 7:
+				moves.append([move])
+
+		return moves
+
 	def path(self, fro, to):
 		abs_diff = abs(fro - to)
 
@@ -69,6 +116,10 @@ class Knight(Figure):
 		return []
 
 class Bishop(Figure):
+	def get_all_moves(self, pos):
+		vectors = [(1, 1), (-1, 1), (-1, 1), (-1, -1)]
+		return self._get_all_moves(pos, vectors)
+
 	def path(self, fro, to):
 		diff = to - fro
 
@@ -81,6 +132,10 @@ class Bishop(Figure):
 
 
 class Rook(Figure):
+	def get_all_moves(self, pos):
+		vectors = [(1, 0), (-1, 0), (0, 1), (0, -1)]
+		return self._get_all_moves(pos, vectors)
+
 	def path(self, fro, to):
 		diff = to - fro
 
@@ -92,6 +147,10 @@ class Rook(Figure):
 		return self._return_path(fro, to)
 
 class Queen(Figure):
+	def get_all_moves(self, pos):
+		vectors = [(1, 0), (-1, 0), (0, 1), (0, -1), (1, 1), (-1, 1), (-1, 1), (-1, -1)]
+		return self._get_all_moves(pos, vectors)
+
 	def path(self, fro, to):
 		diff = to - fro
 
@@ -102,6 +161,17 @@ class Queen(Figure):
 		return self._return_path(fro, to)
 
 class King(Figure):
+	def get_all_moves(self, pos):
+		moves = []
+		vectors = [(1, 0), (-1, 0), (0, 1), (0, -1), (1, 1), (-1, 1), (-1, 1), (-1, -1)]
+
+		for x, y in vectors:
+			move = (pos[0] + x, pos[1] + y)
+			if 0 < move[0] < 7 and 0 < move[1] < 7:
+				moves.append([move])
+
+		return moves
+
 	def path(self, fro, to):
 		abs_diff = abs(to - fro)
 
