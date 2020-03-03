@@ -35,7 +35,25 @@ class Figure:
 	def get_all_moves(self, position):
 		raise NotImplementedError
 
-	def _get_all_moves(self, pos, vectors):
+	def _get_all_moves_jumpers(self, pos, vectors):
+        """
+        This method is used to get all the moves of Knight and King.
+        Knight and King are called jumpers, because they can only jump one vector.
+        """
+		moves = []
+
+		for x, y in vectors:
+			move = (pos[0] + x, pos[1] + y)
+			if 0 <= move[0] <= 7 and 0 <= move[1] <= 7:
+				moves.append([move])
+
+		return moves
+
+	def _get_all_moves_sliders(self, pos, vectors):
+        """
+        This method is used to get all the moves of Queen, Bishop and Rook.
+        Queen, Bishop and Rook are sliders, because they slide towards the vector direction.
+        """
 		moves = []
 
 		for x, y in vectors:
@@ -96,16 +114,10 @@ class Pawn(Figure):
 
 class Knight(Figure):
 	def get_all_moves(self, pos):
-		moves = []
 		vectors = [(1, 2), (-1, 2), (1, -2), (-1, -2),
 				 (2, 1), (-2, 1), (2, -1), (-2, -1)]
+		return self._get_all_moves_jumpers(pos, vectors)
 
-		for x, y in vectors:
-			move = (pos[0] + x, pos[1] + y)
-			if 0 <= move[0] <= 7 and 0 <= move[1] <= 7:
-				moves.append([move])
-
-		return moves
 
 	def path(self, fro, to):
 		abs_diff = abs(fro - to)
@@ -118,7 +130,7 @@ class Knight(Figure):
 class Bishop(Figure):
 	def get_all_moves(self, pos):
 		vectors = [(1, 1), (-1, 1), (-1, 1), (-1, -1)]
-		return self._get_all_moves(pos, vectors)
+		return self._get_all_moves_sliders(pos, vectors)
 
 	def path(self, fro, to):
 		diff = to - fro
@@ -134,7 +146,7 @@ class Bishop(Figure):
 class Rook(Figure):
 	def get_all_moves(self, pos):
 		vectors = [(1, 0), (-1, 0), (0, 1), (0, -1)]
-		return self._get_all_moves(pos, vectors)
+		return self._get_all_moves_sliders(pos, vectors)
 
 	def path(self, fro, to):
 		diff = to - fro
@@ -149,7 +161,7 @@ class Rook(Figure):
 class Queen(Figure):
 	def get_all_moves(self, pos):
 		vectors = [(1, 0), (-1, 0), (0, 1), (0, -1), (1, 1), (-1, 1), (-1, 1), (-1, -1)]
-		return self._get_all_moves(pos, vectors)
+		return self._get_all_moves_sliders(pos, vectors)
 
 	def path(self, fro, to):
 		diff = to - fro
@@ -162,15 +174,9 @@ class Queen(Figure):
 
 class King(Figure):
 	def get_all_moves(self, pos):
-		moves = []
 		vectors = [(1, 0), (-1, 0), (0, 1), (0, -1), (1, 1), (-1, 1), (-1, 1), (-1, -1)]
+		return self._get_all_moves_jumpers(pos, vectors)
 
-		for x, y in vectors:
-			move = (pos[0] + x, pos[1] + y)
-			if 0 < move[0] < 7 and 0 < move[1] < 7:
-				moves.append([move])
-
-		return moves
 
 	def path(self, fro, to):
 		abs_diff = abs(to - fro)
