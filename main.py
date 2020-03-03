@@ -31,6 +31,8 @@ def main():
 			except InvalidMoveException as e:
 				print(e)
 				continue
+		if _input == "quit":
+			exit()
 
 
 if __name__ == '__main__':
