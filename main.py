@@ -36,13 +36,14 @@ class GameEngine:
         for move in moves:
             self.board.move_algebra(move)
 
-        all_moves = self.board.get_all_possible_moves()
-        for _from, to in all_moves:
-            print(str(self.board.board[_from[0]][_from[1]]), to)
+        #all_moves = self.board.get_all_possible_moves()
+        #for _from, to in all_moves:
+        #    print(str(self.board.board[_from[0]][_from[1]]), to)
+
 
     def handle_go(self, go):
         if self.board is not None:
-            self.board.next_move_ai()
+            print('bestmove ' + self.board.get_random_move_algebraic())
 
     def handle_stop(self):
         raise NotImplementedError

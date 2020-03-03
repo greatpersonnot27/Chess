@@ -36,10 +36,10 @@ class Figure:
 		raise NotImplementedError
 
 	def _get_all_moves_jumpers(self, pos, vectors):
-        """
+		"""
         This method is used to get all the moves of Knight and King.
         Knight and King are called jumpers, because they can only jump one vector.
-        """
+		"""
 		moves = []
 
 		for x, y in vectors:
@@ -50,10 +50,10 @@ class Figure:
 		return moves
 
 	def _get_all_moves_sliders(self, pos, vectors):
-        """
+		"""
         This method is used to get all the moves of Queen, Bishop and Rook.
         Queen, Bishop and Rook are sliders, because they slide towards the vector direction.
-        """
+		"""
 		moves = []
 
 		for x, y in vectors:

@@ -1,3 +1,4 @@
+import random
 from libs.exceptions import InvalidMoveException
 from libs.utils import Vector2
 from libs.figures import (
@@ -75,7 +76,12 @@ class ChessBoard:
 
 	@staticmethod
 	def __index_to_algebraic(pos):
-		return chr('a' + pos[1])+ str(int(pos[0]) + 1)
+		return chr(ord('a') + pos[1])+ str(int(pos[0]) + 1)
+
+	def get_random_move_algebraic(self):
+		move = random.choice(self.get_all_possible_moves())
+		fro, to = move
+		return self.__index_to_algebraic(fro) + self.__index_to_algebraic(to)
 	
 	def get_all_possible_moves(self):
 		moves = []
