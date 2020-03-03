@@ -1,39 +1,59 @@
-from libs.chessBot import ChessBot
+import queue
+import sys
 from libs.chessboard import ChessBoard
 from libs.exceptions import InvalidMoveException
 
 
-def main():
-	board = ChessBoard()
-	bot = ChessBot()
-	board_mapping = {'a': 0, 'b': 1, 'c': 2, 'd': 3, 'e': 4, 'f': 5, 'g': 6, 'h': 7}
+class GameEngine:
+    def __init__(self):
+        self.board = None
+        self.options = {}
 
-	while True:
-		# coordinate parsing
-		_input = input()
-		if _input == "":
-			continue
-		if _input == "uci":
-			print("id name AIengine")
-			print("id author ika&shota")
-			print("uciok")
-		if _input =="isready":
-			print("readyok")
-		if _input == "ucinewgame":
-			board = ChessBoard()
-		if _input.startswith("position"):
-			c = _input.split()
-			c = c[-1]
-			try:
-				board.move_algebra(c[:2], c[2:4])
-				bot.make_move(board)
+    def engine_loop(self):
+        self.initialize()
 
-			except InvalidMoveException as e:
-				print(e)
-				continue
-		if _input == "quit":
-			exit()
+        while True:
+            # Check input from GUI
+            _input = input()
+            if _input == "isready":
+                print("readyok")
+
+            elif _input.startswith("position"):
+                self.handle_position(_input)
+
+            elif _input.startswith("go"):
+                self.handle_go(_input)
+            
+            elif _input == "stop":
+                self.handle_stop()
+
+            elif _input == "quit":
+                exit()
+
+    def handle_position(self, position):
+        self.board = ChessBoard()
+        moves = position.split()[3:]
+        for move in moves:
+            self.board.move_algebra(move[:2], move[2:4])
+        print(self.board.draw_board())
+
+    def handle_go(self, go):
+        if self.board is not None:
+            self.board.next_move_ai()
+
+    def handle_stop(self):
+        raise NotImplementedError
+
+    def initialize(self):
+        if input() == 'uci':
+            print("id name AIengine")
+            print("id author ika&shota")
+            print("uciok")
+            sys.stdout.flush()
+        else:
+            exit(1)
 
 
 if __name__ == '__main__':
-	main()
+    engine = GameEngine()
+    engine.engine_loop()
