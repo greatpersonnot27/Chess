@@ -16,9 +16,10 @@ class Figure:
 	
 	def _return_path(self, fro, to):
 		diff = to - fro
+		print('info x:' + str(diff.x) + '  y:' + str(diff.y) + '   max' + str(max(diff)))
 
 		# abs to make sure we don't change the sign
-		normal_vector = diff // abs(max(diff))
+		normal_vector = diff // max(abs(diff.x), abs(diff.y))
 
 		path = []
 		fro += normal_vector
