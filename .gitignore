@@ -2,7 +2,6 @@ moves.input
 *.swp
 *~
 *.un
-engine_ika_shota.bat
 
 .vscode/launch.json
 .vscode/settings.json
