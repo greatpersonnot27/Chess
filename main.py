@@ -21,6 +21,9 @@ class GameEngine:
             elif _input == "isready":
                 print("readyok")
 
+            elif _input.startswith("setoption"):
+                self.options.set_option(_input)
+
             elif _input.startswith("position"):
                 self.handle_position(_input)
 
