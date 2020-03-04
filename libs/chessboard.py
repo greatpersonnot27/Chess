@@ -1,3 +1,4 @@
+import random
 from libs.exceptions import InvalidMoveException
 from libs.utils import Vector2
 from libs.figures import (
@@ -64,10 +65,53 @@ class ChessBoard:
 			board.append('  '.join(row_content))
 		return '\n'.join(board) + '\n'
 	
-	def move_algebra(self, fro, to):
-		new_from = (int(fro[1]) - 1, ord(fro[0].lower()) - ord('a'))
-		new_to = (int(to[1]) - 1, ord(to[0].lower()) - ord('a'))
-		self.move(new_from, new_to)
+	def move_algebra(self, expr):
+		fro = self.__algebraic_to_index(expr[:2])
+		to = self.__algebraic_to_index(expr[2:4])
+		self.move(fro, to)
+	
+	@staticmethod
+	def __algebraic_to_index(pos):
+		return (int(pos[1]) - 1, ord(pos[0].lower()) - ord('a'))
+
+	@staticmethod
+	def __index_to_algebraic(pos):
+		return chr(ord('a') + pos[1])+ str(int(pos[0]) + 1)
+
+	def get_random_move_algebraic(self):
+		move = random.choice(self.get_all_possible_moves())
+		fro, to = move
+		return self.__index_to_algebraic(fro) + self.__index_to_algebraic(to)
+	
+	def get_all_possible_moves(self):
+		moves = []
+		for x, row in enumerate(self.board):
+			for y, figure in enumerate(row):
+				if figure is not None and figure.color == self.turn:
+					moves += self.__get_all_figure_moves(figure, (x, y))
+		moves += self.__get_all_special_moves()
+		return moves
+
+	def __get_all_figure_moves(self, figure, pos):
+		moves = []
+
+		for move_list in figure.get_all_moves(pos):
+			for x, y in move_list:
+				if self.board[x][y] is None:
+					# if square is empty add to possible moves
+					moves.append((pos, (x, y)))
+				elif not isinstance(figure, Pawn) and self.board[x][y].color != figure.color:
+					# make kill
+					moves.append((pos, (x, y)))
+					break
+				else:
+					break
+		return moves
+
+	def __get_all_special_moves(self):
+        # get pawn kills
+        # check special moves
+		return []
 		
 	def move(self, _from, to):
 		"""
