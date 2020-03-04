@@ -93,10 +93,10 @@ class Pawn(Figure):
 		diff = to - fro
 
 		if self.color == Figure.Color.WHITE:
-			valid_moves = ((1, 0), (2, 0), (1, -1), (-1, -1))
+			valid_moves = ((1, 0), (2, 0), (1, 1), (1, -1))
 
 		else:
-			valid_moves = ((-1, 0), (-2, 0), (-1, -1), (-1, 1))
+			valid_moves = ((-1, 0), (-2, 0), (-1, 1), (-1, -1))
 
 		if tuple(diff) not in valid_moves:
 			raise InvalidMoveException()
