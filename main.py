@@ -40,7 +40,9 @@ class GameEngine:
         self.board = ChessBoard()
         moves = position.split()[3:]
         for move in moves:
-            self.board.move_algebra(move)
+            fro = (int(move[:2][1]) - 1, ord(move[:2][0].lower()) - ord('a'))
+            to = (int(move[2:4][1]) - 1, ord(move[2:4][0].lower()) - ord('a'))
+            self.board.move(fro, to)
 
         # all_moves = self.board.get_all_possible_moves()
         # for _from, to in all_moves:
@@ -48,7 +50,7 @@ class GameEngine:
 
     def handle_go(self, go):
         if self.board is not None:
-            print('bestmove ' + self.board.get_random_move_algebraic())
+            print('bestmove ' + self.board.get_random_move())
 
     def handle_stop(self):
         raise NotImplementedError
