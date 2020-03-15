@@ -38,6 +38,7 @@ class GameEngine:
 
     def handle_position(self, position):
         self.board = ChessBoard()
+        self.board.evaluate_board()
         moves = position.split()[3:]
         for move in moves:
             fro = (int(move[:2][1]) - 1, ord(move[:2][0].lower()) - ord('a'))

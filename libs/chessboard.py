@@ -65,20 +65,20 @@ class ChessBoard:
         return '\n'.join(board) + '\n'
 
     def get_random_move(self):
-        move = random.choice(self.get_all_possible_moves())
+        move = random.choice(self.get_all_legal_moves())
         fro, to = move
         return chr(ord('a') + fro[1]) + str(int(fro[0]) + 1) + chr(ord('a') + to[1]) + str(int(to[0]) + 1)
 
-    def get_all_possible_moves(self):
+    def get_all_legal_moves(self):
         moves = []
         for x, row in enumerate(self.board):
             for y, figure in enumerate(row):
                 if figure is not None and figure.color == self.turn:
-                    moves += self.__get_all_figure_moves(figure, (x, y))
+                    moves += self.__get_figure_legal_moves(figure, (x, y))
         moves += self.__get_all_special_moves()
         return moves
 
-    def __get_all_figure_moves(self, figure, pos):
+    def __get_figure_legal_moves(self, figure, pos):
         moves = []
 
         for move_list in figure.get_all_moves(pos):
@@ -167,3 +167,28 @@ class ChessBoard:
         self.board[to[0]][to[1]] = killer
 
         self.dead_figures.append(killee)
+
+    def evaluate_board(self):
+        """
+        using simple shannon function to evaluate relative value of the board
+        """
+        figure_count = self.get_figure_count()
+        position_value = 200 * (figure_count["White King"] - figure_count["Black King"]) + 9 * (
+          figure_count["White Queen"] - figure_count["Black Queen"]) + 5 * (
+          figure_count["White Rook"] - figure_count["Black Rook"]) + 3 * (
+          figure_count["White Knight"] - figure_count["Black Knight"] +
+          figure_count["White Bishop"] - figure_count["Black Bishop"]) + 1 * (
+          figure_count["White Pawn"] - figure_count["Black Pawn"])
+
+        return position_value
+
+    def get_figure_count(self):
+        figure_count = dict()
+        for row in self.board:
+            for figure in row:
+                if figure is not None:
+                    if str(figure) in figure_count.keys():
+                        figure_count[str(figure)] += 1
+                    else:
+                        figure_count[str(figure)] = 1
+        return figure_count
