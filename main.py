@@ -38,6 +38,7 @@ class GameEngine:
 
     def handle_position(self, position):
         self.board = ChessBoard()
+        self.board.evaluate_board()
         moves = position.split()[3:]
         for move in moves:
             fro = (int(move[:2][1]) - 1, ord(move[:2][0].lower()) - ord('a'))
@@ -50,7 +51,7 @@ class GameEngine:
 
     def handle_go(self, go):
         if self.board is not None:
-            print('bestmove ' + self.board.get_random_move())
+            print('bestmove ' + self.board.get_minmax_move())
 
     def handle_stop(self):
         raise NotImplementedError
