@@ -51,7 +51,7 @@ class GameEngine:
 
     def handle_go(self, go):
         if self.board is not None:
-            print('bestmove ' + self.board.get_random_move())
+            print('bestmove ' + self.board.get_minmax_move())
 
     def handle_stop(self):
         raise NotImplementedError
