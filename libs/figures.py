@@ -71,21 +71,32 @@ class Figure:
 class Pawn(Figure):
     def get_all_moves(self, pos):
         if self.color == Figure.Color.WHITE:
-
-            move1 = (pos[0] + 1, pos[1])
-            move2 = (pos[0] + 2, pos[1])
-
-            if pos[0] == 1:
-                return [[move1, move2]]
-            return [[move1]]
-
+            moves = [(pos[0] + 1, pos[1]), (pos[0] + 2, pos[1])]
+            kill_move1 = (pos[0] + 1, pos[1] + 1)
+            kill_move2 = (pos[0] + 1, pos[1] - 1)
+            valid_kill_moves = list()
+            if pos[1] == 0:
+                valid_kill_moves.append(kill_move1)
+            elif pos[1] == 7:
+                valid_kill_moves.append(kill_move2)
+            if pos[0] != 1:
+                moves.pop()
+            return [moves] + [valid_kill_moves]
         elif self.color == Figure.Color.BLACK:
-            move1 = (pos[0] - 1, pos[1])
-            move2 = (pos[0] - 2, pos[1])
-
-            if pos[0] == 6:
-                return [[move1, move2]]
-            return [[move1]]
+            moves = [(pos[0] - 1, pos[1]), (pos[0] - 2, pos[1])]
+            kill_move1 = (pos[0] - 1, pos[1] + 1)
+            kill_move2 = (pos[0] - 1, pos[1] - 1)
+            valid_kill_moves = list()
+            if pos[1] == 0:
+                valid_kill_moves.append(kill_move1)
+            elif pos[1] == 7:
+                valid_kill_moves.append(kill_move2)
+            else:
+                valid_kill_moves.append(kill_move1)
+                valid_kill_moves.append(kill_move2)
+            if pos[0] != 6:
+                moves.pop()
+            return [moves] + [valid_kill_moves]
 
     def path(self, fro, to):
 

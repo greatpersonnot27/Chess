@@ -95,12 +95,18 @@ class ChessBoard:
         for move_list in figure.get_all_moves(pos):
             for x, y in move_list:
                 if self.board[x][y] is None:
-                    # if square is empty add to possible moves
-                    moves.append((pos, (x, y)))
-                elif not isinstance(figure, Pawn) and self.board[x][y].color != figure.color:
-                    # make kill
-                    moves.append((pos, (x, y)))
-                    break
+                    if not (str(figure).endswith("Pawn") and pos[1] != y):
+                        # if square is empty add to possible moves
+                        moves.append((pos, (x, y)))
+                    if str(figure).endswith("Pawn") and (pos[0]-x) % 2 == 0:
+                        for square in figure.path(Vector2(pos), Vector2((x,y))):
+                            if square is not None:
+                                moves.pop()
+                elif self.board[x][y].color != figure.color:
+                    if not (str(figure).endswith("Pawn") and pos[1] == y):
+                        # make kill
+                        moves.append((pos, (x, y)))
+                        break
                 else:
                     break
         return moves
@@ -160,6 +166,7 @@ class ChessBoard:
 
         # change turn
         self.turn = Figure.Color.WHITE if self.turn == Figure.Color.BLACK else Figure.Color.BLACK
+        #print(self.draw_board())
 
     def __apply_move(self, figure, _from, to):
 
