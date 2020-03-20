@@ -117,7 +117,7 @@ class ChessBoard:
         # print("moving")
         # check coordinate sanity
         for coordinate in list(_from) + list(to):
-            if 0 > coordinate > 8:
+            if 0 > coordinate > 7:
                 raise InvalidMoveException()
 
         figure = self.get_piece_at_coordinates(_from)
@@ -137,6 +137,7 @@ class ChessBoard:
         # Change coordinates to vector
         _from = Vector2(_from)
         to = Vector2(to)
+        diff = to - _from
 
         # handle the path
         for square in figure.path(_from, to):
@@ -152,6 +153,8 @@ class ChessBoard:
                 raise InvalidMoveException()
             else:
                 self.__kill(_from, to)
+        elif str(figure).endswith("Pawn") and (abs(diff.x) == abs(diff.y) == 1):
+            raise InvalidMoveException()
         else:
             self.__apply_move(figure, _from, to)
 
