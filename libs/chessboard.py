@@ -76,6 +76,7 @@ class ChessBoard:
         return chr(ord('a') + fro[1]) + str(int(fro[0]) + 1) + chr(ord('a') + to[1]) + str(int(to[0]) + 1)
 
     def get_minmax_move(self):
+        self.__is_check()
         utility, move = self.maximize(self, 3)
         fro, to = move
         return chr(ord('a') + fro[1]) + str(int(fro[0]) + 1) + chr(ord('a') + to[1]) + str(int(to[0]) + 1)
@@ -112,6 +113,13 @@ class ChessBoard:
         return moves
 
     def __get_all_special_moves(self):
+        moves = []
+        # castling
+        moves += self.__check_castling()
+        # impassant
+        return moves
+
+    def __check_castling(self):
         # check special moves
         moves = []
         if self.turn == Figure.Color.WHITE:
@@ -130,7 +138,7 @@ class ChessBoard:
                 if str(self.board[7][7]) == "Black Rook" and not self.board[7][7].been_moved:
                     if not any(self.board[7][5:7]):
                         moves.append(((7, 4), (7, 6)))
-        return []
+        return moves
 
     def move(self, _from, to):
         """
@@ -158,13 +166,17 @@ class ChessBoard:
         if str(figure) == "White King" and _from == (0, 4):
             if to == (0, 2):
                 self.__apply_castling(figure, _from, to, "long")
+                return
             if to == (0, 6):
                 self.__apply_castling(figure, _from, to, "short")
+                return
         if str(figure) == "Black King" and _from == (7, 4):
             if to == (7, 2):
                 self.__apply_castling(figure, _from, to, "long")
+                return
             if to == (7, 6):
                 self.__apply_castling(figure, _from, to, "short")
+                return
 
         # Change coordinates to vector
         _from = Vector2(_from)
@@ -194,6 +206,25 @@ class ChessBoard:
         self.turn = Figure.Color.WHITE if self.turn == Figure.Color.BLACK else Figure.Color.BLACK
         # print(self.draw_board())
 
+    def __is_check(self):
+        # change the turn
+        self.turn = Figure.Color.WHITE if self.turn == Figure.Color.BLACK else Figure.Color.BLACK
+
+        check = False
+
+        moves = self.get_all_legal_moves()
+        for move in moves:
+            fro, to = move
+            dest_figure = self.board[to[0]][to[1]]
+            if isinstance(dest_figure, King):
+                print("IT IS CHECKKKKKKKKK")
+                check = True
+
+        # change the turn back to original
+        self.turn = Figure.Color.WHITE if self.turn == Figure.Color.BLACK else Figure.Color.BLACK
+
+        return check
+
     def __apply_move(self, figure, _from, to):
 
         figure.been_moved = True
@@ -217,6 +248,7 @@ class ChessBoard:
         if type == "short":
             self.board[_from.x][5] = self.get_piece_at_coordinates((_from.x, 7))
             self.board[_from.x][7] = None
+        self.turn = Figure.Color.WHITE if self.turn == Figure.Color.BLACK else Figure.Color.BLACK
 
     def __kill(self, fro, to):
 
