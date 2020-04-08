@@ -112,8 +112,24 @@ class ChessBoard:
         return moves
 
     def __get_all_special_moves(self):
-        # get pawn kills
         # check special moves
+        moves = []
+        if self.turn == Figure.Color.WHITE:
+            if str(self.board[0][4]) == "White King" and not self.board[0][4].been_moved:
+                if str(self.board[0][0]) == "White Rook" and not self.board[0][0].been_moved:
+                    if not any(self.board[0][1:4]):
+                        moves.append(((0, 4), (0, 2)))
+                if str(self.board[0][7]) == "White Rook" and not self.board[0][7].been_moved:
+                    if not any(self.board[0][5:7]):
+                        moves.append(((0, 4), (0, 6)))
+        else:
+            if str(self.board[7][4]) == "Black King" and not self.board[7][4].been_moved:
+                if str(self.board[7][0]) == "Black Rook" and not self.board[7][0].been_moved:
+                    if not any(self.board[7][1:4]):
+                        moves.append(((7, 4), (7, 2)))
+                if str(self.board[7][7]) == "Black Rook" and not self.board[7][7].been_moved:
+                    if not any(self.board[7][5:7]):
+                        moves.append(((7, 4), (7, 6)))
         return []
 
     def move(self, _from, to):
@@ -139,6 +155,16 @@ class ChessBoard:
         # TODO -
         # check special moves like pawn promotion, castling, etc..
         # else: continue usual process
+        if str(figure) == "White King" and _from == (0, 4):
+            if to == (0, 2):
+                self.__apply_castling(figure, _from, to, "long")
+            if to == (0, 6):
+                self.__apply_castling(figure, _from, to, "short")
+        if str(figure) == "Black King" and _from == (7, 4):
+            if to == (7, 2):
+                self.__apply_castling(figure, _from, to, "long")
+            if to == (7, 6):
+                self.__apply_castling(figure, _from, to, "short")
 
         # Change coordinates to vector
         _from = Vector2(_from)
@@ -166,15 +192,31 @@ class ChessBoard:
 
         # change turn
         self.turn = Figure.Color.WHITE if self.turn == Figure.Color.BLACK else Figure.Color.BLACK
-        #print(self.draw_board())
+        # print(self.draw_board())
 
     def __apply_move(self, figure, _from, to):
 
+        figure.been_moved = True
         _from = Vector2(_from)
         to = Vector2(to)
 
         self.board[_from.x][_from.y] = None
         self.board[to.x][to.y] = figure
+
+    def __apply_castling(self, figure, _from, to, type):
+        figure.been_moved = True
+        _from = Vector2(_from)
+        to = Vector2(to)
+
+        self.board[_from.x][_from.y] = None
+        self.board[to.x][to.y] = figure
+
+        if type == "long":
+            self.board[_from.x][3] = self.get_piece_at_coordinates((_from.x, 0))
+            self.board[_from.x][0] = None
+        if type == "short":
+            self.board[_from.x][5] = self.get_piece_at_coordinates((_from.x, 7))
+            self.board[_from.x][7] = None
 
     def __kill(self, fro, to):
 

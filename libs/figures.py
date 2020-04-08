@@ -9,6 +9,7 @@ class Figure:
 
     def __init__(self, color):
         self.color = color
+        self.been_moved = False
 
     def __str__(self):
         color = "White" if self.color == Figure.Color.WHITE else "Black"
