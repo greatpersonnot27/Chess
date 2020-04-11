@@ -76,12 +76,12 @@ class ChessBoard:
         return chr(ord('a') + fro[1]) + str(int(fro[0]) + 1) + chr(ord('a') + to[1]) + str(int(to[0]) + 1)
 
     def get_minmax_move(self):
-        self.__is_check()
         utility, move = self.maximize(self, 3)
         fro, to = move
+        print(self.draw_board())
         return chr(ord('a') + fro[1]) + str(int(fro[0]) + 1) + chr(ord('a') + to[1]) + str(int(to[0]) + 1)
 
-    def get_all_legal_moves(self):
+    def __get_all_legal_moves(self):
         moves = []
         for x, row in enumerate(self.board):
             for y, figure in enumerate(row):
@@ -89,6 +89,18 @@ class ChessBoard:
                     moves += self.__get_figure_legal_moves(figure, (x, y))
         moves += self.__get_all_special_moves()
         return moves
+
+    def get_all_legal_moves(self):
+        moves = self.__get_all_legal_moves()
+        valid_moves = []
+        for move in moves:
+            board_copy = ChessBoard(self)
+            board_copy.move(move[0], move[1])
+            if not board_copy.__is_check(opponent=True):
+                valid_moves.append(move)
+        if len(valid_moves) == 0:
+            raise Exception("Checkmate!")
+        return valid_moves
 
     def __get_figure_legal_moves(self, figure, pos):
         moves = []
@@ -99,8 +111,8 @@ class ChessBoard:
                     if not (str(figure).endswith("Pawn") and pos[1] != y):
                         # if square is empty add to possible moves
                         moves.append((pos, (x, y)))
-                    if str(figure).endswith("Pawn") and (pos[0]-x) % 2 == 0:
-                        for square in figure.path(Vector2(pos), Vector2((x,y))):
+                    if str(figure).endswith("Pawn") and (pos[0] - x) % 2 == 0:
+                        for square in figure.path(Vector2(pos), Vector2((x, y))):
                             if square is not None:
                                 moves.pop()
                 elif self.board[x][y].color != figure.color:
@@ -206,13 +218,14 @@ class ChessBoard:
         self.turn = Figure.Color.WHITE if self.turn == Figure.Color.BLACK else Figure.Color.BLACK
         # print(self.draw_board())
 
-    def __is_check(self):
+    def __is_check(self, opponent):
         # change the turn
-        self.turn = Figure.Color.WHITE if self.turn == Figure.Color.BLACK else Figure.Color.BLACK
+        if not opponent:
+            self.change_turn()
 
         check = False
 
-        moves = self.get_all_legal_moves()
+        moves = self.__get_all_legal_moves()
         for move in moves:
             fro, to = move
             dest_figure = self.board[to[0]][to[1]]
@@ -318,3 +331,6 @@ class ChessBoard:
                     else:
                         figure_count[str(figure)] = 1
         return figure_count
+
+    def change_turn(self):
+        self.turn = Figure.Color.WHITE if self.turn == Figure.Color.BLACK else Figure.Color.BLACK
