@@ -94,9 +94,11 @@ class ChessBoard:
         moves = self.__get_all_legal_moves()
         valid_moves = []
         for move in moves:
+            _from = self.board[move[0][0]][move[0][1]] 
+            to = self.board[move[1][0]][move[1][1]] 
             board_copy = ChessBoard(self)
             board_copy.move(move[0], move[1])
-            if not board_copy.__is_check(opponent=True):
+            if not board_copy.is_opponent_in_check():
                 valid_moves.append(move)
         if len(valid_moves) == 0:
             raise Exception("Checkmate!")
@@ -218,7 +220,13 @@ class ChessBoard:
         self.turn = Figure.Color.WHITE if self.turn == Figure.Color.BLACK else Figure.Color.BLACK
         # print(self.draw_board())
 
-    def __is_check(self, opponent):
+    def is_opponent_in_check(self):
+        return self.__is_check(opponent=True)
+
+    def is_player_in_check(self):
+        return self.__is_check()
+
+    def __is_check(self, opponent=False):
         # change the turn
         if not opponent:
             self.change_turn()
@@ -230,11 +238,10 @@ class ChessBoard:
             fro, to = move
             dest_figure = self.board[to[0]][to[1]]
             if isinstance(dest_figure, King):
-                print("IT IS CHECKKKKKKKKK")
                 check = True
 
-        # change the turn back to original
-        self.turn = Figure.Color.WHITE if self.turn == Figure.Color.BLACK else Figure.Color.BLACK
+        if not opponent:
+            self.change_turn()
 
         return check
 

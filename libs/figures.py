@@ -174,7 +174,7 @@ class Rook(Figure):
 
 class Queen(Figure):
     def get_all_moves(self, pos):
-        vectors = [(1, 0), (-1, 0), (0, 1), (0, -1), (1, 1), (-1, 1), (-1, 1), (-1, -1)]
+        vectors = [(1, 0), (-1, 0), (0, 1), (0, -1), (1, 1), (-1, 1), (1, -1), (-1, -1)]
         return self._get_all_moves_sliders(pos, vectors)
 
     def path(self, fro, to):
