@@ -87,6 +87,8 @@ class Pawn(Figure):
         super().__init__(color)
 
     def get_all_moves(self, pos):
+        if pos[0] in (0, 7):
+            return []
         if self.color == Figure.Color.WHITE:
             moves = [(pos[0] + 1, pos[1]), (pos[0] + 2, pos[1])]
             kill_move1 = (pos[0] + 1, pos[1] + 1)

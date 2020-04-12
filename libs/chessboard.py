@@ -76,7 +76,7 @@ class ChessBoard:
         return chr(ord('a') + fro[1]) + str(int(fro[0]) + 1) + chr(ord('a') + to[1]) + str(int(to[0]) + 1)
 
     def get_minmax_move(self):
-        utility, move = self.maximize(self, 3)
+        utility, move = self.maximize(self, 2)
         fro, to = move
         # print(self.draw_board())
         return chr(ord('a') + fro[1]) + str(int(fro[0]) + 1) + chr(ord('a') + to[1]) + str(int(to[0]) + 1)
@@ -190,6 +190,12 @@ class ChessBoard:
                 self.__apply_castling(figure, _from, to, "short")
                 return
 
+        # check for pawn promotion
+
+        if isinstance(figure, Pawn) and to[0] in (0, 7):
+            self.__apply_pawn_promotion(figure, _from, to, self.history[-1][-1].lower())
+            return
+
         # Change coordinates to vector
         _from = Vector2(_from)
         to = Vector2(to)
@@ -215,7 +221,7 @@ class ChessBoard:
             self.__apply_move(figure, _from, to)
 
         # change turn
-        self.turn = Figure.Color.WHITE if self.turn == Figure.Color.BLACK else Figure.Color.BLACK
+        self.change_turn()
         # print(self.draw_board())
 
     def __is_check(self, opponent):
@@ -260,7 +266,25 @@ class ChessBoard:
         if type == "short":
             self.board[_from.x][5] = self.get_piece_at_coordinates((_from.x, 7))
             self.board[_from.x][7] = None
-        self.turn = Figure.Color.WHITE if self.turn == Figure.Color.BLACK else Figure.Color.BLACK
+        self.change_turn()
+
+    def __apply_pawn_promotion(self, pawn, _from, to, figure):
+        _from = Vector2(_from)
+        to = Vector2(to)
+
+        if figure == "q":
+            self.board[_from.x][_from.y] = None
+            self.board[to.x][to.y] = Queen(pawn.color)
+        if figure == "b":
+            self.board[_from.x][_from.y] = None
+            self.board[to.x][to.y] = Bishop(pawn.color)
+        if figure == "r":
+            self.board[_from.x][_from.y] = None
+            self.board[to.x][to.y] = Rook(pawn.color)
+        if figure == "n":
+            self.board[_from.x][_from.y] = None
+            self.board[to.x][to.y] = Knight(pawn.color)
+        self.change_turn()
 
     def __kill(self, fro, to):
 
