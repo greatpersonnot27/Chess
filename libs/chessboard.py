@@ -78,7 +78,7 @@ class ChessBoard:
     def get_minmax_move(self):
         utility, move = self.maximize(self, 3)
         fro, to = move
-        print(self.draw_board())
+        # print(self.draw_board())
         return chr(ord('a') + fro[1]) + str(int(fro[0]) + 1) + chr(ord('a') + to[1]) + str(int(to[0]) + 1)
 
     def __get_all_legal_moves(self):
@@ -230,7 +230,6 @@ class ChessBoard:
             fro, to = move
             dest_figure = self.board[to[0]][to[1]]
             if isinstance(dest_figure, King):
-                print("IT IS CHECKKKKKKKKK")
                 check = True
 
         # change the turn back to original
@@ -312,14 +311,22 @@ class ChessBoard:
         only the material part. Need to add double pawn and other type of metrics
         """
         figure_count = self.get_figure_count()
-        position_value = 200 * (figure_count.get("White King", 0) - figure_count.get("Black King", 0)) + 9 * (
-                figure_count.get("White Queen", 0) - figure_count.get("Black Queen", 0)) + 5 * (
-                                 figure_count.get("White Rook", 0) - figure_count.get("Black Rook", 0)) + 3 * (
+        position_value = 20000 * (figure_count.get("White King", 0) - figure_count.get("Black King", 0)) + 900 * (
+                figure_count.get("White Queen", 0) - figure_count.get("Black Queen", 0)) + 500 * (
+                                 figure_count.get("White Rook", 0) - figure_count.get("Black Rook", 0)) + 330 * (
                                  figure_count.get("White Knight", 0) - figure_count.get("Black Knight", 0) +
-                                 figure_count.get("White Bishop", 0) - figure_count.get("Black Bishop", 0)) + 1 * (
+                                 figure_count.get("White Bishop", 0) - figure_count.get("Black Bishop", 0)) + 100 * (
                                  figure_count.get("White Pawn", 0) - figure_count.get("Black Pawn", 0))
-
-        return position_value * -1
+        white_st_sum = 0
+        black_st_sum = 0
+        for x, row in enumerate(self.board):
+            for y, figure in enumerate(row):
+                if figure is not None:
+                    if figure.color:
+                        black_st_sum += figure.get_square_table()[x][y]
+                    else:
+                        white_st_sum += figure.get_square_table()[x][y]
+        return (position_value + black_st_sum - white_st_sum) * -1
 
     def get_figure_count(self):
         figure_count = dict()

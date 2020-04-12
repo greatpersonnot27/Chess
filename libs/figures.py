@@ -1,5 +1,4 @@
 from libs.exceptions import InvalidMoveException
-from libs.utils import Vector2
 
 
 class Figure:
@@ -10,10 +9,16 @@ class Figure:
     def __init__(self, color):
         self.color = color
         self.been_moved = False
+        self.square_table_reversed = self.square_table[::-1]
 
     def __str__(self):
         color = "White" if self.color == Figure.Color.WHITE else "Black"
         return color + ' ' + self.__class__.__name__
+
+    def get_square_table(self):
+        if not self.color:
+            return self.square_table_reversed
+        return self.square_table
 
     def _return_path(self, fro, to):
         diff = to - fro
@@ -63,13 +68,24 @@ class Figure:
             while 0 <= move[0] <= 7 and 0 <= move[1] <= 7:
                 move_list.append(move)
                 move = (move[0] + x, move[1] + y)
-            if move_list != []:
+            if move_list:
                 moves.append(move_list)
 
         return moves
 
 
 class Pawn(Figure):
+    def __init__(self, color):
+        self.square_table = [[0, 0, 0, 0, 0, 0, 0, 0],
+                             [50, 50, 50, 50, 50, 50, 50, 50],
+                             [10, 10, 20, 30, 30, 20, 10, 10],
+                             [5, 5, 10, 25, 25, 10, 5, 5],
+                             [0, 0, 0, 20, 20, 0, 0, 0],
+                             [5, -5, -10, 0, 0, -10, -5, 5],
+                             [5, 10, 10, -20, -20, 10, 10, 5],
+                             [0, 0, 0, 0, 0, 0, 0, 0]]
+        super().__init__(color)
+
     def get_all_moves(self, pos):
         if self.color == Figure.Color.WHITE:
             moves = [(pos[0] + 1, pos[1]), (pos[0] + 2, pos[1])]
@@ -114,10 +130,10 @@ class Pawn(Figure):
 
         if diff == (2, 0) or diff == (-2, 0):
             # check the inital positions if pawn moves over two squares
-            if (self.color == Figure.Color.WHITE and fro.x != 1):
+            if self.color == Figure.Color.WHITE and fro.x != 1:
                 raise InvalidMoveException()
 
-            elif (self.color == Figure.Color.BLACK and fro.x != 6):
+            elif self.color == Figure.Color.BLACK and fro.x != 6:
                 raise InvalidMoveException()
 
             return [fro + (diff // 2)]
@@ -126,6 +142,17 @@ class Pawn(Figure):
 
 
 class Knight(Figure):
+    def __init__(self, color):
+        self.square_table = [[-50, -40, -30, -30, -30, -30, -40, -50],
+                             [-40, -20, 0, 0, 0, 0, -20, -40],
+                             [-30, 0, 10, 15, 15, 10, 0, -30],
+                             [-30, 5, 15, 20, 20, 15, 5, -30],
+                             [-30, 0, 15, 20, 20, 15, 0, -30],
+                             [-30, 5, 10, 15, 15, 10, 5, -30],
+                             [-40, -20, 0, 5, 5, 0, -20, -40],
+                             [-50, -40, -30, -30, -30, -30, -40, -50]]
+        super().__init__(color)
+
     def get_all_moves(self, pos):
         vectors = [(1, 2), (-1, 2), (1, -2), (-1, -2),
                    (2, 1), (-2, 1), (2, -1), (-2, -1)]
@@ -141,6 +168,17 @@ class Knight(Figure):
 
 
 class Bishop(Figure):
+    def __init__(self, color):
+        self.square_table = [[-20, -10, -10, -10, -10, -10, -10, -20],
+                             [-10, 0, 0, 0, 0, 0, 0, -10],
+                             [-10, 0, 5, 10, 10, 5, 0, -10],
+                             [-10, 5, 5, 10, 10, 5, 5, -10],
+                             [-10, 0, 10, 10, 10, 10, 0, -10],
+                             [-10, 10, 10, 10, 10, 10, 10, -10],
+                             [-10, 5, 0, 0, 0, 0, 5, -10],
+                             [-20, -10, -10, -10, -10, -10, -10, -20]]
+        super().__init__(color)
+
     def get_all_moves(self, pos):
         vectors = [(1, 1), (-1, 1), (-1, 1), (-1, -1)]
         return self._get_all_moves_sliders(pos, vectors)
@@ -157,6 +195,17 @@ class Bishop(Figure):
 
 
 class Rook(Figure):
+    def __init__(self, color):
+        self.square_table = [[0, 0, 0, 0, 0, 0, 0, 0],
+                             [5, 10, 10, 10, 10, 10, 10, 5],
+                             [-5, 0, 0, 0, 0, 0, 0, -5],
+                             [-5, 0, 0, 0, 0, 0, 0, -5],
+                             [-5, 0, 0, 0, 0, 0, 0, -5],
+                             [-5, 0, 0, 0, 0, 0, 0, -5],
+                             [-5, 0, 0, 0, 0, 0, 0, -5],
+                             [0, 0, 0, 5, 5, 0, 0, 0]]
+        super().__init__(color)
+
     def get_all_moves(self, pos):
         vectors = [(1, 0), (-1, 0), (0, 1), (0, -1)]
         return self._get_all_moves_sliders(pos, vectors)
@@ -173,8 +222,19 @@ class Rook(Figure):
 
 
 class Queen(Figure):
+    def __init__(self, color):
+        self.square_table = [[-20, -10, -10, -5, -5, -10, -10, -20],
+                             [-10, 0, 0, 0, 0, 0, 0, -10],
+                             [-10, 0, 5, 5, 5, 5, 0, -10],
+                             [-5, 0, 5, 5, 5, 5, 0, -5],
+                             [0, 0, 5, 5, 5, 5, 0, -5],
+                             [-10, 5, 5, 5, 5, 5, 0, -10],
+                             [-10, 0, 5, 0, 0, 0, 0, -10],
+                             [-20, -10, -10, -5, -5, -10, -10, -20]]
+        super().__init__(color)
+
     def get_all_moves(self, pos):
-        vectors = [(1, 0), (-1, 0), (0, 1), (0, -1), (1, 1), (-1, 1), (-1, 1), (-1, -1)]
+        vectors = [(1, 0), (-1, 0), (0, 1), (0, -1), (1, 1), (1, -1), (-1, 1), (-1, -1)]
         return self._get_all_moves_sliders(pos, vectors)
 
     def path(self, fro, to):
@@ -188,6 +248,17 @@ class Queen(Figure):
 
 
 class King(Figure):
+    def __init__(self, color):
+        self.square_table = [[-30, -40, -40, -50, -50, -40, -40, -30],
+                             [-30, -40, -40, -50, -50, -40, -40, -30],
+                             [-30, -40, -40, -50, -50, -40, -40, -30],
+                             [-30, -40, -40, -50, -50, -40, -40, -30],
+                             [-20, -30, -30, -40, -40, -30, -30, -20],
+                             [-10, -20, -20, -20, -20, -20, -20, -10],
+                             [20, 20, 0, 0, 0, 0, 20, 20],
+                             [20, 30, 10, 0, 0, 10, 30, 20]]
+        super().__init__(color)
+
     def get_all_moves(self, pos):
         vectors = [(1, 0), (-1, 0), (0, 1), (0, -1), (1, 1), (-1, 1), (-1, 1), (-1, -1)]
         return self._get_all_moves_jumpers(pos, vectors)
