@@ -76,7 +76,7 @@ class ChessBoard:
         return chr(ord('a') + fro[1]) + str(int(fro[0]) + 1) + chr(ord('a') + to[1]) + str(int(to[0]) + 1)
 
     def get_minmax_move(self):
-        utility, move = self.maximize(self, 2)
+        utility, move = self.maximize(float("-inf"), float("inf"), self, 4)
         fro, to = move
         # print(self.draw_board())
         return chr(ord('a') + fro[1]) + str(int(fro[0]) + 1) + chr(ord('a') + to[1]) + str(int(to[0]) + 1)
@@ -94,14 +94,14 @@ class ChessBoard:
         moves = self.__get_all_legal_moves()
         valid_moves = []
         for move in moves:
-            _from = self.board[move[0][0]][move[0][1]] 
-            to = self.board[move[1][0]][move[1][1]] 
+            _from = self.board[move[0][0]][move[0][1]]
+            to = self.board[move[1][0]][move[1][1]]
             board_copy = ChessBoard(self)
             board_copy.move(move[0], move[1])
             if not board_copy.is_opponent_in_check():
                 valid_moves.append(move)
-        if len(valid_moves) == 0:
-            raise Exception("Checkmate!")
+        # if len(valid_moves) == 0:
+        #     raise Exception("Checkmate!")
         return valid_moves
 
     def __get_figure_legal_moves(self, figure, pos):
@@ -307,7 +307,7 @@ class ChessBoard:
 
         self.dead_figures.append(killee)
 
-    def maximize(self, board, depth):
+    def maximize(self, alpha, beta, board, depth):
         if depth == 0:
             return board.evaluate_board(), None
         maximum_utility = float('-inf')
@@ -316,13 +316,17 @@ class ChessBoard:
         for move in board.get_all_legal_moves():
             cb = ChessBoard(board)
             cb.move(move[0], move[1])
-            utility, mv = self.minimize(cb, depth - 1)
-            if utility > maximum_utility:
-                maximum_utility = utility
-                move_with_max_utility = move
+            utility, mv = self.minimize(alpha, beta, cb, depth - 1)
+            if utility is not None:
+                if utility > maximum_utility:
+                    maximum_utility = utility
+                    move_with_max_utility = move
+                alpha = max(alpha, utility)
+                if alpha >= beta:
+                    return None, None
         return maximum_utility, move_with_max_utility
 
-    def minimize(self, board, depth):
+    def minimize(self, alpha, beta, board, depth):
         if depth == 0:
             return board.evaluate_board(), None
         minimum_utility = float('inf')
@@ -331,10 +335,14 @@ class ChessBoard:
         for move in board.get_all_legal_moves():
             cb = ChessBoard(board)
             cb.move(move[0], move[1])
-            utility, mv = self.maximize(cb, depth - 1)
-            if utility < minimum_utility:
-                minimum_utility = utility
-                move_with_min_utility = move
+            utility, mv = self.maximize(alpha, beta, cb, depth - 1)
+            if utility is not None:
+                if utility < minimum_utility:
+                    minimum_utility = utility
+                    move_with_min_utility = move
+                beta = min(beta, utility)
+                if alpha >= beta:
+                    return None, None
         return minimum_utility, move_with_min_utility
 
     def evaluate_board(self):

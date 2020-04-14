@@ -1,2 +1,6 @@
 class InvalidMoveException(Exception):
-	pass
+    pass
+
+
+class CheckMateException(Exception):
+    pass
