@@ -2,25 +2,73 @@ from libs.exceptions import InvalidMoveException
 
 
 class Figure:
+    """
+        This is a class for figures on the board. It stores the color of the figure
+        and returns its possible moves and paths it needs to take.
+
+        Attributes:
+
+            color (Color): if white it is 0, else it is 1.
+
+            been_moved (bool): True if figure has been moved before, else False
+
+            square_table_reversed (list): list of integer lists (reversed)
+
+        """
     class Color:
         WHITE = 0
         BLACK = 1
 
     def __init__(self, color):
+        """
+        Constructs a figure with give color
+
+        Parameters
+        ----------
+
+            color (Color):
+
+                color of the figure
+        """
         self.color = color
         self.been_moved = False
         self.square_table_reversed = self.square_table[::-1]
 
     def __str__(self):
+        """
+        Returns White if figure is white else Black
+
+            Returns:
+
+                str: White or Black
+
+        """
         color = "White" if self.color == Figure.Color.WHITE else "Black"
         return color + ' ' + self.__class__.__name__
 
     def get_square_table(self):
+        """
+        Returns the Square table of the figure
+
+            Returns:
+
+                (list): list of integer lists
+
+        """
         if not self.color:
             return self.square_table_reversed
         return self.square_table
 
     def _return_path(self, fro, to):
+        """
+        Returns a list of squares on the board that a figure needs to pass
+        to get to its destination
+
+            Returns:
+
+                path (list): list of tuples of two integers
+
+        """
         diff = to - fro
 
         # abs to make sure we don't change the sign
@@ -45,6 +93,10 @@ class Figure:
         """
         This method is used to get all the moves of Knight and King.
         Knight and King are called jumpers, because they can only jump one vector.
+
+            Returns:
+
+                moves (list): list of tuples of tuples containing two integers describing the move
         """
         moves = []
 
@@ -59,6 +111,10 @@ class Figure:
         """
         This method is used to get all the moves of Queen, Bishop and Rook.
         Queen, Bishop and Rook are sliders, because they slide towards the vector direction.
+
+            Returns:
+
+                moves (list): list of tuples of tuples containing two integers describing the move
         """
         moves = []
 
@@ -75,6 +131,17 @@ class Figure:
 
 
 class Pawn(Figure):
+    """
+       A class for the Pawn inherits from the Figure
+
+       Attributes:
+
+           color (Color): if white it is 0, else it is 1.
+
+           square_table (list): list of positional values for every square
+
+           of the board for the evaluation algorithm
+    """
     def __init__(self, color):
         self.square_table = [[0, 0, 0, 0, 0, 0, 0, 0],
                              [50, 50, 50, 50, 50, 50, 50, 50],
@@ -87,6 +154,13 @@ class Pawn(Figure):
         super().__init__(color)
 
     def get_all_moves(self, pos):
+        """
+        Returns all possible moves for the pawn for the given position
+
+            Returns:
+
+                (list): list of tuples of tuples containing two integers describing the move
+        """
         if pos[0] in (0, 7):
             return []
         if self.color == Figure.Color.WHITE:
@@ -118,7 +192,13 @@ class Pawn(Figure):
             return [moves] + [valid_kill_moves]
 
     def path(self, fro, to):
+        """
+        Returns list of squares on the table Pawn needs to pass to execute the move
 
+            Returns:
+
+                (list): list of tuples containing two integers describing the path
+        """
         diff = to - fro
 
         if self.color == Figure.Color.WHITE:
@@ -144,6 +224,17 @@ class Pawn(Figure):
 
 
 class Knight(Figure):
+    """
+       A class for the Knight inherits from the Figure
+
+       Attributes:
+
+           color (Color): if white it is 0, else it is 1.
+
+           square_table (list): list of positional values for every square
+
+           of the board for the evaluation algorithm
+    """
     def __init__(self, color):
         self.square_table = [[-50, -40, -30, -30, -30, -30, -40, -50],
                              [-40, -20, 0, 0, 0, 0, -20, -40],
@@ -156,11 +247,25 @@ class Knight(Figure):
         super().__init__(color)
 
     def get_all_moves(self, pos):
+        """
+        Returns all possible moves for the Knight for the given position
+
+            Returns:
+
+                (list): list of tuples of tuples containing two integers describing the move
+        """
         vectors = [(1, 2), (-1, 2), (1, -2), (-1, -2),
                    (2, 1), (-2, 1), (2, -1), (-2, -1)]
         return self._get_all_moves_jumpers(pos, vectors)
 
     def path(self, fro, to):
+        """
+        Returns list of squares on the table Knight needs to pass to execute the move
+
+            Returns:
+
+                (list): list of tuples containing two integers describing the path
+        """
         abs_diff = abs(fro - to)
 
         if abs_diff != (2, 1) and abs_diff != (1, 2):
@@ -170,6 +275,17 @@ class Knight(Figure):
 
 
 class Bishop(Figure):
+    """
+       A class for the Bishop inherits from the Figure
+
+       Attributes:
+
+           color (Color): if white it is 0, else it is 1.
+
+           square_table (list): list of positional values for every square
+
+           of the board for the evaluation algorithm
+    """
     def __init__(self, color):
         self.square_table = [[-20, -10, -10, -10, -10, -10, -10, -20],
                              [-10, 0, 0, 0, 0, 0, 0, -10],
@@ -182,10 +298,24 @@ class Bishop(Figure):
         super().__init__(color)
 
     def get_all_moves(self, pos):
+        """
+        Returns all possible moves for the Bishop for the given position
+
+            Returns:
+
+                (list): list of tuples of tuples containing two integers describing the move
+        """
         vectors = [(1, 1), (-1, 1), (-1, 1), (-1, -1)]
         return self._get_all_moves_sliders(pos, vectors)
 
     def path(self, fro, to):
+        """
+        Returns list of squares on the table Bishop needs to pass to execute the move
+
+            Returns:
+
+                (list): list of tuples containing two integers describing the path
+        """
         diff = to - fro
 
         # if absolute values of diff don't equal  each other
@@ -197,6 +327,17 @@ class Bishop(Figure):
 
 
 class Rook(Figure):
+    """
+       A class for the Rook inherits from the Figure
+
+       Attributes:
+
+           color (Color): if white it is 0, else it is 1.
+
+           square_table (list): list of positional values for every square
+
+           of the board for the evaluation algorithm
+    """
     def __init__(self, color):
         self.square_table = [[0, 0, 0, 0, 0, 0, 0, 0],
                              [5, 10, 10, 10, 10, 10, 10, 5],
@@ -209,10 +350,24 @@ class Rook(Figure):
         super().__init__(color)
 
     def get_all_moves(self, pos):
+        """
+        Returns all possible moves for the Rook for the given position
+
+            Returns:
+
+                (list): list of tuples of tuples containing two integers describing the move
+        """
         vectors = [(1, 0), (-1, 0), (0, 1), (0, -1)]
         return self._get_all_moves_sliders(pos, vectors)
 
     def path(self, fro, to):
+        """
+        Returns list of squares on the table Rook needs to pass to execute the move
+
+            Returns:
+
+                (list): list of tuples containing two integers describing the path
+        """
         diff = to - fro
 
         # if absolute values of diff equal each other
@@ -224,6 +379,17 @@ class Rook(Figure):
 
 
 class Queen(Figure):
+    """
+       A class for the Queen inherits from the Figure
+
+       Attributes:
+
+           color (Color): if white it is 0, else it is 1.
+
+           square_table (list): list of positional values for every square
+
+           of the board for the evaluation algorithm
+    """
     def __init__(self, color):
         self.square_table = [[-20, -10, -10, -5, -5, -10, -10, -20],
                              [-10, 0, 0, 0, 0, 0, 0, -10],
@@ -236,10 +402,24 @@ class Queen(Figure):
         super().__init__(color)
 
     def get_all_moves(self, pos):
+        """
+        Returns all possible moves for the Queen for the given position
+
+            Returns:
+
+                (list): list of tuples of tuples containing two integers describing the move
+        """
         vectors = [(1, 0), (-1, 0), (0, 1), (0, -1), (1, 1), (-1, 1), (1, -1), (-1, -1)]
         return self._get_all_moves_sliders(pos, vectors)
 
     def path(self, fro, to):
+        """
+        Returns list of squares on the table Queen needs to pass to execute the move
+
+            Returns:
+
+                (list): list of tuples containing two integers describing the path
+        """
         diff = to - fro
 
         # check for diagonal and (horizontal,vertical)
@@ -250,6 +430,17 @@ class Queen(Figure):
 
 
 class King(Figure):
+    """
+       A class for the King inherits from the Figure
+
+       Attributes:
+
+           color (Color): if white it is 0, else it is 1.
+
+           square_table (list): list of positional values for every square
+
+           of the board for the evaluation algorithm
+    """
     def __init__(self, color):
         self.square_table = [[-30, -40, -40, -50, -50, -40, -40, -30],
                              [-30, -40, -40, -50, -50, -40, -40, -30],
@@ -262,10 +453,24 @@ class King(Figure):
         super().__init__(color)
 
     def get_all_moves(self, pos):
+        """
+        Returns all possible moves for the King for the given position
+
+            Returns:
+
+                (list): list of tuples of tuples containing two integers describing the move
+        """
         vectors = [(1, 0), (-1, 0), (0, 1), (0, -1), (1, 1), (-1, 1), (-1, 1), (-1, -1)]
         return self._get_all_moves_jumpers(pos, vectors)
 
     def path(self, fro, to):
+        """
+        Returns list of squares on the table King needs to pass to execute the move
+
+            Returns:
+
+                (list): list of tuples containing two integers describing the path
+        """
         abs_diff = abs(to - fro)
 
         if abs_diff != (1, 1) and abs_diff != (1, 0) and abs_diff != (0, 1):

@@ -9,10 +9,41 @@ from libs.figures import (
 
 class ChessBoard:
     """
-    This is a class containing the chessboard state
+    This is a class containing the chessboard state,
+    with methods for validating and generating possible moves
+
+    Attributes
+    ----------
+    turn : Figure.Color
+
+        the color of the player whose turn it is to make a move
+
+    history: list
+
+        list of made moves (two tuples of two integers each)
+
+    dead_figures: list
+
+        list of figures that were killed
+
+    number_possible_moves: int
+
+        total possible moves for the given depth
+
+    number_prunned_moves: int
+
+        number of moves prunned as a result of alpha-beta prunning
     """
     def __init__(self, chessboard=None):
+        """
+        Constructs a new chessboard of chessboard parameter is none, else creates an new chessboard from it
 
+        Parameters
+        ----------
+            chessboard: ChessBoard
+
+                instance of Chessboard object with possibly some registered activity
+        """
         # current turn
         self.turn = Figure.Color.WHITE
 
@@ -57,7 +88,14 @@ class ChessBoard:
     def get_piece_at_coordinates(self, coordinates):
         """
         Get piece on given coordinates. If the coordinates is empty
-        return None
+
+            Parameters:
+
+                coordinates (tuple): tuple of integers
+
+            Returns:
+
+                (Figure) : Figure contained at the given coordinates
         """
         x, y = coordinates
         return self.board[x][y]
@@ -81,8 +119,10 @@ class ChessBoard:
     def get_random_move(self):
         """
         Returns a random move from all legal moves available for the given board position
+
             Returns:
-                str: move in long algebric notation. Example: C7C2
+
+                str: move in long algebraic notation. Example: C7C2
         """
         move = random.choice(self.get_all_legal_moves())
         fro, to = move
@@ -91,8 +131,10 @@ class ChessBoard:
     def get_minmax_move(self):
         """
         Returns next move calculated with minmax algorithm
+
             Returns:
-                str: move in long algebric notation. Example: C7C2
+
+                str: move in long algebraic notation. Example: C7C2
         """
         utility, move = self.maximize(float("-inf"), float("inf"), self, 4, self)
         fro, to = move
@@ -103,7 +145,9 @@ class ChessBoard:
     def __get_all_legal_moves(self):
         """
         Returns all legal moves as a list of tuples for the current position
+
             Returns:
+
                 moves (list): list of tuples containing 2 integers each. Example: [((0, 1),(0, 2)),((0, 4),(0, 6))]
         """
         moves = []
@@ -132,10 +176,15 @@ class ChessBoard:
     def __get_figure_legal_moves(self, figure, pos):
         """
         Returns all legal moves for a given figure in a given position
+
             Parameters:
+
                 figure (Figure): object of type Figure
+
                 pos (tuple): tuple of two integers
+
             Returns:
+
                 moves (list): list of two tuples each with two integers
         """
         moves = []
@@ -162,7 +211,10 @@ class ChessBoard:
     def __get_all_special_moves(self):
         """
         Returns special type of moves like castling or impassant
+
             Returns:
+
+                moves (list): list of two tuples each with two integers
         """
         moves = []
         # castling
@@ -171,6 +223,13 @@ class ChessBoard:
         return moves
 
     def __check_castling(self):
+        """
+        Returns available castling moves
+
+            Returns:
+
+                moves (list): list of two tuples each with two integers
+        """
         # check special moves
         moves = []
         if self.turn == Figure.Color.WHITE:
@@ -264,12 +323,37 @@ class ChessBoard:
         # print(self.draw_board())
 
     def is_opponent_in_check(self):
+        """
+        Returns true if opponent is in check else returns false
+
+            Returns:
+
+                check (bool)
+        """
         return self.__is_check(opponent=True)
 
     def is_player_in_check(self):
+        """
+        Returns true if player is in check else returns false
+
+            Returns:
+
+                check (bool)
+        """
         return self.__is_check()
 
     def __is_check(self, opponent=False):
+        """
+        Checks if player or opponent is in check
+
+            Parameters:
+
+                opponent (bool): true if the function should check for the opponent else false
+
+            Returns:
+
+                check (bool)
+        """
         # change the turn
         if not opponent:
             self.change_turn()
@@ -289,6 +373,17 @@ class ChessBoard:
         return check
 
     def __apply_move(self, figure, _from, to):
+        """
+        Makes the move on the board object and sets the been_moved flag to true for a figure being moved
+
+            Parameters:
+
+                figure (Figure): figure that needs to be moved
+
+                _from (tuple): tuple of two integers describing from which place the piece is being moved
+
+                _to (tuple): tuple of two integers describing to which place the piece is being moved
+        """
 
         figure.been_moved = True
         _from = Vector2(_from)
@@ -298,6 +393,19 @@ class ChessBoard:
         self.board[to.x][to.y] = figure
 
     def __apply_castling(self, figure, _from, to, type):
+        """
+        Makes the castling move on the board object and sets the been_moved flag to true for a figure being moved
+
+            Parameters:
+
+                figure (Figure): figure that needs to be moved
+
+                _from (tuple): tuple of two integers describing from which place the piece is being moved
+
+                _to (tuple): tuple of two integers describing to which place the piece is being moved
+
+                type (str): "long" or "short" depending which type of castling is being applied
+        """
         figure.been_moved = True
         _from = Vector2(_from)
         to = Vector2(to)
@@ -314,6 +422,19 @@ class ChessBoard:
         self.change_turn()
 
     def __apply_pawn_promotion(self, pawn, _from, to, figure):
+        """
+        Applies the promotion rule to the given pawn with the chosen figure
+
+            Parameters:
+
+                pawn (Figure): pawn that needs to be moved
+
+                _from (tuple): tuple of two integers describing from which place the piece is being moved
+
+                _to (tuple): tuple of two integers describing to which place the piece is being moved
+
+                figure (figure): "long" or "short" depending which type of castling is being applied
+        """
         _from = Vector2(_from)
         to = Vector2(to)
 
@@ -332,7 +453,15 @@ class ChessBoard:
         self.change_turn()
 
     def __kill(self, fro, to):
+        """
+        Removes the killed figure from the board object and replaces it with the killer figure
 
+            Parameters:
+
+                fro (tuple): tuple of two integers - coordinates of the killer
+
+                to (tuple): tuple of two integers - coordinates of the killee
+        """
         killer = self.board[fro[0]][fro[1]]
         killee = self.board[to[0]][to[1]]
 
@@ -345,6 +474,27 @@ class ChessBoard:
         self.dead_figures.append(killee)
 
     def maximize(self, alpha, beta, board, depth, original_board):
+        """
+        Returns the value of the maximum utility and the corresponding move
+
+            Parameters:
+
+                alpha (float): maximizing functions best utility value for the current depth or above
+
+                beta (float): minimizing functions best utility value for the current depth or above
+
+                board (ChessBoard): board to be copied
+
+                depth (str): the depth limit for the recursive call of the function
+
+                original_board (ChessBoard): the original Chessboard object
+
+            Returns:
+
+                maximum_utility (float): value of the maximum utility generated
+
+                move_with_max_utility (tuple): tuple of two tuples each with two integers describing the move
+        """
         original_board.number_possible_moves += 1
         if depth == 0:
             return board.evaluate_board(), None
@@ -372,6 +522,27 @@ class ChessBoard:
         return maximum_utility, move_with_max_utility
 
     def minimize(self, alpha, beta, board, depth, original_board):
+        """
+        Returns the value of the minimum utility and the corresponding move
+
+            Parameters:
+
+                alpha (float): maximizing functions best utility value for the current depth or above
+
+                beta (float): minimizing functions best utility value for the current depth or above
+
+                board (ChessBoard): board to be copied
+
+                depth (str): the depth limit for the recursive call of the function
+
+                original_board (ChessBoard): the original Chessboard object
+
+            Returns:
+
+                minimum_utility (float): value of the minimum utility generated
+
+                move_with_min_utility (tuple): tuple of two tuples each with two integers describing the move
+        """
         original_board.number_possible_moves += 1
         if depth == 0:
             return board.evaluate_board(), None
@@ -400,8 +571,13 @@ class ChessBoard:
 
     def evaluate_board(self):
         """
-        using simple shannon function to evaluate relative value of the board
-        only the material part. Need to add double pawn and other type of metrics
+        Returns the value evaluating the advantageous position using simple shannon function
+
+        to evaluate relative value of the board - the material part plus the positional values
+
+            Returns:
+
+                (int): value of the evaluated board
         """
         figure_count = self.get_figure_count()
         position_value = 20000 * (figure_count.get("White King", 0) - figure_count.get("Black King", 0)) + 900 * (
@@ -422,6 +598,13 @@ class ChessBoard:
         return (position_value + black_st_sum - white_st_sum) * -1
 
     def get_figure_count(self):
+        """
+        Returns the dictionary with Figures as keys and number of the contained in the ChessBoard object as values
+
+            Returns:
+
+                figure_count (dictionary): key - Figure, value - # of that figure on the Board
+        """
         figure_count = dict()
         for row in self.board:
             for figure in row:
@@ -433,6 +616,5 @@ class ChessBoard:
         return figure_count
 
     def change_turn(self):
+        """Flips the turn attribute (when the current player makes the move)"""
         self.turn = Figure.Color.WHITE if self.turn == Figure.Color.BLACK else Figure.Color.BLACK
-
-print(__doc__)
