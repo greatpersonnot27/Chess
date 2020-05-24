@@ -65,5 +65,6 @@ class GameEngine:
 
 
 if __name__ == '__main__':
+    print(help(ChessBoard))
     engine = GameEngine()
     engine.engine_loop()

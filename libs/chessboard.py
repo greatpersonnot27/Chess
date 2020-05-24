@@ -8,7 +8,9 @@ from libs.figures import (
 
 
 class ChessBoard:
-
+    """
+    This is a class containing the chessboard state
+    """
     def __init__(self, chessboard=None):
 
         # current turn
@@ -28,6 +30,7 @@ class ChessBoard:
             self.__setup_initial_board()
 
     def __setup_first_row(self, color):
+        """Receives the color attribute and Sets up a list of Figures on the first row, returns the list"""
         row = [None] * 8
         row[0] = Rook(color)
         row[1] = Knight(color)
@@ -40,6 +43,7 @@ class ChessBoard:
         return row
 
     def __setup_initial_board(self):
+        """Populates the chessboard (list of lists) with figures"""
         self.board = [[None] * 8 for i in range(8)]
 
         # setup pawns
@@ -59,6 +63,7 @@ class ChessBoard:
         return self.board[x][y]
 
     def draw_board(self):
+        """Draws the current state of the chessboard on the console with easy to comprehend formatting"""
         board = ['   ' + ('   ').join('ABCDEFGH')]
 
         for i, row in enumerate(self.board[::-1]):
@@ -74,17 +79,33 @@ class ChessBoard:
         return '\n'.join(board) + '\n'
 
     def get_random_move(self):
+        """
+        Returns a random move from all legal moves available for the given board position
+            Returns:
+                str: move in long algebric notation. Example: C7C2
+        """
         move = random.choice(self.get_all_legal_moves())
         fro, to = move
         return chr(ord('a') + fro[1]) + str(int(fro[0]) + 1) + chr(ord('a') + to[1]) + str(int(to[0]) + 1)
 
     def get_minmax_move(self):
+        """
+        Returns next move calculated with minmax algorithm
+            Returns:
+                str: move in long algebric notation. Example: C7C2
+        """
         utility, move = self.maximize(float("-inf"), float("inf"), self, 4, self)
         fro, to = move
         # print(self.draw_board())
+        print(chr(ord('a') + fro[1]) + str(int(fro[0]) + 1) + chr(ord('a') + to[1]) + str(int(to[0]) + 1))
         return chr(ord('a') + fro[1]) + str(int(fro[0]) + 1) + chr(ord('a') + to[1]) + str(int(to[0]) + 1)
 
     def __get_all_legal_moves(self):
+        """
+        Returns all legal moves as a list of tuples for the current position
+            Returns:
+                moves (list): list of tuples containing 2 integers each. Example: [((0, 1),(0, 2)),((0, 4),(0, 6))]
+        """
         moves = []
         for x, row in enumerate(self.board):
             for y, figure in enumerate(row):
@@ -94,6 +115,7 @@ class ChessBoard:
         return moves
 
     def get_all_legal_moves(self):
+
         moves = self.__get_all_legal_moves()
         valid_moves = []
         for move in moves:
@@ -108,6 +130,14 @@ class ChessBoard:
         return valid_moves
 
     def __get_figure_legal_moves(self, figure, pos):
+        """
+        Returns all legal moves for a given figure in a given position
+            Parameters:
+                figure (Figure): object of type Figure
+                pos (tuple): tuple of two integers
+            Returns:
+                moves (list): list of two tuples each with two integers
+        """
         moves = []
 
         for move_list in figure.get_all_moves(pos):
@@ -130,6 +160,10 @@ class ChessBoard:
         return moves
 
     def __get_all_special_moves(self):
+        """
+        Returns special type of moves like castling or impassant
+            Returns:
+        """
         moves = []
         # castling
         moves += self.__check_castling()
@@ -400,3 +434,5 @@ class ChessBoard:
 
     def change_turn(self):
         self.turn = Figure.Color.WHITE if self.turn == Figure.Color.BLACK else Figure.Color.BLACK
+
+print(__doc__)
