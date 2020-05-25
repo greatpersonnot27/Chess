@@ -136,7 +136,7 @@ class ChessBoard:
 
                 str: move in long algebraic notation. Example: C7C2
         """
-        utility, move = self.maximize(float("-inf"), float("inf"), self, 4, self)
+        utility, move = self.maximize(float("-inf"), float("inf"), self, 2, self)
         fro, to = move
         # print(self.draw_board())
         print(chr(ord('a') + fro[1]) + str(int(fro[0]) + 1) + chr(ord('a') + to[1]) + str(int(to[0]) + 1))
@@ -270,9 +270,6 @@ class ChessBoard:
         if figure.color != self.turn:
             raise InvalidMoveException("Not your turn")
 
-        # TODO -
-        # check special moves like pawn promotion, castling, etc..
-        # else: continue usual process
         if str(figure) == "White King" and _from == (0, 4):
             if to == (0, 2):
                 self.__apply_castling(figure, _from, to, "long")
@@ -291,7 +288,7 @@ class ChessBoard:
         # check for pawn promotion
 
         if isinstance(figure, Pawn) and to[0] in (0, 7):
-            self.__apply_pawn_promotion(figure, _from, to, self.history[-1][-1].lower())
+            self.__apply_pawn_promotion(figure, _from, to, "q")
             return
 
         # Change coordinates to vector

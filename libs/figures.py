@@ -305,7 +305,7 @@ class Bishop(Figure):
 
                 (list): list of tuples of tuples containing two integers describing the move
         """
-        vectors = [(1, 1), (-1, 1), (-1, 1), (-1, -1)]
+        vectors = [(1, 1), (-1, 1), (1, -1), (-1, -1)]
         return self._get_all_moves_sliders(pos, vectors)
 
     def path(self, fro, to):
@@ -460,7 +460,7 @@ class King(Figure):
 
                 (list): list of tuples of tuples containing two integers describing the move
         """
-        vectors = [(1, 0), (-1, 0), (0, 1), (0, -1), (1, 1), (-1, 1), (-1, 1), (-1, -1)]
+        vectors = [(1, 0), (-1, 0), (0, 1), (0, -1), (1, 1), (-1, 1), (1, -1), (-1, -1)]
         return self._get_all_moves_jumpers(pos, vectors)
 
     def path(self, fro, to):

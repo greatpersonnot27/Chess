@@ -1,6 +1,9 @@
-class InvalidMoveException(Exception):
+class AIChess(Exception):
+    pass
+
+class InvalidMoveException(AIChess):
     pass
 
 
-class CheckMateException(Exception):
+class CheckMateException(AIChess):
     pass
