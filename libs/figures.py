@@ -55,7 +55,7 @@ class Figure:
                 (list): list of integer lists
 
         """
-        if not self.color:
+        if self.color:
             return self.square_table_reversed
         return self.square_table
 
@@ -147,7 +147,7 @@ class Pawn(Figure):
                              [50, 50, 50, 50, 50, 50, 50, 50],
                              [10, 10, 20, 30, 30, 20, 10, 10],
                              [5, 5, 10, 25, 25, 10, 5, 5],
-                             [0, 0, 0, 20, 20, 0, 0, 0],
+                             [0, 0, 0, 200000, 20, 0, 0, 0],
                              [5, -5, -10, 0, 0, -10, -5, 5],
                              [5, 10, 10, -20, -20, 10, 10, 5],
                              [0, 0, 0, 0, 0, 0, 0, 0]]
@@ -171,6 +171,9 @@ class Pawn(Figure):
             if pos[1] == 0:
                 valid_kill_moves.append(kill_move1)
             elif pos[1] == 7:
+                valid_kill_moves.append(kill_move2)
+            else:
+                valid_kill_moves.append(kill_move1)
                 valid_kill_moves.append(kill_move2)
             if pos[0] != 1:
                 moves.pop()

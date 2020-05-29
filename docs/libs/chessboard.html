@@ -35,24 +35,26 @@
       <div class='octowrap'>
         <a class='octothorpe' href='#section-1'>#</a>
       </div>
-      <p>This is a class containing the chessboard state,
-with methods for validating and generating possible moves</p>
-<h2>Attributes</h2>
-<p>turn : Figure.Color</p>
-<pre><code>the color of the player whose turn it is to make a move
+      <pre><code>This is a class containing the chessboard state,
+with methods for validating and generating possible moves
+
+Attributes
+----------
+turn : Figure.Color
 </code></pre>
-<p>history: list</p>
-<pre><code>list of made moves (two tuples of two integers each)
+<p>the color of the player whose turn it is to make a move</p>
+<pre><code>history: list
 </code></pre>
-<p>dead_figures: list</p>
-<pre><code>list of figures that were killed
+<p>list of made moves (two tuples of two integers each)</p>
+<pre><code>dead_figures: list
 </code></pre>
-<p>number_possible_moves: int</p>
-<pre><code>total possible moves for the given depth
+<p>list of figures that were killed</p>
+<pre><code>number_possible_moves: int
 </code></pre>
-<p>number_prunned_moves: int</p>
-<pre><code>number of moves prunned as a result of alpha-beta prunning
+<p>total possible moves for the given depth</p>
+<pre><code>number_prunned_moves: int
 </code></pre>
+<p>number of moves prunned as a result of alpha-beta prunning</p>
     </div>
     <div class='code'>
       <div class="highlight"><pre><span class="k">class</span> <span class="nc">ChessBoard</span><span class="p">:</span></pre></div>
@@ -64,11 +66,15 @@ with methods for validating and generating possible moves</p>
       <div class='octowrap'>
         <a class='octothorpe' href='#section-2'>#</a>
       </div>
-      <p>Constructs a new chessboard of chessboard parameter is none, else creates an new chessboard from it</p>
-<h2>Parameters</h2>
-<pre><code>chessboard: ChessBoard
+      <pre><code>    Constructs a new chessboard of chessboard parameter is none
+    , else creates an new chessboard from it
 
-    instance of Chessboard object with possibly some registered activity
+    Parameters
+    ----------
+</code></pre>
+<p>chessboard: ChessBoard</p>
+<pre><code>   instance of Chessboard object with possibly some
+   registered activity
 </code></pre>
     </div>
     <div class='code'>
@@ -198,14 +204,13 @@ with methods for validating and generating possible moves</p>
       <div class='octowrap'>
         <a class='octothorpe' href='#section-11'>#</a>
       </div>
-      <p>Get piece on given coordinates. If the coordinates is empty</p>
-<pre><code>Parameters:
-
-    coordinates (tuple): tuple of integers
-
-Returns:
-
-    (Figure) : Figure contained at the given coordinates
+      <pre><code>    Get piece on given coordinates. If the coordinates is empty
+</code></pre>
+<p>Parameters:</p>
+<pre><code>   coordinates (tuple): tuple of integers
+</code></pre>
+<p>Returns:</p>
+<pre><code>   (Figure) : Figure contained at the given coordinates
 </code></pre>
     </div>
     <div class='code'>
@@ -267,10 +272,10 @@ Returns:
       <div class='octowrap'>
         <a class='octothorpe' href='#section-15'>#</a>
       </div>
-      <p>Returns a random move from all legal moves available for the given board position</p>
-<pre><code>Returns:
-
-    str: move in long algebraic notation. Example: C7C2
+      <pre><code>    Returns a random move from all legal moves available for the given board position
+</code></pre>
+<p>Returns:</p>
+<pre><code>   str: move in long algebraic notation. Example: C7C2
 </code></pre>
     </div>
     <div class='code'>
@@ -297,10 +302,10 @@ Returns:
       <div class='octowrap'>
         <a class='octothorpe' href='#section-17'>#</a>
       </div>
-      <p>Returns next move calculated with minmax algorithm</p>
-<pre><code>Returns:
-
-    str: move in long algebraic notation. Example: C7C2
+      <pre><code>    Returns next move calculated with minmax algorithm
+</code></pre>
+<p>Returns:</p>
+<pre><code>   str: move in long algebraic notation. Example: C7C2
 </code></pre>
     </div>
     <div class='code'>
@@ -316,7 +321,7 @@ Returns:
       
     </div>
     <div class='code'>
-      <div class="highlight"><pre>        <span class="n">utility</span><span class="p">,</span> <span class="n">move</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">maximize</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="s2">&quot;-inf&quot;</span><span class="p">),</span> <span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+      <div class="highlight"><pre>        <span class="n">utility</span><span class="p">,</span> <span class="n">move</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">maximize</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="s2">&quot;-inf&quot;</span><span class="p">),</span> <span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
         <span class="n">fro</span><span class="p">,</span> <span class="n">to</span> <span class="o">=</span> <span class="n">move</span></pre></div>
     </div>
   </div>
@@ -339,10 +344,12 @@ Returns:
       <div class='octowrap'>
         <a class='octothorpe' href='#section-20'>#</a>
       </div>
-      <p>Returns all legal moves as a list of tuples for the current position</p>
-<pre><code>Returns:
-
-    moves (list): list of tuples containing 2 integers each. Example: [((0, 1),(0, 2)),((0, 4),(0, 6))]
+      <pre><code>    Returns all legal moves as a list of tuples for the current
+    position
+</code></pre>
+<p>Returns:</p>
+<pre><code>   moves (list): list of tuples containing 2 integers
+   each. Example: [((0, 1),(0, 2)),((0, 4),(0, 6))]
 </code></pre>
     </div>
     <div class='code'>
@@ -408,16 +415,17 @@ Returns:
       <div class='octowrap'>
         <a class='octothorpe' href='#section-24'>#</a>
       </div>
-      <p>Returns all legal moves for a given figure in a given position</p>
-<pre><code>Parameters:
+      <pre><code>    Returns all legal moves for a given figure in a given
+    position
+</code></pre>
+<p>Parameters:</p>
+<pre><code>   figure (Figure): object of type Figure
 
-    figure (Figure): object of type Figure
-
-    pos (tuple): tuple of two integers
-
-Returns:
-
-    moves (list): list of two tuples each with two integers
+   pos (tuple): tuple of two integers
+</code></pre>
+<p>Returns:</p>
+<pre><code>   moves (list): list of two tuples each with two
+   integers
 </code></pre>
     </div>
     <div class='code'>
@@ -481,10 +489,10 @@ Returns:
       <div class='octowrap'>
         <a class='octothorpe' href='#section-28'>#</a>
       </div>
-      <p>Returns special type of moves like castling or impassant</p>
-<pre><code>Returns:
-
-    moves (list): list of two tuples each with two integers
+      <pre><code>    Returns special type of moves like castling or impassant
+</code></pre>
+<p>Returns:</p>
+<pre><code>   moves (list): list of two tuples each with two integers
 </code></pre>
     </div>
     <div class='code'>
@@ -533,10 +541,10 @@ Returns:
       <div class='octowrap'>
         <a class='octothorpe' href='#section-32'>#</a>
       </div>
-      <p>Returns available castling moves</p>
-<pre><code>Returns:
-
-    moves (list): list of two tuples each with two integers
+      <pre><code>    Returns available castling moves
+</code></pre>
+<p>Returns:</p>
+<pre><code>   moves (list): list of two tuples each with two integers
 </code></pre>
     </div>
     <div class='code'>
@@ -578,7 +586,8 @@ Returns:
       <div class='octowrap'>
         <a class='octothorpe' href='#section-34'>#</a>
       </div>
-      <p>Move piece from &ldquo;_from&rdquo; coordinates to &ldquo;to&rdquo;</p>
+      <pre><code>    Move piece from "_from" coordinates to "to"
+</code></pre>
     </div>
     <div class='code'>
       <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">move</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_from</span><span class="p">,</span> <span class="n">to</span><span class="p">):</span></pre></div>
@@ -624,21 +633,9 @@ check coordinate sanity</p>
     </div>
     <div class='code'>
       <div class="highlight"><pre>        <span class="k">if</span> <span class="n">figure</span><span class="o">.</span><span class="n">color</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">turn</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">InvalidMoveException</span><span class="p">(</span><span class="s2">&quot;Not your turn&quot;</span><span class="p">)</span></pre></div>
-    </div>
-  </div>
-  <div class='clearall'></div>
-  <div class='section' id='section-38'>
-    <div class='docs'>
-      <div class='octowrap'>
-        <a class='octothorpe' href='#section-38'>#</a>
-      </div>
-      <p>TODO -
-check special moves like pawn promotion, castling, etc..
-else: continue usual process</p>
-    </div>
-    <div class='code'>
-      <div class="highlight"><pre>        <span class="k">if</span> <span class="nb">str</span><span class="p">(</span><span class="n">figure</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;White King&quot;</span> <span class="ow">and</span> <span class="n">_from</span> <span class="o">==</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">InvalidMoveException</span><span class="p">(</span><span class="s2">&quot;Not your turn&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">str</span><span class="p">(</span><span class="n">figure</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;White King&quot;</span> <span class="ow">and</span> <span class="n">_from</span> <span class="o">==</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="p">):</span>
             <span class="k">if</span> <span class="n">to</span> <span class="o">==</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">):</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">__apply_castling</span><span class="p">(</span><span class="n">figure</span><span class="p">,</span> <span class="n">_from</span><span class="p">,</span> <span class="n">to</span><span class="p">,</span> <span class="s2">&quot;long&quot;</span><span class="p">)</span>
                 <span class="k">return</span>
@@ -655,24 +652,24 @@ else: continue usual process</p>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-39'>
+  <div class='section' id='section-38'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-39'>#</a>
+        <a class='octothorpe' href='#section-38'>#</a>
       </div>
       <p>check for pawn promotion</p>
     </div>
     <div class='code'>
       <div class="highlight"><pre>        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">figure</span><span class="p">,</span> <span class="n">Pawn</span><span class="p">)</span> <span class="ow">and</span> <span class="n">to</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">7</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">__apply_pawn_promotion</span><span class="p">(</span><span class="n">figure</span><span class="p">,</span> <span class="n">_from</span><span class="p">,</span> <span class="n">to</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">history</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__apply_pawn_promotion</span><span class="p">(</span><span class="n">figure</span><span class="p">,</span> <span class="n">_from</span><span class="p">,</span> <span class="n">to</span><span class="p">,</span> <span class="s2">&quot;q&quot;</span><span class="p">)</span>
             <span class="k">return</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-40'>
+  <div class='section' id='section-39'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-40'>#</a>
+        <a class='octothorpe' href='#section-39'>#</a>
       </div>
       <p>Change coordinates to vector</p>
     </div>
@@ -683,10 +680,10 @@ else: continue usual process</p>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-41'>
+  <div class='section' id='section-40'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-41'>#</a>
+        <a class='octothorpe' href='#section-40'>#</a>
       </div>
       <p>handle the path</p>
     </div>
@@ -695,10 +692,10 @@ else: continue usual process</p>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-42'>
+  <div class='section' id='section-41'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-42'>#</a>
+        <a class='octothorpe' href='#section-41'>#</a>
       </div>
       <p>if something stands in the path raise Exception</p>
     </div>
@@ -708,10 +705,10 @@ else: continue usual process</p>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-43'>
+  <div class='section' id='section-42'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-43'>#</a>
+        <a class='octothorpe' href='#section-42'>#</a>
       </div>
       <p>handle destination square</p>
     </div>
@@ -729,10 +726,10 @@ else: continue usual process</p>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-44'>
+  <div class='section' id='section-43'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-44'>#</a>
+        <a class='octothorpe' href='#section-43'>#</a>
       </div>
       <p>change turn</p>
     </div>
@@ -741,10 +738,10 @@ else: continue usual process</p>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-45'>
+  <div class='section' id='section-44'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-45'>#</a>
+        <a class='octothorpe' href='#section-44'>#</a>
       </div>
       <p>print(self.draw_board())</p>
     </div>
@@ -753,15 +750,15 @@ else: continue usual process</p>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-46'>
+  <div class='section' id='section-45'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-46'>#</a>
+        <a class='octothorpe' href='#section-45'>#</a>
       </div>
-      <p>Returns true if opponent is in check else returns false</p>
-<pre><code>Returns:
-
-    check (bool)
+      <pre><code>    Returns true if opponent is in check else returns false
+</code></pre>
+<p>Returns:</p>
+<pre><code>   check (bool)
 </code></pre>
     </div>
     <div class='code'>
@@ -769,10 +766,10 @@ else: continue usual process</p>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-47'>
+  <div class='section' id='section-46'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-47'>#</a>
+        <a class='octothorpe' href='#section-46'>#</a>
       </div>
       
     </div>
@@ -781,15 +778,15 @@ else: continue usual process</p>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-48'>
+  <div class='section' id='section-47'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-48'>#</a>
+        <a class='octothorpe' href='#section-47'>#</a>
       </div>
-      <p>Returns true if player is in check else returns false</p>
-<pre><code>Returns:
-
-    check (bool)
+      <pre><code>    Returns true if player is in check else returns false
+</code></pre>
+<p>Returns:</p>
+<pre><code>   check (bool)
 </code></pre>
     </div>
     <div class='code'>
@@ -797,10 +794,10 @@ else: continue usual process</p>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-49'>
+  <div class='section' id='section-48'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-49'>#</a>
+        <a class='octothorpe' href='#section-48'>#</a>
       </div>
       
     </div>
@@ -809,19 +806,19 @@ else: continue usual process</p>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-50'>
+  <div class='section' id='section-49'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-50'>#</a>
+        <a class='octothorpe' href='#section-49'>#</a>
       </div>
-      <p>Checks if player or opponent is in check</p>
-<pre><code>Parameters:
-
-    opponent (bool): true if the function should check for the opponent else false
-
-Returns:
-
-    check (bool)
+      <pre><code>    Checks if player or opponent is in check
+</code></pre>
+<p>Parameters:</p>
+<pre><code>   opponent (bool): true if the function should check
+   for the opponent else false
+</code></pre>
+<p>Returns:</p>
+<pre><code>   check (bool)
 </code></pre>
     </div>
     <div class='code'>
@@ -829,10 +826,10 @@ Returns:
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-51'>
+  <div class='section' id='section-50'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-51'>#</a>
+        <a class='octothorpe' href='#section-50'>#</a>
       </div>
       <p>change the turn</p>
     </div>
@@ -856,19 +853,22 @@ Returns:
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-52'>
+  <div class='section' id='section-51'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-52'>#</a>
+        <a class='octothorpe' href='#section-51'>#</a>
       </div>
-      <p>Makes the move on the board object and sets the been_moved flag to true for a figure being moved</p>
-<pre><code>Parameters:
+      <pre><code>    Makes the move on the board object and sets the been_moved
+    flag to true for a figure being moved
+</code></pre>
+<p>Parameters:</p>
+<pre><code>   figure (Figure): figure that needs to be moved
 
-    figure (Figure): figure that needs to be moved
+   _from (tuple): tuple of two integers describing
+   from which place the piece is being moved
 
-    _from (tuple): tuple of two integers describing from which place the piece is being moved
-
-    _to (tuple): tuple of two integers describing to which place the piece is being moved
+   _to (tuple): tuple of two integers describing to
+   which place the piece is being moved
 </code></pre>
     </div>
     <div class='code'>
@@ -876,10 +876,10 @@ Returns:
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-53'>
+  <div class='section' id='section-52'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-53'>#</a>
+        <a class='octothorpe' href='#section-52'>#</a>
       </div>
       
     </div>
@@ -893,21 +893,25 @@ Returns:
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-54'>
+  <div class='section' id='section-53'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-54'>#</a>
+        <a class='octothorpe' href='#section-53'>#</a>
       </div>
-      <p>Makes the castling move on the board object and sets the been_moved flag to true for a figure being moved</p>
-<pre><code>Parameters:
+      <pre><code>    Makes the castling move on the board object and sets the
+    been_moved flag to true for a figure being moved
+</code></pre>
+<p>Parameters:</p>
+<pre><code>   figure (Figure): figure that needs to be moved
 
-    figure (Figure): figure that needs to be moved
+   _from (tuple): tuple of two integers describing
+   from which place the piece is being moved
 
-    _from (tuple): tuple of two integers describing from which place the piece is being moved
+   _to (tuple): tuple of two integers describing to
+   which place the piece is being moved
 
-    _to (tuple): tuple of two integers describing to which place the piece is being moved
-
-    type (str): "long" or "short" depending which type of castling is being applied
+   type (str): "long" or "short" depending which type
+   of castling is being applied
 </code></pre>
     </div>
     <div class='code'>
@@ -915,10 +919,10 @@ Returns:
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-55'>
+  <div class='section' id='section-54'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-55'>#</a>
+        <a class='octothorpe' href='#section-54'>#</a>
       </div>
       
     </div>
@@ -940,21 +944,25 @@ Returns:
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-56'>
+  <div class='section' id='section-55'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-56'>#</a>
+        <a class='octothorpe' href='#section-55'>#</a>
       </div>
-      <p>Applies the promotion rule to the given pawn with the chosen figure</p>
-<pre><code>Parameters:
+      <pre><code>    Applies the promotion rule to the given pawn with
+    the chosen figure
+</code></pre>
+<p>Parameters:</p>
+<pre><code>   pawn (Figure): pawn that needs to be moved
 
-    pawn (Figure): pawn that needs to be moved
+   _from (tuple): tuple of two integers describing
+   from which place the piece is being moved
 
-    _from (tuple): tuple of two integers describing from which place the piece is being moved
+   _to (tuple): tuple of two integers describing to
+   which place the piece is being moved
 
-    _to (tuple): tuple of two integers describing to which place the piece is being moved
-
-    figure (figure): "long" or "short" depending which type of castling is being applied
+   figure (figure): "long" or "short" depending which
+   type of castling is being applied
 </code></pre>
     </div>
     <div class='code'>
@@ -962,10 +970,10 @@ Returns:
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-57'>
+  <div class='section' id='section-56'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-57'>#</a>
+        <a class='octothorpe' href='#section-56'>#</a>
       </div>
       
     </div>
@@ -989,17 +997,20 @@ Returns:
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-58'>
+  <div class='section' id='section-57'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-58'>#</a>
+        <a class='octothorpe' href='#section-57'>#</a>
       </div>
-      <p>Removes the killed figure from the board object and replaces it with the killer figure</p>
-<pre><code>Parameters:
+      <pre><code>    Removes the killed figure from the board object and
+    replaces it with the killer figure
+</code></pre>
+<p>Parameters:</p>
+<pre><code>   fro (tuple): tuple of two integers -
+   coordinates of the killer
 
-    fro (tuple): tuple of two integers - coordinates of the killer
-
-    to (tuple): tuple of two integers - coordinates of the killee
+   to (tuple): tuple of two integers -
+   coordinates of the killee
 </code></pre>
     </div>
     <div class='code'>
@@ -1007,10 +1018,10 @@ Returns:
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-59'>
+  <div class='section' id='section-58'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-59'>#</a>
+        <a class='octothorpe' href='#section-58'>#</a>
       </div>
       
     </div>
@@ -1028,29 +1039,34 @@ Returns:
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-60'>
+  <div class='section' id='section-59'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-60'>#</a>
+        <a class='octothorpe' href='#section-59'>#</a>
       </div>
-      <p>Returns the value of the maximum utility and the corresponding move</p>
-<pre><code>Parameters:
+      <pre><code>    Returns the value of the maximum utility and
+    the corresponding move
+</code></pre>
+<p>Parameters:</p>
+<pre><code>   alpha (float): maximizing functions best
+   utility value for the current depth or above
 
-    alpha (float): maximizing functions best utility value for the current depth or above
+   beta (float): minimizing functions best
+   utility value for the current depth or above
 
-    beta (float): minimizing functions best utility value for the current depth or above
+   board (ChessBoard): board to be copied
 
-    board (ChessBoard): board to be copied
+   depth (str): the depth limit for the
+   recursive call of the function
 
-    depth (str): the depth limit for the recursive call of the function
+   original_board (ChessBoard): the original Chessboard object
+</code></pre>
+<p>Returns:</p>
+<pre><code>   maximum_utility (float): value of the
+   maximum utility generated
 
-    original_board (ChessBoard): the original Chessboard object
-
-Returns:
-
-    maximum_utility (float): value of the maximum utility generated
-
-    move_with_max_utility (tuple): tuple of two tuples each with two integers describing the move
+   move_with_max_utility (tuple): tuple of
+   two tuples each with two integers describing the move
 </code></pre>
     </div>
     <div class='code'>
@@ -1058,10 +1074,10 @@ Returns:
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-61'>
+  <div class='section' id='section-60'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-61'>#</a>
+        <a class='octothorpe' href='#section-60'>#</a>
       </div>
       
     </div>
@@ -1094,29 +1110,35 @@ Returns:
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-62'>
+  <div class='section' id='section-61'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-62'>#</a>
+        <a class='octothorpe' href='#section-61'>#</a>
       </div>
-      <p>Returns the value of the minimum utility and the corresponding move</p>
-<pre><code>Parameters:
+      <pre><code>    Returns the value of the minimum utility and
+    the corresponding move
+</code></pre>
+<p>Parameters:</p>
+<pre><code>   alpha (float): maximizing functions best
+   utility value for the current depth or above
 
-    alpha (float): maximizing functions best utility value for the current depth or above
+   beta (float): minimizing functions best
+   utility value for the current depth or above
 
-    beta (float): minimizing functions best utility value for the current depth or above
+   board (ChessBoard): board to be copied
 
-    board (ChessBoard): board to be copied
+   depth (str): the depth limit for the
+   recursive call of the function
 
-    depth (str): the depth limit for the recursive call of the function
+   original_board (ChessBoard): the
+   original Chessboard object
+</code></pre>
+<p>Returns:</p>
+<pre><code>   minimum_utility (float): value of the minimum utility
+   generated
 
-    original_board (ChessBoard): the original Chessboard object
-
-Returns:
-
-    minimum_utility (float): value of the minimum utility generated
-
-    move_with_min_utility (tuple): tuple of two tuples each with two integers describing the move
+   move_with_min_utility (tuple): tuple of two
+   tuples each with two integers describing the move
 </code></pre>
     </div>
     <div class='code'>
@@ -1124,10 +1146,10 @@ Returns:
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-63'>
+  <div class='section' id='section-62'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-63'>#</a>
+        <a class='octothorpe' href='#section-62'>#</a>
       </div>
       
     </div>
@@ -1160,16 +1182,19 @@ Returns:
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-64'>
+  <div class='section' id='section-63'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-64'>#</a>
+        <a class='octothorpe' href='#section-63'>#</a>
       </div>
-      <p>Returns the value evaluating the advantageous position using simple shannon function</p>
-<p>to evaluate relative value of the board - the material part plus the positional values</p>
-<pre><code>Returns:
+      <pre><code>    Returns the value evaluating the advantageous position
+    using simple shannon function
 
-    (int): value of the evaluated board
+    to evaluate relative value of the board - the material
+    part plus the positional values
+</code></pre>
+<p>Returns:</p>
+<pre><code>   (int): value of the evaluated board
 </code></pre>
     </div>
     <div class='code'>
@@ -1177,10 +1202,10 @@ Returns:
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-65'>
+  <div class='section' id='section-64'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-65'>#</a>
+        <a class='octothorpe' href='#section-64'>#</a>
       </div>
       
     </div>
@@ -1205,15 +1230,17 @@ Returns:
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-66'>
+  <div class='section' id='section-65'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-66'>#</a>
+        <a class='octothorpe' href='#section-65'>#</a>
       </div>
-      <p>Returns the dictionary with Figures as keys and number of the contained in the ChessBoard object as values</p>
-<pre><code>Returns:
-
-    figure_count (dictionary): key - Figure, value - # of that figure on the Board
+      <pre><code>    Returns the dictionary with Figures as keys and
+    number of the contained in the ChessBoard object as values
+</code></pre>
+<p>Returns:</p>
+<pre><code>   figure_count (dictionary): key - Figure,
+   value - # of that figure on the Board
 </code></pre>
     </div>
     <div class='code'>
@@ -1221,10 +1248,10 @@ Returns:
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-67'>
+  <div class='section' id='section-66'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-67'>#</a>
+        <a class='octothorpe' href='#section-66'>#</a>
       </div>
       
     </div>
@@ -1241,10 +1268,10 @@ Returns:
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-68'>
+  <div class='section' id='section-67'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-68'>#</a>
+        <a class='octothorpe' href='#section-67'>#</a>
       </div>
       <p>Flips the turn attribute (when the current player makes the move)</p>
     </div>
@@ -1253,10 +1280,10 @@ Returns:
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-69'>
+  <div class='section' id='section-68'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-69'>#</a>
+        <a class='octothorpe' href='#section-68'>#</a>
       </div>
       
     </div>

@@ -29,16 +29,14 @@
       <div class='octowrap'>
         <a class='octothorpe' href='#section-1'>#</a>
       </div>
-      <pre><code>This is a class for figures on the board. It stores the color of the figure
-and returns its possible moves and paths it needs to take.
+      <p>This is a class for figures on the board. It stores the color of the figure
+   and returns its possible moves and paths it needs to take.</p>
+<p>Attributes:</p>
+<pre><code>   color (Color): if white it is 0, else it is 1.
 
-Attributes:
+   been_moved (bool): True if figure has been moved before, else False
 
-    color (Color): if white it is 0, else it is 1.
-
-    been_moved (bool): True if figure has been moved before, else False
-
-    square_table_reversed (list): list of integer lists (reversed)
+   square_table_reversed (list): list of integer lists (reversed)
 </code></pre>
     </div>
     <div class='code'>
@@ -65,11 +63,13 @@ Attributes:
       <div class='octowrap'>
         <a class='octothorpe' href='#section-3'>#</a>
       </div>
-      <p>Constructs a figure with give color</p>
-<h2>Parameters</h2>
-<pre><code>color (Color):
+      <pre><code>    Constructs a figure with give color
 
-    color of the figure
+    Parameters
+    ----------
+</code></pre>
+<p>color (Color):</p>
+<pre><code>   color of the figure
 </code></pre>
     </div>
     <div class='code'>
@@ -96,10 +96,10 @@ Attributes:
       <div class='octowrap'>
         <a class='octothorpe' href='#section-5'>#</a>
       </div>
-      <p>Returns White if figure is white else Black</p>
-<pre><code>Returns:
-
-    str: White or Black
+      <pre><code>    Returns White if figure is white else Black
+</code></pre>
+<p>Returns:</p>
+<pre><code>   str: White or Black
 </code></pre>
     </div>
     <div class='code'>
@@ -125,10 +125,10 @@ Attributes:
       <div class='octowrap'>
         <a class='octothorpe' href='#section-7'>#</a>
       </div>
-      <p>Returns the Square table of the figure</p>
-<pre><code>Returns:
-
-    (list): list of integer lists
+      <pre><code>    Returns the Square table of the figure
+</code></pre>
+<p>Returns:</p>
+<pre><code>   (list): list of integer lists
 </code></pre>
     </div>
     <div class='code'>
@@ -155,11 +155,11 @@ Attributes:
       <div class='octowrap'>
         <a class='octothorpe' href='#section-9'>#</a>
       </div>
-      <p>Returns a list of squares on the board that a figure needs to pass
-to get to its destination</p>
-<pre><code>Returns:
-
-    path (list): list of tuples of two integers
+      <pre><code>    Returns a list of squares on the board that a figure needs to pass
+    to get to its destination
+</code></pre>
+<p>Returns:</p>
+<pre><code>   path (list): list of tuples of two integers
 </code></pre>
     </div>
     <div class='code'>
@@ -231,11 +231,11 @@ to get to its destination</p>
       <div class='octowrap'>
         <a class='octothorpe' href='#section-14'>#</a>
       </div>
-      <p>This method is used to get all the moves of Knight and King.
-Knight and King are called jumpers, because they can only jump one vector.</p>
-<pre><code>Returns:
-
-    moves (list): list of tuples of tuples containing two integers describing the move
+      <pre><code>    This method is used to get all the moves of Knight and King.
+    Knight and King are called jumpers, because they can only jump one vector.
+</code></pre>
+<p>Returns:</p>
+<pre><code>   moves (list): list of tuples of tuples containing two integers describing the move
 </code></pre>
     </div>
     <div class='code'>
@@ -267,11 +267,11 @@ Knight and King are called jumpers, because they can only jump one vector.</p>
       <div class='octowrap'>
         <a class='octothorpe' href='#section-16'>#</a>
       </div>
-      <p>This method is used to get all the moves of Queen, Bishop and Rook.
-Queen, Bishop and Rook are sliders, because they slide towards the vector direction.</p>
-<pre><code>Returns:
-
-    moves (list): list of tuples of tuples containing two integers describing the move
+      <pre><code>    This method is used to get all the moves of Queen, Bishop and Rook.
+    Queen, Bishop and Rook are sliders, because they slide towards the vector direction.
+</code></pre>
+<p>Returns:</p>
+<pre><code>   moves (list): list of tuples of tuples containing two integers describing the move
 </code></pre>
     </div>
     <div class='code'>
@@ -309,11 +309,11 @@ Queen, Bishop and Rook are sliders, because they slide towards the vector direct
       </div>
       <p>A class for the Pawn inherits from the Figure</p>
 <p>Attributes:</p>
-<pre><code>   color (Color): if white it is 0, else it is 1.
+<pre><code>  color (Color): if white it is 0, else it is 1.
 
-   square_table (list): list of positional values for every square
+  square_table (list): list of positional values for every square
 
-   of the board for the evaluation algorithm
+  of the board for the evaluation algorithm
 </code></pre>
     </div>
     <div class='code'>
@@ -347,10 +347,10 @@ Queen, Bishop and Rook are sliders, because they slide towards the vector direct
       <div class='octowrap'>
         <a class='octothorpe' href='#section-20'>#</a>
       </div>
-      <p>Returns all possible moves for the pawn for the given position</p>
-<pre><code>Returns:
-
-    (list): list of tuples of tuples containing two integers describing the move
+      <pre><code>    Returns all possible moves for the pawn for the given position
+</code></pre>
+<p>Returns:</p>
+<pre><code>   (list): list of tuples of tuples containing two integers describing the move
 </code></pre>
     </div>
     <div class='code'>
@@ -403,10 +403,10 @@ Queen, Bishop and Rook are sliders, because they slide towards the vector direct
       <div class='octowrap'>
         <a class='octothorpe' href='#section-22'>#</a>
       </div>
-      <p>Returns list of squares on the table Pawn needs to pass to execute the move</p>
-<pre><code>Returns:
-
-    (list): list of tuples containing two integers describing the path
+      <pre><code>    Returns list of squares on the table Pawn needs to pass to execute the move
+</code></pre>
+<p>Returns:</p>
+<pre><code>   (list): list of tuples containing two integers describing the path
 </code></pre>
     </div>
     <div class='code'>
@@ -474,11 +474,11 @@ Queen, Bishop and Rook are sliders, because they slide towards the vector direct
       </div>
       <p>A class for the Knight inherits from the Figure</p>
 <p>Attributes:</p>
-<pre><code>   color (Color): if white it is 0, else it is 1.
+<pre><code>  color (Color): if white it is 0, else it is 1.
 
-   square_table (list): list of positional values for every square
+  square_table (list): list of positional values for every square
 
-   of the board for the evaluation algorithm
+  of the board for the evaluation algorithm
 </code></pre>
     </div>
     <div class='code'>
@@ -512,10 +512,10 @@ Queen, Bishop and Rook are sliders, because they slide towards the vector direct
       <div class='octowrap'>
         <a class='octothorpe' href='#section-28'>#</a>
       </div>
-      <p>Returns all possible moves for the Knight for the given position</p>
-<pre><code>Returns:
-
-    (list): list of tuples of tuples containing two integers describing the move
+      <pre><code>    Returns all possible moves for the Knight for the given position
+</code></pre>
+<p>Returns:</p>
+<pre><code>   (list): list of tuples of tuples containing two integers describing the move
 </code></pre>
     </div>
     <div class='code'>
@@ -542,10 +542,10 @@ Queen, Bishop and Rook are sliders, because they slide towards the vector direct
       <div class='octowrap'>
         <a class='octothorpe' href='#section-30'>#</a>
       </div>
-      <p>Returns list of squares on the table Knight needs to pass to execute the move</p>
-<pre><code>Returns:
-
-    (list): list of tuples containing two integers describing the path
+      <pre><code>    Returns list of squares on the table Knight needs to pass to execute the move
+</code></pre>
+<p>Returns:</p>
+<pre><code>   (list): list of tuples containing two integers describing the path
 </code></pre>
     </div>
     <div class='code'>
@@ -577,11 +577,11 @@ Queen, Bishop and Rook are sliders, because they slide towards the vector direct
       </div>
       <p>A class for the Bishop inherits from the Figure</p>
 <p>Attributes:</p>
-<pre><code>   color (Color): if white it is 0, else it is 1.
+<pre><code>  color (Color): if white it is 0, else it is 1.
 
-   square_table (list): list of positional values for every square
+  square_table (list): list of positional values for every square
 
-   of the board for the evaluation algorithm
+  of the board for the evaluation algorithm
 </code></pre>
     </div>
     <div class='code'>
@@ -615,10 +615,10 @@ Queen, Bishop and Rook are sliders, because they slide towards the vector direct
       <div class='octowrap'>
         <a class='octothorpe' href='#section-34'>#</a>
       </div>
-      <p>Returns all possible moves for the Bishop for the given position</p>
-<pre><code>Returns:
-
-    (list): list of tuples of tuples containing two integers describing the move
+      <pre><code>    Returns all possible moves for the Bishop for the given position
+</code></pre>
+<p>Returns:</p>
+<pre><code>   (list): list of tuples of tuples containing two integers describing the move
 </code></pre>
     </div>
     <div class='code'>
@@ -634,7 +634,7 @@ Queen, Bishop and Rook are sliders, because they slide towards the vector direct
       
     </div>
     <div class='code'>
-      <div class="highlight"><pre>        <span class="n">vectors</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)]</span>
+      <div class="highlight"><pre>        <span class="n">vectors</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)]</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_all_moves_sliders</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span> <span class="n">vectors</span><span class="p">)</span></pre></div>
     </div>
   </div>
@@ -644,10 +644,10 @@ Queen, Bishop and Rook are sliders, because they slide towards the vector direct
       <div class='octowrap'>
         <a class='octothorpe' href='#section-36'>#</a>
       </div>
-      <p>Returns list of squares on the table Bishop needs to pass to execute the move</p>
-<pre><code>Returns:
-
-    (list): list of tuples containing two integers describing the path
+      <pre><code>    Returns list of squares on the table Bishop needs to pass to execute the move
+</code></pre>
+<p>Returns:</p>
+<pre><code>   (list): list of tuples containing two integers describing the path
 </code></pre>
     </div>
     <div class='code'>
@@ -690,11 +690,11 @@ it&rsquo;s not a valid bishop move.</p>
       </div>
       <p>A class for the Rook inherits from the Figure</p>
 <p>Attributes:</p>
-<pre><code>   color (Color): if white it is 0, else it is 1.
+<pre><code>  color (Color): if white it is 0, else it is 1.
 
-   square_table (list): list of positional values for every square
+  square_table (list): list of positional values for every square
 
-   of the board for the evaluation algorithm
+  of the board for the evaluation algorithm
 </code></pre>
     </div>
     <div class='code'>
@@ -728,10 +728,10 @@ it&rsquo;s not a valid bishop move.</p>
       <div class='octowrap'>
         <a class='octothorpe' href='#section-41'>#</a>
       </div>
-      <p>Returns all possible moves for the Rook for the given position</p>
-<pre><code>Returns:
-
-    (list): list of tuples of tuples containing two integers describing the move
+      <pre><code>    Returns all possible moves for the Rook for the given position
+</code></pre>
+<p>Returns:</p>
+<pre><code>   (list): list of tuples of tuples containing two integers describing the move
 </code></pre>
     </div>
     <div class='code'>
@@ -757,10 +757,10 @@ it&rsquo;s not a valid bishop move.</p>
       <div class='octowrap'>
         <a class='octothorpe' href='#section-43'>#</a>
       </div>
-      <p>Returns list of squares on the table Rook needs to pass to execute the move</p>
-<pre><code>Returns:
-
-    (list): list of tuples containing two integers describing the path
+      <pre><code>    Returns list of squares on the table Rook needs to pass to execute the move
+</code></pre>
+<p>Returns:</p>
+<pre><code>   (list): list of tuples containing two integers describing the path
 </code></pre>
     </div>
     <div class='code'>
@@ -803,11 +803,11 @@ it&rsquo;s a valid move for bishop</p>
       </div>
       <p>A class for the Queen inherits from the Figure</p>
 <p>Attributes:</p>
-<pre><code>   color (Color): if white it is 0, else it is 1.
+<pre><code>  color (Color): if white it is 0, else it is 1.
 
-   square_table (list): list of positional values for every square
+  square_table (list): list of positional values for every square
 
-   of the board for the evaluation algorithm
+  of the board for the evaluation algorithm
 </code></pre>
     </div>
     <div class='code'>
@@ -841,10 +841,10 @@ it&rsquo;s a valid move for bishop</p>
       <div class='octowrap'>
         <a class='octothorpe' href='#section-48'>#</a>
       </div>
-      <p>Returns all possible moves for the Queen for the given position</p>
-<pre><code>Returns:
-
-    (list): list of tuples of tuples containing two integers describing the move
+      <pre><code>    Returns all possible moves for the Queen for the given position
+</code></pre>
+<p>Returns:</p>
+<pre><code>   (list): list of tuples of tuples containing two integers describing the move
 </code></pre>
     </div>
     <div class='code'>
@@ -870,10 +870,10 @@ it&rsquo;s a valid move for bishop</p>
       <div class='octowrap'>
         <a class='octothorpe' href='#section-50'>#</a>
       </div>
-      <p>Returns list of squares on the table Queen needs to pass to execute the move</p>
-<pre><code>Returns:
-
-    (list): list of tuples containing two integers describing the path
+      <pre><code>    Returns list of squares on the table Queen needs to pass to execute the move
+</code></pre>
+<p>Returns:</p>
+<pre><code>   (list): list of tuples containing two integers describing the path
 </code></pre>
     </div>
     <div class='code'>
@@ -915,11 +915,11 @@ it&rsquo;s a valid move for bishop</p>
       </div>
       <p>A class for the King inherits from the Figure</p>
 <p>Attributes:</p>
-<pre><code>   color (Color): if white it is 0, else it is 1.
+<pre><code>  color (Color): if white it is 0, else it is 1.
 
-   square_table (list): list of positional values for every square
+  square_table (list): list of positional values for every square
 
-   of the board for the evaluation algorithm
+  of the board for the evaluation algorithm
 </code></pre>
     </div>
     <div class='code'>
@@ -953,10 +953,10 @@ it&rsquo;s a valid move for bishop</p>
       <div class='octowrap'>
         <a class='octothorpe' href='#section-55'>#</a>
       </div>
-      <p>Returns all possible moves for the King for the given position</p>
-<pre><code>Returns:
-
-    (list): list of tuples of tuples containing two integers describing the move
+      <pre><code>    Returns all possible moves for the King for the given position
+</code></pre>
+<p>Returns:</p>
+<pre><code>   (list): list of tuples of tuples containing two integers describing the move
 </code></pre>
     </div>
     <div class='code'>
@@ -972,7 +972,7 @@ it&rsquo;s a valid move for bishop</p>
       
     </div>
     <div class='code'>
-      <div class="highlight"><pre>        <span class="n">vectors</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)]</span>
+      <div class="highlight"><pre>        <span class="n">vectors</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)]</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_all_moves_jumpers</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span> <span class="n">vectors</span><span class="p">)</span></pre></div>
     </div>
   </div>
@@ -982,10 +982,10 @@ it&rsquo;s a valid move for bishop</p>
       <div class='octowrap'>
         <a class='octothorpe' href='#section-57'>#</a>
       </div>
-      <p>Returns list of squares on the table King needs to pass to execute the move</p>
-<pre><code>Returns:
-
-    (list): list of tuples containing two integers describing the path
+      <pre><code>    Returns list of squares on the table King needs to pass to execute the move
+</code></pre>
+<p>Returns:</p>
+<pre><code>   (list): list of tuples containing two integers describing the path
 </code></pre>
     </div>
     <div class='code'>

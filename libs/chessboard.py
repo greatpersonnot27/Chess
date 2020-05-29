@@ -1,6 +1,6 @@
 import random
 import copy
-from libs.exceptions import InvalidMoveException
+from libs.exceptions import InvalidMoveException, CheckMateException, StalemateException
 from libs.utils import Vector2
 from libs.figures import (
     Figure, Pawn, Knight, Bishop, Rook, Queen, King
@@ -36,13 +36,15 @@ class ChessBoard:
     """
     def __init__(self, chessboard=None):
         """
-        Constructs a new chessboard of chessboard parameter is none, else creates an new chessboard from it
+        Constructs a new chessboard of chessboard parameter is none
+        , else creates an new chessboard from it
 
         Parameters
         ----------
             chessboard: ChessBoard
 
-                instance of Chessboard object with possibly some registered activity
+                instance of Chessboard object with possibly some
+                registered activity
         """
         # current turn
         self.turn = Figure.Color.WHITE
@@ -136,7 +138,7 @@ class ChessBoard:
 
                 str: move in long algebraic notation. Example: C7C2
         """
-        utility, move = self.maximize(float("-inf"), float("inf"), self, 2, self)
+        utility, move = self.maximize(float("-inf"), float("inf"), self, 3, self)
         fro, to = move
         # print(self.draw_board())
         print(chr(ord('a') + fro[1]) + str(int(fro[0]) + 1) + chr(ord('a') + to[1]) + str(int(to[0]) + 1))
@@ -144,11 +146,13 @@ class ChessBoard:
 
     def __get_all_legal_moves(self):
         """
-        Returns all legal moves as a list of tuples for the current position
+        Returns all legal moves as a list of tuples for the current
+        position
 
             Returns:
 
-                moves (list): list of tuples containing 2 integers each. Example: [((0, 1),(0, 2)),((0, 4),(0, 6))]
+                moves (list): list of tuples containing 2 integers
+                each. Example: [((0, 1),(0, 2)),((0, 4),(0, 6))]
         """
         moves = []
         for x, row in enumerate(self.board):
@@ -163,19 +167,20 @@ class ChessBoard:
         moves = self.__get_all_legal_moves()
         valid_moves = []
         for move in moves:
-            _from = self.board[move[0][0]][move[0][1]]
-            to = self.board[move[1][0]][move[1][1]]
             board_copy = ChessBoard(self)
             board_copy.move(move[0], move[1])
             if not board_copy.is_opponent_in_check():
                 valid_moves.append(move)
-        # if len(valid_moves) == 0:
-        #     raise Exception("Checkmate!")
+        if len(valid_moves) == 0:
+            if self.__is_check():
+                raise CheckMateException("Checkmate!")
+            raise StalemateException("Stalemate!")
         return valid_moves
 
     def __get_figure_legal_moves(self, figure, pos):
         """
-        Returns all legal moves for a given figure in a given position
+        Returns all legal moves for a given figure in a given
+        position
 
             Parameters:
 
@@ -185,7 +190,8 @@ class ChessBoard:
 
             Returns:
 
-                moves (list): list of two tuples each with two integers
+                moves (list): list of two tuples each with two
+                integers
         """
         moves = []
 
@@ -345,7 +351,8 @@ class ChessBoard:
 
             Parameters:
 
-                opponent (bool): true if the function should check for the opponent else false
+                opponent (bool): true if the function should check
+                for the opponent else false
 
             Returns:
 
@@ -371,15 +378,18 @@ class ChessBoard:
 
     def __apply_move(self, figure, _from, to):
         """
-        Makes the move on the board object and sets the been_moved flag to true for a figure being moved
+        Makes the move on the board object and sets the been_moved
+        flag to true for a figure being moved
 
             Parameters:
 
                 figure (Figure): figure that needs to be moved
 
-                _from (tuple): tuple of two integers describing from which place the piece is being moved
+                _from (tuple): tuple of two integers describing
+                from which place the piece is being moved
 
-                _to (tuple): tuple of two integers describing to which place the piece is being moved
+                _to (tuple): tuple of two integers describing to
+                which place the piece is being moved
         """
 
         figure.been_moved = True
@@ -391,17 +401,21 @@ class ChessBoard:
 
     def __apply_castling(self, figure, _from, to, type):
         """
-        Makes the castling move on the board object and sets the been_moved flag to true for a figure being moved
+        Makes the castling move on the board object and sets the
+        been_moved flag to true for a figure being moved
 
             Parameters:
 
                 figure (Figure): figure that needs to be moved
 
-                _from (tuple): tuple of two integers describing from which place the piece is being moved
+                _from (tuple): tuple of two integers describing
+                from which place the piece is being moved
 
-                _to (tuple): tuple of two integers describing to which place the piece is being moved
+                _to (tuple): tuple of two integers describing to
+                which place the piece is being moved
 
-                type (str): "long" or "short" depending which type of castling is being applied
+                type (str): "long" or "short" depending which type
+                of castling is being applied
         """
         figure.been_moved = True
         _from = Vector2(_from)
@@ -420,17 +434,21 @@ class ChessBoard:
 
     def __apply_pawn_promotion(self, pawn, _from, to, figure):
         """
-        Applies the promotion rule to the given pawn with the chosen figure
+        Applies the promotion rule to the given pawn with
+        the chosen figure
 
             Parameters:
 
                 pawn (Figure): pawn that needs to be moved
 
-                _from (tuple): tuple of two integers describing from which place the piece is being moved
+                _from (tuple): tuple of two integers describing
+                from which place the piece is being moved
 
-                _to (tuple): tuple of two integers describing to which place the piece is being moved
+                _to (tuple): tuple of two integers describing to
+                which place the piece is being moved
 
-                figure (figure): "long" or "short" depending which type of castling is being applied
+                figure (figure): "long" or "short" depending which
+                type of castling is being applied
         """
         _from = Vector2(_from)
         to = Vector2(to)
@@ -451,13 +469,16 @@ class ChessBoard:
 
     def __kill(self, fro, to):
         """
-        Removes the killed figure from the board object and replaces it with the killer figure
+        Removes the killed figure from the board object and
+        replaces it with the killer figure
 
             Parameters:
 
-                fro (tuple): tuple of two integers - coordinates of the killer
+                fro (tuple): tuple of two integers -
+                coordinates of the killer
 
-                to (tuple): tuple of two integers - coordinates of the killee
+                to (tuple): tuple of two integers -
+                coordinates of the killee
         """
         killer = self.board[fro[0]][fro[1]]
         killee = self.board[to[0]][to[1]]
@@ -472,44 +493,59 @@ class ChessBoard:
 
     def maximize(self, alpha, beta, board, depth, original_board):
         """
-        Returns the value of the maximum utility and the corresponding move
+        Returns the value of the maximum utility and
+        the corresponding move
 
             Parameters:
 
-                alpha (float): maximizing functions best utility value for the current depth or above
+                alpha (float): maximizing functions best
+                utility value for the current depth or above
 
-                beta (float): minimizing functions best utility value for the current depth or above
+                beta (float): minimizing functions best
+                utility value for the current depth or above
 
                 board (ChessBoard): board to be copied
 
-                depth (str): the depth limit for the recursive call of the function
+                depth (str): the depth limit for the
+                recursive call of the function
 
                 original_board (ChessBoard): the original Chessboard object
 
             Returns:
 
-                maximum_utility (float): value of the maximum utility generated
+                maximum_utility (float): value of the
+                maximum utility generated
 
-                move_with_max_utility (tuple): tuple of two tuples each with two integers describing the move
+                move_with_max_utility (tuple): tuple of
+                two tuples each with two integers describing the move
         """
         original_board.number_possible_moves += 1
         if depth == 0:
             return board.evaluate_board(), None
         maximum_utility = float('-inf')
         move_with_max_utility = None
-
-        for move in board.get_all_legal_moves():
-            cb = ChessBoard(board)
-            cb.move(move[0], move[1])
-            utility, mv = self.minimize(alpha, beta, cb, depth - 1, original_board)
-            if utility is not None:
-                if utility > maximum_utility:
-                    maximum_utility = utility
-                    move_with_max_utility = move
-                alpha = max(alpha, utility)
-                if alpha >= beta:
-                    original_board.number_prunned_moves[depth - 1] += 1
-                    return None, None
+        try:
+            for move in board.get_all_legal_moves():
+                cb = ChessBoard(board)
+                cb.move(move[0], move[1])
+                utility, mv = self.minimize(alpha, beta, cb, depth - 1, original_board)
+                if utility is not None:
+                    if utility > maximum_utility:
+                        maximum_utility = utility
+                        move_with_max_utility = move
+                    alpha = max(alpha, utility)
+                    if alpha >= beta:
+                        original_board.number_prunned_moves[depth - 1] += 1
+                        return None, None
+        except (CheckMateException, StalemateException) as e:
+            if depth != 3:
+                return -50000, None
+            else:
+                if isinstance(e, CheckMateException):
+                    print("info: Game Lost")
+                else:
+                    print("info: Stalemate!")
+                exit()
         if depth >= 2:
             print("info: depth: " + str(depth) + " possible_moves: " + str(
                 original_board.number_possible_moves) + " prunned_moves: depth 1: " + str(
@@ -520,44 +556,55 @@ class ChessBoard:
 
     def minimize(self, alpha, beta, board, depth, original_board):
         """
-        Returns the value of the minimum utility and the corresponding move
+        Returns the value of the minimum utility and
+        the corresponding move
 
             Parameters:
 
-                alpha (float): maximizing functions best utility value for the current depth or above
+                alpha (float): maximizing functions best
+                utility value for the current depth or above
 
-                beta (float): minimizing functions best utility value for the current depth or above
+                beta (float): minimizing functions best
+                utility value for the current depth or above
 
                 board (ChessBoard): board to be copied
 
-                depth (str): the depth limit for the recursive call of the function
+                depth (str): the depth limit for the
+                recursive call of the function
 
-                original_board (ChessBoard): the original Chessboard object
+                original_board (ChessBoard): the
+                original Chessboard object
 
             Returns:
 
-                minimum_utility (float): value of the minimum utility generated
+                minimum_utility (float): value of the minimum utility
+                generated
 
-                move_with_min_utility (tuple): tuple of two tuples each with two integers describing the move
+                move_with_min_utility (tuple): tuple of two
+                tuples each with two integers describing the move
         """
         original_board.number_possible_moves += 1
         if depth == 0:
             return board.evaluate_board(), None
         minimum_utility = float('inf')
         move_with_min_utility = None
-
-        for move in board.get_all_legal_moves():
-            cb = ChessBoard(board)
-            cb.move(move[0], move[1])
-            utility, mv = self.maximize(alpha, beta, cb, depth - 1, original_board)
-            if utility is not None:
-                if utility < minimum_utility:
-                    minimum_utility = utility
-                    move_with_min_utility = move
-                beta = min(beta, utility)
-                if alpha >= beta:
-                    original_board.number_prunned_moves[depth - 1] += 1
-                    return None, None
+        try:
+            for move in board.get_all_legal_moves():
+                cb = ChessBoard(board)
+                cb.move(move[0], move[1])
+                utility, mv = self.maximize(alpha, beta, cb, depth - 1, original_board)
+                if utility is not None:
+                    if utility < minimum_utility:
+                        minimum_utility = utility
+                        move_with_min_utility = move
+                    beta = min(beta, utility)
+                    if alpha >= beta:
+                        original_board.number_prunned_moves[depth - 1] += 1
+                        return None, None
+        except CheckMateException as e:
+            return 50000, None
+        except StalemateException as e:
+            return 39000, None
         if depth >= 2:
             print("info: depth: " + str(depth) + " possible_moves: " + str(
                 original_board.number_possible_moves) + " prunned_moves: depth 1: " + str(
@@ -568,9 +615,11 @@ class ChessBoard:
 
     def evaluate_board(self):
         """
-        Returns the value evaluating the advantageous position using simple shannon function
+        Returns the value evaluating the advantageous position
+        using simple shannon function
 
-        to evaluate relative value of the board - the material part plus the positional values
+        to evaluate relative value of the board - the material
+        part plus the positional values
 
             Returns:
 
@@ -596,11 +645,13 @@ class ChessBoard:
 
     def get_figure_count(self):
         """
-        Returns the dictionary with Figures as keys and number of the contained in the ChessBoard object as values
+        Returns the dictionary with Figures as keys and
+        number of the contained in the ChessBoard object as values
 
             Returns:
 
-                figure_count (dictionary): key - Figure, value - # of that figure on the Board
+                figure_count (dictionary): key - Figure,
+                value - # of that figure on the Board
         """
         figure_count = dict()
         for row in self.board:
