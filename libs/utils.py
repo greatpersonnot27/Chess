@@ -35,16 +35,9 @@ class Vector2:
 
 		"""
 		if isinstance(value, Vector2):
-			if len(value) != len(self.data):
-				raise RuntimeError("unssuported operation on Vector")
-			else:
-				return Vector2([sum(i) for i in zip(value, self.data)])
-
+				return Vector2((value[0] + self.data[0], value[1] + self.data[1]))
 		elif isinstance(value, int):
-			return Vector2(tuple(i + value for i in self.data))
-
-		else:
-			raise RuntimeError("unssuported operation on Vector")
+			return Vector2((self.data[0] + value, self.data[1] + value))
 	
 	def __truediv__(self, value):
 		"""
@@ -139,8 +132,10 @@ class Vector2:
 				(Vector2): subtraction of two Vector2 - s
 
 		"""
-		invert = tuple(i * -1  for i in value)
-		return self.__add__(Vector2(invert))
+		if isinstance(value, Vector2):
+				return Vector2((self.data[0] - value[0], self.data[1] - value[1]))
+		elif isinstance(value, int):
+			return Vector2((self.data[0] - value, self.data[1] - value))
 	
 	def __contains__(self, value):
 		"""

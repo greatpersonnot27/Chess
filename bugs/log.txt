@@ -1,0 +1,199 @@
+2020-05-30 16:24:17.909 Arena 3.5.1
+2020-05-30 16:24:17.928Font Arena Chess Figurine MISSING
+
+2020-05-30 16:24:18.651**----------New game---2020-05-30 16:24:18,651 Sat -------------
+2020-05-30 16:24:18.885**screen: 1920x1080
+2020-05-30 16:24:18.885**Monitors: 2
+2020-05-30 16:24:18.885**Monitor0: 1920x1080
+2020-05-30 16:24:18.885**Monitor1: 1366x768
+2020-05-30 16:24:18.885**FormMonitor: 0
+2020-05-30 16:24:18.885**DesktopRect: 0/0 .. 3286/1080
+2020-05-30 16:24:18.925**Loading  1
+2020-05-30 16:24:20.535**----------New game---2020-05-30 16:24:20,535 Sat -------------
+2020-05-30 16:24:26.712*1*------------------Starting engine 1 Ika_shota_engine [001]------------------
+2020-05-30 16:24:26.713*1*Configured Engine 1 Type:  Auto
+2020-05-30 16:24:26.713*1*Engine 1 dir: C:\Pycharm Projects\chess
+2020-05-30 16:24:26.713*1*Engine 1 commandline: "C:\Pycharm Projects\chess\ika_shota_engine.bat" 
+2020-05-30 16:24:26.826*1*Child Process Prio Adj:  PID 21484 conhost.exe
+2020-05-30 16:24:26.827*1*Child Process Prio Adj:  PID 11828 python.exe
+2020-05-30 16:24:26.827*1*Engine 1 ProcessID: 13000
+2020-05-30 16:24:26.827*1*Engine 1 Prio:32 ThreadPrio:0
+2020-05-30 16:24:26.827-->1:xboard
+2020-05-30 16:24:26.848-->1:uci
+2020-05-30 16:24:26.848<--1:id name AIengine
+2020-05-30 16:24:26.848<--1:id author ika&shota
+2020-05-30 16:24:26.848<--1:option name Hash type spin min 1 max 4096 default 32 value 32
+2020-05-30 16:24:26.849<--1:option name Max CPUs type spin min 1 max 2048 default 2048 value 2048
+2020-05-30 16:24:26.849<--1:option name Display PV Tips type check default false value false
+2020-05-30 16:24:26.849<--1:option name CPU Usage type spin min 1 max 100 default 100 value 100
+2020-05-30 16:24:26.849<--1:option name Win Percentage to Hash Usage type check default false value false
+2020-05-30 16:24:26.849<--1:option name Display Current Move type check default true value true
+2020-05-30 16:24:26.849<--1:option name NalimovPath type string default <empty> value <empty>
+2020-05-30 16:24:26.849<--1:option name NalimovCache type spin min 1 max 256 default 1 value 1
+2020-05-30 16:24:26.849<--1:option name Ponder type check default true value true
+2020-05-30 16:24:26.849<--1:option name UCI_AnalyseMode type check default false value false
+2020-05-30 16:24:26.849<--1:uciok
+2020-05-30 16:24:26.850-->1:setoption name Hash value 128
+2020-05-30 16:24:26.850-->1:setoption name Max CPUs value 1
+2020-05-30 16:24:26.850-->1:setoption name NalimovPath value C:\TB
+2020-05-30 16:24:26.850-->1:setoption name NalimovCache value 32
+2020-05-30 16:24:26.861*1*Child Process Prio Adj:  PID 21484 conhost.exe
+2020-05-30 16:24:26.862*1*Child Process Prio Adj:  PID 11828 python.exe
+2020-05-30 16:24:26.862-->1:isready
+2020-05-30 16:24:26.900<--1:readyok
+2020-05-30 16:24:27.048*1*Start calc, move no: 1
+2020-05-30 16:24:27.048-->1:ucinewgame
+2020-05-30 16:24:27.048-->1:isready
+2020-05-30 16:24:27.048<--1:readyok
+2020-05-30 16:24:27.053-->1:position startpos moves e2e4
+2020-05-30 16:24:27.053-->1:go infinite
+2020-05-30 16:24:50.536<--1:a7a5
+2020-05-30 16:24:50.536<--1:bestmove a7a5
+2020-05-30 16:24:50.536*1*Found move:a7-a5
+2020-05-30 16:25:43.759*1*Start calc, move no: 3
+2020-05-30 16:25:43.759-->1:position startpos moves e2e4 a7a5 d1f3
+2020-05-30 16:25:43.759-->1:go infinite
+2020-05-30 16:26:05.277<--1:b7b6
+2020-05-30 16:26:05.277<--1:bestmove b7b6
+2020-05-30 16:26:05.277*1*Found move:b7-b6
+2020-05-30 16:26:14.151*1*Start calc, move no: 5
+2020-05-30 16:26:14.152-->1:position startpos moves e2e4 a7a5 d1f3 b7b6 b1c3
+2020-05-30 16:26:14.152-->1:go infinite
+2020-05-30 16:26:35.232<--1:c7c5
+2020-05-30 16:26:35.233<--1:bestmove c7c5
+2020-05-30 16:26:35.233*1*Found move:c7-c5
+2020-05-30 16:26:41.792*1*Start calc, move no: 7
+2020-05-30 16:26:41.792-->1:position startpos moves e2e4 a7a5 d1f3 b7b6 b1c3 c7c5 g2g4
+2020-05-30 16:26:41.792-->1:go infinite
+2020-05-30 16:27:08.751<--1:g7g5
+2020-05-30 16:27:08.751<--1:bestmove g7g5
+2020-05-30 16:27:08.751*1*Found move:g7-g5
+2020-05-30 16:27:18.563*1*Start calc, move no: 9
+2020-05-30 16:27:18.563-->1:position startpos moves e2e4 a7a5 d1f3 b7b6 b1c3 c7c5 g2g4 g7g5 f1c4
+2020-05-30 16:27:18.563-->1:go infinite
+2020-05-30 16:27:40.055<--1:e7e6
+2020-05-30 16:27:40.055<--1:bestmove e7e6
+2020-05-30 16:27:40.055*1*Found move:e7-e6
+2020-05-30 16:28:29.988*1*Start calc, move no: 11
+2020-05-30 16:28:29.988-->1:position startpos moves e2e4 a7a5 d1f3 b7b6 b1c3 c7c5 g2g4 g7g5 f1c4 e7e6 g1h3
+2020-05-30 16:28:29.988-->1:go infinite
+2020-05-30 16:28:54.000<--1:d7d6
+2020-05-30 16:28:54.000<--1:bestmove d7d6
+2020-05-30 16:28:54.000*1*Found move:d7-d6
+2020-05-30 16:29:31.604*1*Start calc, move no: 13
+2020-05-30 16:29:31.604-->1:position startpos moves e2e4 a7a5 d1f3 b7b6 b1c3 c7c5 g2g4 g7g5 f1c4 e7e6 g1h3 d7d6 e1g1
+2020-05-30 16:29:31.604-->1:go infinite
+2020-05-30 16:29:53.612<--1:h7h6
+2020-05-30 16:29:53.612<--1:bestmove h7h6
+2020-05-30 16:29:53.612*1*Found move:h7-h6
+2020-05-30 16:30:32.835*1*Start calc, move no: 15
+2020-05-30 16:30:32.835-->1:position startpos moves e2e4 a7a5 d1f3 b7b6 b1c3 c7c5 g2g4 g7g5 f1c4 e7e6 g1h3 d7d6 e1g1 h7h6 c3b5
+2020-05-30 16:30:32.835-->1:go infinite
+2020-05-30 16:30:47.885<--1:d6d5
+2020-05-30 16:30:47.885<--1:bestmove d6d5
+2020-05-30 16:30:47.885*1*Found move:d6-d5
+2020-05-30 16:31:47.239*1*Start calc, move no: 17
+2020-05-30 16:31:47.239-->1:position startpos moves e2e4 a7a5 d1f3 b7b6 b1c3 c7c5 g2g4 g7g5 f1c4 e7e6 g1h3 d7d6 e1g1 h7h6 c3b5 d6d5 e4d5
+2020-05-30 16:31:47.239-->1:go infinite
+2020-05-30 16:32:02.554<--1:e6d5
+2020-05-30 16:32:02.554<--1:bestmove e6d5
+2020-05-30 16:32:02.555*1*Found move:e6xd5
+2020-05-30 16:32:22.030*1*Start calc, move no: 19
+2020-05-30 16:32:22.030-->1:position startpos moves e2e4 a7a5 d1f3 b7b6 b1c3 c7c5 g2g4 g7g5 f1c4 e7e6 g1h3 d7d6 e1g1 h7h6 c3b5 d6d5 e4d5 e6d5 c4d5
+2020-05-30 16:32:22.030-->1:go infinite
+2020-05-30 16:33:01.537<--1:c8f5
+2020-05-30 16:33:01.537<--1:bestmove c8f5
+2020-05-30 16:33:01.537*1*Found move:Bc8-f5
+2020-05-30 16:33:29.092*1*Start calc, move no: 21
+2020-05-30 16:33:29.092-->1:position startpos moves e2e4 a7a5 d1f3 b7b6 b1c3 c7c5 g2g4 g7g5 f1c4 e7e6 g1h3 d7d6 e1g1 h7h6 c3b5 d6d5 e4d5 e6d5 c4d5 c8f5 g4f5
+2020-05-30 16:33:29.092-->1:go infinite
+2020-05-30 16:34:00.975<--1:a8a6
+2020-05-30 16:34:00.976<--1:bestmove a8a6
+2020-05-30 16:34:00.976*1*Found move:Ra8-a6
+2020-05-30 16:35:28.183*1*Start calc, move no: 23
+2020-05-30 16:35:28.183-->1:position startpos moves e2e4 a7a5 d1f3 b7b6 b1c3 c7c5 g2g4 g7g5 f1c4 e7e6 g1h3 d7d6 e1g1 h7h6 c3b5 d6d5 e4d5 e6d5 c4d5 c8f5 g4f5 a8a6 d5c6
+2020-05-30 16:35:28.183-->1:go infinite
+2020-05-30 16:35:37.673<--1:b8c6
+2020-05-30 16:35:37.674<--1:bestmove b8c6
+2020-05-30 16:35:37.674*1*Found move:Nb8xc6
+2020-05-30 16:35:54.589*1*Start calc, move no: 25
+2020-05-30 16:35:54.590-->1:position startpos moves e2e4 a7a5 d1f3 b7b6 b1c3 c7c5 g2g4 g7g5 f1c4 e7e6 g1h3 d7d6 e1g1 h7h6 c3b5 d6d5 e4d5 e6d5 c4d5 c8f5 g4f5 a8a6 d5c6 b8c6 f3c6
+2020-05-30 16:35:54.590-->1:go infinite
+2020-05-30 16:36:00.849<--1:d8d7
+2020-05-30 16:36:00.849<--1:bestmove d8d7
+2020-05-30 16:36:00.850*1*Found move:Qd8-d7
+2020-05-30 16:37:28.479*1*Start calc, move no: 27
+2020-05-30 16:37:28.480-->1:position startpos moves e2e4 a7a5 d1f3 b7b6 b1c3 c7c5 g2g4 g7g5 f1c4 e7e6 g1h3 d7d6 e1g1 h7h6 c3b5 d6d5 e4d5 e6d5 c4d5 c8f5 g4f5 a8a6 d5c6 b8c6 f3c6 d8d7 b5c7
+2020-05-30 16:37:28.480-->1:go infinite
+2020-05-30 16:37:49.449<--1:e8d8
+2020-05-30 16:37:49.449<--1:bestmove e8d8
+2020-05-30 16:37:49.449*1*Found move:Ke8-d8
+2020-05-30 16:38:38.976*1*Start calc, move no: 29
+2020-05-30 16:38:38.977-->1:position startpos moves e2e4 a7a5 d1f3 b7b6 b1c3 c7c5 g2g4 g7g5 f1c4 e7e6 g1h3 d7d6 e1g1 h7h6 c3b5 d6d5 e4d5 e6d5 c4d5 c8f5 g4f5 a8a6 d5c6 b8c6 f3c6 d8d7 b5c7 e8d8 c6d7
+2020-05-30 16:38:38.977-->1:go infinite
+2020-05-30 16:38:45.128<--1:d8d7
+2020-05-30 16:38:45.128<--1:bestmove d8d7
+2020-05-30 16:38:45.128*1*Found move:Kd8xd7
+2020-05-30 16:38:46.788*1*Start calc, move no: 31
+2020-05-30 16:38:46.788-->1:position startpos moves e2e4 a7a5 d1f3 b7b6 b1c3 c7c5 g2g4 g7g5 f1c4 e7e6 g1h3 d7d6 e1g1 h7h6 c3b5 d6d5 e4d5 e6d5 c4d5 c8f5 g4f5 a8a6 d5c6 b8c6 f3c6 d8d7 b5c7 e8d8 c6d7 d8d7 c7a6
+2020-05-30 16:38:46.788-->1:go infinite
+2020-05-30 16:38:51.083<--1:g5g4
+2020-05-30 16:38:51.083<--1:bestmove g5g4
+2020-05-30 16:38:51.083*1*Found move:g5-g4
+2020-05-30 16:39:15.946*1*Start calc, move no: 33
+2020-05-30 16:39:15.946-->1:position startpos moves e2e4 a7a5 d1f3 b7b6 b1c3 c7c5 g2g4 g7g5 f1c4 e7e6 g1h3 d7d6 e1g1 h7h6 c3b5 d6d5 e4d5 e6d5 c4d5 c8f5 g4f5 a8a6 d5c6 b8c6 f3c6 d8d7 b5c7 e8d8 c6d7 d8d7 c7a6 g5g4 h3f4
+2020-05-30 16:39:15.946-->1:go infinite
+2020-05-30 16:39:27.478<--1:f8d6
+2020-05-30 16:39:27.478<--1:bestmove f8d6
+2020-05-30 16:39:27.478*1*Found move:Bf8-d6
+2020-05-30 16:40:51.355*1*Start calc, move no: 35
+2020-05-30 16:40:51.355-->1:position startpos moves e2e4 a7a5 d1f3 b7b6 b1c3 c7c5 g2g4 g7g5 f1c4 e7e6 g1h3 d7d6 e1g1 h7h6 c3b5 d6d5 e4d5 e6d5 c4d5 c8f5 g4f5 a8a6 d5c6 b8c6 f3c6 d8d7 b5c7 e8d8 c6d7 d8d7 c7a6 g5g4 h3f4 f8d6 f4d5
+2020-05-30 16:40:51.355-->1:go infinite
+2020-05-30 16:40:59.574<--1:b6b5
+2020-05-30 16:40:59.575<--1:bestmove b6b5
+2020-05-30 16:40:59.575*1*Found move:b6-b5
+2020-05-30 16:42:30.678*1*Start calc, move no: 37
+2020-05-30 16:42:30.678-->1:position startpos moves e2e4 a7a5 d1f3 b7b6 b1c3 c7c5 g2g4 g7g5 f1c4 e7e6 g1h3 d7d6 e1g1 h7h6 c3b5 d6d5 e4d5 e6d5 c4d5 c8f5 g4f5 a8a6 d5c6 b8c6 f3c6 d8d7 b5c7 e8d8 c6d7 d8d7 c7a6 g5g4 h3f4 f8d6 f4d5 b6b5 a2a4
+2020-05-30 16:42:30.678-->1:go infinite
+2020-05-30 16:42:41.588<--1:d7c6
+2020-05-30 16:42:41.588<--1:bestmove d7c6
+2020-05-30 16:42:41.589*1*Found move:Kd7-c6
+2020-05-30 16:44:09.669*1*Start calc, move no: 39
+2020-05-30 16:44:09.669-->1:position startpos moves e2e4 a7a5 d1f3 b7b6 b1c3 c7c5 g2g4 g7g5 f1c4 e7e6 g1h3 d7d6 e1g1 h7h6 c3b5 d6d5 e4d5 e6d5 c4d5 c8f5 g4f5 a8a6 d5c6 b8c6 f3c6 d8d7 b5c7 e8d8 c6d7 d8d7 c7a6 g5g4 h3f4 f8d6 f4d5 b6b5 a2a4 d7c6 d5e3
+2020-05-30 16:44:09.669-->1:go infinite
+2020-05-30 16:44:25.174<--1:b5a4
+2020-05-30 16:44:25.174<--1:bestmove b5a4
+2020-05-30 16:44:25.174*1*Found move:b5xa4
+2020-05-30 16:44:50.380*1*Start calc, move no: 41
+2020-05-30 16:44:50.381-->1:position startpos moves e2e4 a7a5 d1f3 b7b6 b1c3 c7c5 g2g4 g7g5 f1c4 e7e6 g1h3 d7d6 e1g1 h7h6 c3b5 d6d5 e4d5 e6d5 c4d5 c8f5 g4f5 a8a6 d5c6 b8c6 f3c6 d8d7 b5c7 e8d8 c6d7 d8d7 c7a6 g5g4 h3f4 f8d6 f4d5 b6b5 a2a4 d7c6 d5e3 b5a4 a1a4
+2020-05-30 16:44:50.381-->1:go infinite
+2020-05-30 16:45:02.599<--1:c6b6
+2020-05-30 16:45:02.599<--1:bestmove c6b6
+2020-05-30 16:45:02.599*1*Found move:Kc6-b6
+2020-05-30 16:47:04.831*1*Start calc, move no: 43
+2020-05-30 16:47:04.832-->1:position startpos moves e2e4 a7a5 d1f3 b7b6 b1c3 c7c5 g2g4 g7g5 f1c4 e7e6 g1h3 d7d6 e1g1 h7h6 c3b5 d6d5 e4d5 e6d5 c4d5 c8f5 g4f5 a8a6 d5c6 b8c6 f3c6 d8d7 b5c7 e8d8 c6d7 d8d7 c7a6 g5g4 h3f4 f8d6 f4d5 b6b5 a2a4 d7c6 d5e3 b5a4 a1a4 c6b6 a6c5
+2020-05-30 16:47:04.832-->1:go infinite
+2020-05-30 16:47:16.129<--1:d6c5
+2020-05-30 16:47:16.129<--1:bestmove d6c5
+2020-05-30 16:47:16.129*1*Found move:Bd6xc5
+2020-05-30 16:47:47.935*1*Start calc, move no: 45
+2020-05-30 16:47:47.935-->1:position startpos moves e2e4 a7a5 d1f3 b7b6 b1c3 c7c5 g2g4 g7g5 f1c4 e7e6 g1h3 d7d6 e1g1 h7h6 c3b5 d6d5 e4d5 e6d5 c4d5 c8f5 g4f5 a8a6 d5c6 b8c6 f3c6 d8d7 b5c7 e8d8 c6d7 d8d7 c7a6 g5g4 h3f4 f8d6 f4d5 b6b5 a2a4 d7c6 d5e3 b5a4 a1a4 c6b6 a6c5 d6c5 d2d4
+2020-05-30 16:47:47.935-->1:go infinite
+2020-05-30 16:47:58.544<--1:b6b5
+2020-05-30 16:47:58.545<--1:bestmove b6b5
+2020-05-30 16:47:58.545*1*Found move:Kb6-b5
+2020-05-30 16:48:31.120*1*Start calc, move no: 47
+2020-05-30 16:48:31.120-->1:position startpos moves e2e4 a7a5 d1f3 b7b6 b1c3 c7c5 g2g4 g7g5 f1c4 e7e6 g1h3 d7d6 e1g1 h7h6 c3b5 d6d5 e4d5 e6d5 c4d5 c8f5 g4f5 a8a6 d5c6 b8c6 f3c6 d8d7 b5c7 e8d8 c6d7 d8d7 c7a6 g5g4 h3f4 f8d6 f4d5 b6b5 a2a4 d7c6 d5e3 b5a4 a1a4 c6b6 a6c5 d6c5 d2d4 b6b5 b2b3
+2020-05-30 16:48:31.120-->1:go infinite
+2020-05-30 16:48:47.066<--1:c5f8
+2020-05-30 16:48:47.066<--1:bestmove c5f8
+2020-05-30 16:48:47.066*1*Found move:Bc5-f8
+2020-05-30 16:49:17.275*1*Start calc, move no: 49
+2020-05-30 16:49:17.275-->1:position startpos moves e2e4 a7a5 d1f3 b7b6 b1c3 c7c5 g2g4 g7g5 f1c4 e7e6 g1h3 d7d6 e1g1 h7h6 c3b5 d6d5 e4d5 e6d5 c4d5 c8f5 g4f5 a8a6 d5c6 b8c6 f3c6 d8d7 b5c7 e8d8 c6d7 d8d7 c7a6 g5g4 h3f4 f8d6 f4d5 b6b5 a2a4 d7c6 d5e3 b5a4 a1a4 c6b6 a6c5 d6c5 d2d4 b6b5 b2b3 c5f8 c2c4
+2020-05-30 16:49:17.276-->1:go infinite
+2020-05-30 16:49:21.750<--1:b5a4
+2020-05-30 16:49:21.750<--1:bestmove b5a4
+2020-05-30 16:49:21.750*moveerror* own king in check !Kb5xa4!
+2020-05-30 16:49:21.750*moveerror* move not in legal moves list2 !Kb5xa4!
+2020-05-30 16:49:21.751*moveerror* R illegal move detected by movegen, sorry, no more details !...!
+2020-05-30 16:49:21.751*1*---------> Arena:Illegal move!: "bestmove b5a4" ()

@@ -49,16 +49,25 @@ class ChessBoard:
         # current turn
         self.turn = Figure.Color.WHITE
 
+        self.white_king_pos = Vector2((0, 4))
+        self.black_king_pos = Vector2((7, 4))
+
+        self.white_in_check = False
+        self.black_in_check = False
+
+        self.depth = 4
         # Game history
         self.history = []
         self.dead_figures = []
         self.number_possible_moves = 0
-        self.number_prunned_moves = [0, 0, 0, 0]
+        self.number_prunned_moves = [0, 0, 0, 0, 0, 0]
         self.info_count = 0
 
         if chessboard is not None:
-            self.board = copy.deepcopy(chessboard.board)
+            self.board = copy.copy(chessboard.board)
             self.turn = chessboard.turn
+            self.white_king_pos = chessboard.white_king_pos
+            self.black_king_pos = chessboard.black_king_pos
         else:
             self.__setup_initial_board()
 
@@ -77,17 +86,13 @@ class ChessBoard:
 
     def __setup_initial_board(self):
         """Populates the chessboard (list of lists) with figures"""
-        self.board = [[None] * 8 for i in range(8)]
+        self.board = self.__setup_first_row(Figure.Color.WHITE)
+        self.board += [Pawn(Figure.Color.WHITE) for i in range(8)]
+        self.board += [None] * 32
+        self.board += [Pawn(Figure.Color.BLACK) for i in range(8)]
+        self.board += self.__setup_first_row(Figure.Color.BLACK)
 
-        # setup pawns
-        self.board[1] = [Pawn(Figure.Color.WHITE) for i in range(8)]
-        self.board[6] = [Pawn(Figure.Color.BLACK) for i in range(8)]
-
-        # setup rest of the figures
-        self.board[0] = self.__setup_first_row(Figure.Color.WHITE)
-        self.board[7] = self.__setup_first_row(Figure.Color.BLACK)
-
-    def get_piece_at_coordinates(self, coordinates):
+    def get_piece_at(self, coordinates):
         """
         Get piece on given coordinates. If the coordinates is empty
 
@@ -100,35 +105,13 @@ class ChessBoard:
                 (Figure) : Figure contained at the given coordinates
         """
         x, y = coordinates
-        return self.board[x][y]
+        if isinstance(y, slice):
+            return self.board[x * 8 + y.start : x * 8 + y.stop]
+        return self.board[x * 8 + y]
 
-    def draw_board(self):
-        """Draws the current state of the chessboard on the console with easy to comprehend formatting"""
-        board = ['   ' + ('   ').join('ABCDEFGH')]
-
-        for i, row in enumerate(self.board[::-1]):
-            row_content = [str(8 - i)]
-            for square in row:
-                if square is None:
-                    row_content.append('  ')
-                else:
-                    name = str(square)
-                    initials = ''.join([w[0] for w in name.split()])
-                    row_content.append(initials)
-            board.append('  '.join(row_content))
-        return '\n'.join(board) + '\n'
-
-    def get_random_move(self):
-        """
-        Returns a random move from all legal moves available for the given board position
-
-            Returns:
-
-                str: move in long algebraic notation. Example: C7C2
-        """
-        move = random.choice(self.get_all_legal_moves())
-        fro, to = move
-        return chr(ord('a') + fro[1]) + str(int(fro[0]) + 1) + chr(ord('a') + to[1]) + str(int(to[0]) + 1)
+    def set_piece_at(self, coordinates, value):
+        x, y = coordinates
+        self.board[x * 8 + y] = value
 
     def get_minmax_move(self):
         """
@@ -138,7 +121,7 @@ class ChessBoard:
 
                 str: move in long algebraic notation. Example: C7C2
         """
-        utility, move = self.maximize(float("-inf"), float("inf"), self, 3, self)
+        utility, move = self.maximize(float("-inf"), float("inf"), self, self.depth, self)
         fro, to = move
         # print(self.draw_board())
         print(chr(ord('a') + fro[1]) + str(int(fro[0]) + 1) + chr(ord('a') + to[1]) + str(int(to[0]) + 1))
@@ -155,21 +138,35 @@ class ChessBoard:
                 each. Example: [((0, 1),(0, 2)),((0, 4),(0, 6))]
         """
         moves = []
-        for x, row in enumerate(self.board):
-            for y, figure in enumerate(row):
-                if figure is not None and figure.color == self.turn:
-                    moves += self.__get_figure_legal_moves(figure, (x, y))
+        for x, y, figure in self.get_all_figures():
+            if figure is not None and figure.color == self.turn:
+                moves += self.__get_figure_legal_moves(figure, (x, y))
         moves += self.__get_all_special_moves()
         return moves
+
+    def get_all_figures(self):
+        for k, figure in enumerate(self.board):
+            x = k//8
+            y = k%8
+            yield x, y, figure
 
     def get_all_legal_moves(self):
 
         moves = self.__get_all_legal_moves()
         valid_moves = []
         for move in moves:
+
             board_copy = ChessBoard(self)
             board_copy.move(move[0], move[1])
-            if not board_copy.is_opponent_in_check():
+
+            move_v2 = Vector2(move[0])
+            king_pos = self.white_king_pos if self.turn == Figure.Color.WHITE else self.black_king_pos
+            direction_vector = abs(move_v2 - king_pos)
+            normal_vector = Vector2((1, 1)) if direction_vector.x == 0 and direction_vector.y == 0 else direction_vector / max(abs(direction_vector.x), abs(direction_vector.y))
+            if (normal_vector.x, normal_vector.y) in [(1, 1), (0, 1), (1, 0)]:
+                if not board_copy.is_opponent_in_check():
+                    valid_moves.append(move)
+            else:
                 valid_moves.append(move)
         if len(valid_moves) == 0:
             if self.__is_check():
@@ -197,15 +194,15 @@ class ChessBoard:
 
         for move_list in figure.get_all_moves(pos):
             for x, y in move_list:
-                if self.board[x][y] is None:
+                if self.get_piece_at((x, y)) is None:
                     if not (str(figure).endswith("Pawn") and pos[1] != y):
                         # if square is empty add to possible moves
                         moves.append((pos, (x, y)))
                     if str(figure).endswith("Pawn") and (pos[0] - x) % 2 == 0:
                         for square in figure.path(Vector2(pos), Vector2((x, y))):
-                            if square is not None:
+                            if self.get_piece_at((square[0], square[1])) is not None:
                                 moves.pop()
-                elif self.board[x][y].color != figure.color:
+                elif self.get_piece_at((x, y)).color != figure.color:
                     if not (str(figure).endswith("Pawn") and pos[1] == y):
                         # make kill
                         moves.append((pos, (x, y)))
@@ -239,20 +236,20 @@ class ChessBoard:
         # check special moves
         moves = []
         if self.turn == Figure.Color.WHITE:
-            if str(self.board[0][4]) == "White King" and not self.board[0][4].been_moved:
-                if str(self.board[0][0]) == "White Rook" and not self.board[0][0].been_moved:
-                    if not any(self.board[0][1:4]):
+            if str(self.get_piece_at((0, 4))) == "White King" and not self.get_piece_at((0, 4)).been_moved:
+                if str(self.get_piece_at((0, 0))) == "White Rook" and not self.get_piece_at((0, 0)).been_moved:
+                    if not any(self.get_piece_at((0, slice(1,4)))):
                         moves.append(((0, 4), (0, 2)))
-                if str(self.board[0][7]) == "White Rook" and not self.board[0][7].been_moved:
-                    if not any(self.board[0][5:7]):
+                if str(self.get_piece_at((0, 7))) == "White Rook" and not self.get_piece_at((0, 7)).been_moved:
+                    if not any(self.get_piece_at((0, slice(5,7)))):
                         moves.append(((0, 4), (0, 6)))
         else:
-            if str(self.board[7][4]) == "Black King" and not self.board[7][4].been_moved:
-                if str(self.board[7][0]) == "Black Rook" and not self.board[7][0].been_moved:
-                    if not any(self.board[7][1:4]):
+            if str(self.get_piece_at((7, 4))) == "Black King" and not self.get_piece_at((7, 4)).been_moved:
+                if str(self.get_piece_at((7, 0))) == "Black Rook" and not self.get_piece_at((7, 0)).been_moved:
+                    if not any(self.get_piece_at((7, slice(1, 4)))):
                         moves.append(((7, 4), (7, 2)))
-                if str(self.board[7][7]) == "Black Rook" and not self.board[7][7].been_moved:
-                    if not any(self.board[7][5:7]):
+                if str(self.get_piece_at((7, 7))) == "Black Rook" and not self.get_piece_at((7, 7)).been_moved:
+                    if not any(self.get_piece_at((7, slice(5, 7)))):
                         moves.append(((7, 4), (7, 6)))
         return moves
 
@@ -266,7 +263,7 @@ class ChessBoard:
             if 0 > coordinate > 7:
                 raise InvalidMoveException()
 
-        figure = self.get_piece_at_coordinates(_from)
+        figure = self.get_piece_at(_from)
 
         # figure is on right position
         if figure is None:
@@ -306,11 +303,11 @@ class ChessBoard:
         for square in figure.path(_from, to):
 
             # if something stands in the path raise Exception
-            if self.get_piece_at_coordinates(square) is not None:
+            if self.get_piece_at(square) is not None:
                 raise InvalidMoveException()
 
         # handle destination square
-        dest = self.get_piece_at_coordinates(to)
+        dest = self.get_piece_at(to)
         if dest is not None:
             if dest.color == figure.color:
                 raise InvalidMoveException()
@@ -320,6 +317,12 @@ class ChessBoard:
             raise InvalidMoveException()
         else:
             self.__apply_move(figure, _from, to)
+
+        if isinstance(figure, King):
+            if figure.color == Figure.Color.WHITE:
+                self.white_king_pos = to
+            else:
+                self.black_king_pos = to
 
         # change turn
         self.change_turn()
@@ -367,7 +370,7 @@ class ChessBoard:
         moves = self.__get_all_legal_moves()
         for move in moves:
             fro, to = move
-            dest_figure = self.board[to[0]][to[1]]
+            dest_figure = self.get_piece_at((to[0], to[1]))
             if isinstance(dest_figure, King):
                 check = True
 
@@ -396,8 +399,8 @@ class ChessBoard:
         _from = Vector2(_from)
         to = Vector2(to)
 
-        self.board[_from.x][_from.y] = None
-        self.board[to.x][to.y] = figure
+        self.set_piece_at((_from.x, _from.y), None)
+        self.set_piece_at((to.x, to.y), figure)
 
     def __apply_castling(self, figure, _from, to, type):
         """
@@ -421,15 +424,20 @@ class ChessBoard:
         _from = Vector2(_from)
         to = Vector2(to)
 
-        self.board[_from.x][_from.y] = None
-        self.board[to.x][to.y] = figure
+        if figure.color == Figure.Color.WHITE:
+            self.white_king_pos = to
+        else:
+            self.black_king_pos = to
+
+        self.set_piece_at((_from.x, _from.y), None)
+        self.set_piece_at((to.x, to.y), figure)
 
         if type == "long":
-            self.board[_from.x][3] = self.get_piece_at_coordinates((_from.x, 0))
-            self.board[_from.x][0] = None
+            self.set_piece_at((_from.x, 3), self.get_piece_at((_from.x, 0)))
+            self.set_piece_at((_from.x, 0), None)
         if type == "short":
-            self.board[_from.x][5] = self.get_piece_at_coordinates((_from.x, 7))
-            self.board[_from.x][7] = None
+            self.set_piece_at((_from.x, 5), self.get_piece_at((_from.x, 7)))
+            self.set_piece_at((_from.x, 7), None)
         self.change_turn()
 
     def __apply_pawn_promotion(self, pawn, _from, to, figure):
@@ -454,17 +462,17 @@ class ChessBoard:
         to = Vector2(to)
 
         if figure == "q":
-            self.board[_from.x][_from.y] = None
-            self.board[to.x][to.y] = Queen(pawn.color)
+            self.set_piece_at((_from.x, _from.y), None)
+            self.set_piece_at((to.x, to.y), Queen(pawn.color))
         if figure == "b":
-            self.board[_from.x][_from.y] = None
-            self.board[to.x][to.y] = Bishop(pawn.color)
+            self.set_piece_at((_from.x, _from.y), None)
+            self.set_piece_at((to.x, to.y), Bishop(pawn.color))
         if figure == "r":
-            self.board[_from.x][_from.y] = None
-            self.board[to.x][to.y] = Rook(pawn.color)
+            self.set_piece_at((_from.x, _from.y), None)
+            self.set_piece_at((to.x, to.y), Rook(pawn.color))
         if figure == "n":
-            self.board[_from.x][_from.y] = None
-            self.board[to.x][to.y] = Knight(pawn.color)
+            self.set_piece_at((_from.x, _from.y), None)
+            self.set_piece_at((to.x, to.y), Knight(pawn.color))
         self.change_turn()
 
     def __kill(self, fro, to):
@@ -480,14 +488,14 @@ class ChessBoard:
                 to (tuple): tuple of two integers -
                 coordinates of the killee
         """
-        killer = self.board[fro[0]][fro[1]]
-        killee = self.board[to[0]][to[1]]
+        killer = self.get_piece_at((fro[0], fro[1]))
+        killee = self.get_piece_at((to[0], to[1]))
 
         if killer is None or killee is None or killer.color == killee.color:
             raise RuntimeError()
 
-        self.board[fro[0]][fro[1]] = None
-        self.board[to[0]][to[1]] = killer
+        self.set_piece_at((fro[0], fro[1]), None)
+        self.set_piece_at((to[0], to[1]), killer)
 
         self.dead_figures.append(killee)
 
@@ -538,7 +546,7 @@ class ChessBoard:
                         original_board.number_prunned_moves[depth - 1] += 1
                         return None, None
         except (CheckMateException, StalemateException) as e:
-            if depth != 3:
+            if depth != self.depth:
                 return -50000, None
             else:
                 if isinstance(e, CheckMateException):
@@ -546,12 +554,12 @@ class ChessBoard:
                 else:
                     print("info: Stalemate!")
                 exit()
-        if depth >= 2:
-            print("info: depth: " + str(depth) + " possible_moves: " + str(
-                original_board.number_possible_moves) + " prunned_moves: depth 1: " + str(
-                original_board.number_prunned_moves[0]) + " depth 2: " + str(
-                original_board.number_prunned_moves[1]) + " depth 3: " + str(
-                original_board.number_prunned_moves[2]))
+        # if depth >= 5:
+        #     print("info: depth: " + str(depth) + " possible_moves: " + str(
+        #         original_board.number_possible_moves) + " prunned_moves: depth 1: " + str(
+        #         original_board.number_prunned_moves[0]) + " depth 2: " + str(
+        #         original_board.number_prunned_moves[1]) + " depth 3: " + str(
+        #         original_board.number_prunned_moves[2]))
         return maximum_utility, move_with_max_utility
 
     def minimize(self, alpha, beta, board, depth, original_board):
@@ -605,12 +613,12 @@ class ChessBoard:
             return 50000, None
         except StalemateException as e:
             return 39000, None
-        if depth >= 2:
-            print("info: depth: " + str(depth) + " possible_moves: " + str(
-                original_board.number_possible_moves) + " prunned_moves: depth 1: " + str(
-                original_board.number_prunned_moves[0]) + " depth 2: " + str(
-                original_board.number_prunned_moves[1]) + " depth 3: " + str(
-                original_board.number_prunned_moves[2]))
+        # if depth >= 2:
+        #     print("info: depth: " + str(depth) + " possible_moves: " + str(
+        #         original_board.number_possible_moves) + " prunned_moves: depth 1: " + str(
+        #         original_board.number_prunned_moves[0]) + " depth 2: " + str(
+        #         original_board.number_prunned_moves[1]) + " depth 3: " + str(
+        #         original_board.number_prunned_moves[2]))
         return minimum_utility, move_with_min_utility
 
     def evaluate_board(self):
@@ -634,13 +642,12 @@ class ChessBoard:
                                  figure_count.get("White Pawn", 0) - figure_count.get("Black Pawn", 0))
         white_st_sum = 0
         black_st_sum = 0
-        for x, row in enumerate(self.board):
-            for y, figure in enumerate(row):
-                if figure is not None:
-                    if figure.color:
-                        black_st_sum += figure.get_square_table()[x][y]
-                    else:
-                        white_st_sum += figure.get_square_table()[x][y]
+        for x, y, figure in self.get_all_figures():
+            if figure is not None:
+                if figure.color:
+                    black_st_sum += figure.get_square_table()[x][y]
+                else:
+                    white_st_sum += figure.get_square_table()[x][y]
         return (position_value + black_st_sum - white_st_sum) * -1
 
     def get_figure_count(self):
@@ -654,13 +661,13 @@ class ChessBoard:
                 value - # of that figure on the Board
         """
         figure_count = dict()
-        for row in self.board:
-            for figure in row:
-                if figure is not None:
-                    if str(figure) in figure_count.keys():
-                        figure_count[str(figure)] += 1
-                    else:
-                        figure_count[str(figure)] = 1
+
+        for x,y,figure in self.get_all_figures():
+            if figure is not None:
+                if str(figure) in figure_count.keys():
+                    figure_count[str(figure)] += 1
+                else:
+                    figure_count[str(figure)] = 1
         return figure_count
 
     def change_turn(self):
