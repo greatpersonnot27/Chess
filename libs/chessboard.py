@@ -56,7 +56,7 @@ class ChessBoard:
         self.white_in_check = False
         self.black_in_check = False
 
-        self.depth = 2
+        self.depth = 4
         # Game history
         self.history = []
         self.dead_figures = []
@@ -153,23 +153,13 @@ class ChessBoard:
 
     def get_all_legal_moves(self):
 
-        if self.cached_moves != None:
-            return self.cached_moves
-
         moves = self.__get_all_legal_moves()
         valid_moves = []
         for move in moves:
-
             board_copy = ChessBoard(self)
             board_copy.move(move[0], move[1])
-
             if not board_copy.is_opponent_in_check():
                 valid_moves.append(move)
-
-        if len(valid_moves) == 0:
-            if self.__is_check():
-                raise CheckMateException("Checkmate!")
-            raise StalemateException("Stalemate!")
         return valid_moves
 
     def __get_figure_legal_moves(self, figure, pos):
@@ -533,34 +523,6 @@ class ChessBoard:
         self.dead_figures.append(killee)
 
     def maximize(self, alpha, beta, board, depth, original_board):
-        """
-        Returns the value of the maximum utility and
-        the corresponding move
-
-            Parameters:
-
-                alpha (float): maximizing functions best
-                utility value for the current depth or above
-
-                beta (float): minimizing functions best
-                utility value for the current depth or above
-
-                board (ChessBoard): board to be copied
-
-                depth (str): the depth limit for the
-                recursive call of the function
-
-                original_board (ChessBoard): the original Chessboard object
-
-            Returns:
-
-                maximum_utility (float): value of the
-                maximum utility generated
-
-                move_with_max_utility (tuple): tuple of
-                two tuples each with two integers describing the move
-        """
-        original_board.number_possible_moves += 1
         if depth == 0:
             return board.evaluate_board(), None
         maximum_utility = float('-inf')
@@ -568,11 +530,7 @@ class ChessBoard:
         for move in board.get_all_legal_moves():
             cb = ChessBoard(board)
             cb.move(move[0], move[1])
-            try:
-                cb.cached_moves = cb.get_all_legal_moves()
-                utility, mv = self.minimize(alpha, beta, cb, depth - 1, original_board)
-            except (CheckMateException, StalemateException) as e:
-                utility, mv = 50000, None
+            utility, mv = self.minimize(alpha, beta, cb, depth - 1, original_board)
             if utility is not None:
                 if utility > maximum_utility:
                     maximum_utility = utility
@@ -581,44 +539,9 @@ class ChessBoard:
                 if alpha >= beta:
                     original_board.number_prunned_moves[depth - 1] += 1
                     return None, move_with_max_utility
-        # if depth >= 5:
-        #     print("info: depth: " + str(depth) + " possible_moves: " + str(
-        #         original_board.number_possible_moves) + " prunned_moves: depth 1: " + str(
-        #         original_board.number_prunned_moves[0]) + " depth 2: " + str(
-        #         original_board.number_prunned_moves[1]) + " depth 3: " + str(
-        #         original_board.number_prunned_moves[2]))
         return maximum_utility, move_with_max_utility
 
     def minimize(self, alpha, beta, board, depth, original_board):
-        """
-        Returns the value of the minimum utility and
-        the corresponding move
-
-            Parameters:
-
-                alpha (float): maximizing functions best
-                utility value for the current depth or above
-
-                beta (float): minimizing functions best
-                utility value for the current depth or above
-
-                board (ChessBoard): board to be copied
-
-                depth (str): the depth limit for the
-                recursive call of the function
-
-                original_board (ChessBoard): the
-                original Chessboard object
-
-            Returns:
-
-                minimum_utility (float): value of the minimum utility
-                generated
-
-                move_with_min_utility (tuple): tuple of two
-                tuples each with two integers describing the move
-        """
-        original_board.number_possible_moves += 1
         if depth == 0:
             return board.evaluate_board(), None
         minimum_utility = float('inf')
@@ -626,11 +549,7 @@ class ChessBoard:
         for move in board.get_all_legal_moves():
             cb = ChessBoard(board)
             cb.move(move[0], move[1])
-            try:
-                cb.cached_moves = cb.get_all_legal_moves()
-                utility, mv = self.minimize(alpha, beta, cb, depth - 1, original_board)
-            except (CheckMateException, StalemateException) as e:
-                utility, mv = -50000, None
+            utility, mv = self.maximize(alpha, beta, cb, depth - 1, original_board)
             if utility is not None:
                 if utility < minimum_utility:
                     minimum_utility = utility
@@ -639,12 +558,6 @@ class ChessBoard:
                 if alpha >= beta:
                     original_board.number_prunned_moves[depth - 1] += 1
                     return None, None
-        # if depth >= 2:
-        #     print("info: depth: " + str(depth) + " possible_moves: " + str(
-        #         original_board.number_possible_moves) + " prunned_moves: depth 1: " + str(
-        #         original_board.number_prunned_moves[0]) + " depth 2: " + str(
-        #         original_board.number_prunned_moves[1]) + " depth 3: " + str(
-        #         original_board.number_prunned_moves[2]))
         return minimum_utility, move_with_min_utility
 
     def evaluate_board(self):
@@ -660,7 +573,8 @@ class ChessBoard:
                 (int): value of the evaluated board
         """
         figure_count = self.get_figure_count()
-        position_value = 900 * ( figure_count.get("White Queen", 0) - figure_count.get("Black Queen", 0)) + 500 * (
+        position_value = 20000 * (figure_count.get("White King", 0) - figure_count.get("Black King", 0)) + 900 * (
+                    figure_count.get("White Queen", 0) - figure_count.get("Black Queen", 0)) + 500 * (
                                  figure_count.get("White Rook", 0) - figure_count.get("Black Rook", 0)) + 330 * (
                                  figure_count.get("White Knight", 0) - figure_count.get("Black Knight", 0) +
                                  figure_count.get("White Bishop", 0) - figure_count.get("Black Bishop", 0)) + 100 * (
@@ -698,5 +612,4 @@ class ChessBoard:
 
     def change_turn(self):
         """Flips the turn attribute (when the current player makes the move)"""
-        self.cached_moves = None
         self.turn = Figure.Color.WHITE if self.turn == Figure.Color.BLACK else Figure.Color.BLACK
