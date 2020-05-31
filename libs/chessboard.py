@@ -34,6 +34,7 @@ class ChessBoard:
 
         number of moves prunned as a result of alpha-beta prunning
     """
+
     def __init__(self, chessboard=None):
         """
         Constructs a new chessboard of chessboard parameter is none
@@ -55,7 +56,7 @@ class ChessBoard:
         self.white_in_check = False
         self.black_in_check = False
 
-        self.depth = 4
+        self.depth = 2
         # Game history
         self.history = []
         self.dead_figures = []
@@ -106,7 +107,7 @@ class ChessBoard:
         """
         x, y = coordinates
         if isinstance(y, slice):
-            return self.board[x * 8 + y.start : x * 8 + y.stop]
+            return self.board[x * 8 + y.start: x * 8 + y.stop]
         return self.board[x * 8 + y]
 
     def set_piece_at(self, coordinates, value):
@@ -146,11 +147,14 @@ class ChessBoard:
 
     def get_all_figures(self):
         for k, figure in enumerate(self.board):
-            x = k//8
-            y = k%8
+            x = k // 8
+            y = k % 8
             yield x, y, figure
 
     def get_all_legal_moves(self):
+
+        if self.cached_moves != None:
+            return self.cached_moves
 
         moves = self.__get_all_legal_moves()
         valid_moves = []
@@ -159,15 +163,9 @@ class ChessBoard:
             board_copy = ChessBoard(self)
             board_copy.move(move[0], move[1])
 
-            move_v2 = Vector2(move[0])
-            king_pos = self.white_king_pos if self.turn == Figure.Color.WHITE else self.black_king_pos
-            direction_vector = abs(move_v2 - king_pos)
-            normal_vector = Vector2((1, 1)) if direction_vector.x == 0 and direction_vector.y == 0 else direction_vector / max(abs(direction_vector.x), abs(direction_vector.y))
-            if (normal_vector.x, normal_vector.y) in [(1, 1), (0, 1), (1, 0)]:
-                if not board_copy.is_opponent_in_check():
-                    valid_moves.append(move)
-            else:
+            if not board_copy.is_opponent_in_check():
                 valid_moves.append(move)
+
         if len(valid_moves) == 0:
             if self.__is_check():
                 raise CheckMateException("Checkmate!")
@@ -238,10 +236,10 @@ class ChessBoard:
         if self.turn == Figure.Color.WHITE:
             if str(self.get_piece_at((0, 4))) == "White King" and not self.get_piece_at((0, 4)).been_moved:
                 if str(self.get_piece_at((0, 0))) == "White Rook" and not self.get_piece_at((0, 0)).been_moved:
-                    if not any(self.get_piece_at((0, slice(1,4)))):
+                    if not any(self.get_piece_at((0, slice(1, 4)))):
                         moves.append(((0, 4), (0, 2)))
                 if str(self.get_piece_at((0, 7))) == "White Rook" and not self.get_piece_at((0, 7)).been_moved:
-                    if not any(self.get_piece_at((0, slice(5,7)))):
+                    if not any(self.get_piece_at((0, slice(5, 7)))):
                         moves.append(((0, 4), (0, 6)))
         else:
             if str(self.get_piece_at((7, 4))) == "Black King" and not self.get_piece_at((7, 4)).been_moved:
@@ -362,20 +360,55 @@ class ChessBoard:
                 check (bool)
         """
         # change the turn
-        if not opponent:
-            self.change_turn()
-
+        if opponent:
+            my_color = Figure.Color.WHITE if self.turn == Figure.Color.BLACK else Figure.Color.BLACK
+        else:
+            my_color = self.turn
+        king_position = self.white_king_pos if my_color == Figure.Color.WHITE else self.black_king_pos
         check = False
 
-        moves = self.__get_all_legal_moves()
-        for move in moves:
-            fro, to = move
-            dest_figure = self.get_piece_at((to[0], to[1]))
-            if isinstance(dest_figure, King):
-                check = True
+        knight_vectors = [(1, 2), (-1, 2), (1, -2), (-1, -2), (2, 1), (-2, 1), (2, -1), (-2, -1)]
+        for vector in knight_vectors:
+            pos = king_position + Vector2(vector)
+            if (0 <= pos.x <= 7) and (0 <= pos.y <= 7):
+                fig = self.get_piece_at((pos.x, pos.y))
+                if isinstance(fig , Knight) and fig.color != my_color:
+                    return True
 
-        if not opponent:
-            self.change_turn()
+        for vector in [(1, 1), (1, -1), (-1, 1), (-1, -1)]:
+            vector = Vector2(vector)
+            for inc in range(1, 8):
+                pos = king_position + Vector2(vector * inc)
+                if (0 <= pos.x <= 7) and (0 <= pos.y <= 7):
+                    fig = self.get_piece_at((pos.x, pos.y))
+                    if fig != None and fig.color != my_color and type(fig) in [Queen, Bishop]:
+                        return True
+                    elif fig != None:
+                        break
+                else:
+                    break
+
+        for vector in [(1, 0), (-1, 0), (0, 1), (0, -1)]:
+            vector = Vector2(vector)
+            for inc in range(1, 8):
+                pos = king_position + Vector2(vector * inc)
+                if (0 <= pos.x <= 7) and (0 <= pos.y <= 7):
+                    fig = self.get_piece_at((pos.x, pos.y))
+                    if fig != None and fig.color != my_color and type(fig) in [Queen, Rook]:
+                        return True
+                    elif fig != None:
+                        break
+                else:
+                    break
+        pawn_vectors = [(-1 , 1), (-1, -1)] if my_color == Figure.Color.BLACK else [(1, 1), (1, -1)]
+
+        for vector in pawn_vectors:
+            vector = Vector2(vector)
+            pos = king_position + Vector2(vector)
+            if (0 <= pos.x <= 7) and (0 <= pos.y <= 7):
+                fig = self.get_piece_at((pos.x, pos.y))
+                if type(fig) == Pawn and fig.color != my_color:
+                    return True
 
         return check
 
@@ -532,28 +565,22 @@ class ChessBoard:
             return board.evaluate_board(), None
         maximum_utility = float('-inf')
         move_with_max_utility = None
-        try:
-            for move in board.get_all_legal_moves():
-                cb = ChessBoard(board)
-                cb.move(move[0], move[1])
+        for move in board.get_all_legal_moves():
+            cb = ChessBoard(board)
+            cb.move(move[0], move[1])
+            try:
+                cb.cached_moves = cb.get_all_legal_moves()
                 utility, mv = self.minimize(alpha, beta, cb, depth - 1, original_board)
-                if utility is not None:
-                    if utility > maximum_utility:
-                        maximum_utility = utility
-                        move_with_max_utility = move
-                    alpha = max(alpha, utility)
-                    if alpha >= beta:
-                        original_board.number_prunned_moves[depth - 1] += 1
-                        return None, None
-        except (CheckMateException, StalemateException) as e:
-            if depth != self.depth:
-                return -50000, None
-            else:
-                if isinstance(e, CheckMateException):
-                    print("info: Game Lost")
-                else:
-                    print("info: Stalemate!")
-                exit()
+            except (CheckMateException, StalemateException) as e:
+                utility, mv = 50000, None
+            if utility is not None:
+                if utility > maximum_utility:
+                    maximum_utility = utility
+                    move_with_max_utility = move
+                alpha = max(alpha, utility)
+                if alpha >= beta:
+                    original_board.number_prunned_moves[depth - 1] += 1
+                    return None, move_with_max_utility
         # if depth >= 5:
         #     print("info: depth: " + str(depth) + " possible_moves: " + str(
         #         original_board.number_possible_moves) + " prunned_moves: depth 1: " + str(
@@ -596,23 +623,22 @@ class ChessBoard:
             return board.evaluate_board(), None
         minimum_utility = float('inf')
         move_with_min_utility = None
-        try:
-            for move in board.get_all_legal_moves():
-                cb = ChessBoard(board)
-                cb.move(move[0], move[1])
-                utility, mv = self.maximize(alpha, beta, cb, depth - 1, original_board)
-                if utility is not None:
-                    if utility < minimum_utility:
-                        minimum_utility = utility
-                        move_with_min_utility = move
-                    beta = min(beta, utility)
-                    if alpha >= beta:
-                        original_board.number_prunned_moves[depth - 1] += 1
-                        return None, None
-        except CheckMateException as e:
-            return 50000, None
-        except StalemateException as e:
-            return 39000, None
+        for move in board.get_all_legal_moves():
+            cb = ChessBoard(board)
+            cb.move(move[0], move[1])
+            try:
+                cb.cached_moves = cb.get_all_legal_moves()
+                utility, mv = self.minimize(alpha, beta, cb, depth - 1, original_board)
+            except (CheckMateException, StalemateException) as e:
+                utility, mv = -50000, None
+            if utility is not None:
+                if utility < minimum_utility:
+                    minimum_utility = utility
+                    move_with_min_utility = move
+                beta = min(beta, utility)
+                if alpha >= beta:
+                    original_board.number_prunned_moves[depth - 1] += 1
+                    return None, None
         # if depth >= 2:
         #     print("info: depth: " + str(depth) + " possible_moves: " + str(
         #         original_board.number_possible_moves) + " prunned_moves: depth 1: " + str(
@@ -634,12 +660,12 @@ class ChessBoard:
                 (int): value of the evaluated board
         """
         figure_count = self.get_figure_count()
-        position_value = 20000 * (figure_count.get("White King", 0) - figure_count.get("Black King", 0)) + 900 * (
-                figure_count.get("White Queen", 0) - figure_count.get("Black Queen", 0)) + 500 * (
+        position_value = 900 * ( figure_count.get("White Queen", 0) - figure_count.get("Black Queen", 0)) + 500 * (
                                  figure_count.get("White Rook", 0) - figure_count.get("Black Rook", 0)) + 330 * (
                                  figure_count.get("White Knight", 0) - figure_count.get("Black Knight", 0) +
                                  figure_count.get("White Bishop", 0) - figure_count.get("Black Bishop", 0)) + 100 * (
                                  figure_count.get("White Pawn", 0) - figure_count.get("Black Pawn", 0))
+        position_value *= -1
         white_st_sum = 0
         black_st_sum = 0
         for x, y, figure in self.get_all_figures():
@@ -648,7 +674,7 @@ class ChessBoard:
                     black_st_sum += figure.get_square_table()[x][y]
                 else:
                     white_st_sum += figure.get_square_table()[x][y]
-        return (position_value + black_st_sum - white_st_sum) * -1
+        return (position_value + black_st_sum - white_st_sum)
 
     def get_figure_count(self):
         """
@@ -662,7 +688,7 @@ class ChessBoard:
         """
         figure_count = dict()
 
-        for x,y,figure in self.get_all_figures():
+        for x, y, figure in self.get_all_figures():
             if figure is not None:
                 if str(figure) in figure_count.keys():
                     figure_count[str(figure)] += 1
@@ -672,4 +698,5 @@ class ChessBoard:
 
     def change_turn(self):
         """Flips the turn attribute (when the current player makes the move)"""
+        self.cached_moves = None
         self.turn = Figure.Color.WHITE if self.turn == Figure.Color.BLACK else Figure.Color.BLACK

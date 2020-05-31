@@ -55,7 +55,7 @@ class Figure:
                 (list): list of integer lists
 
         """
-        if self.color:
+        if self.color == Figure.Color.WHITE:
             return self.square_table_reversed
         return self.square_table
 

@@ -38,7 +38,10 @@ class Vector2:
 				return Vector2((value[0] + self.data[0], value[1] + self.data[1]))
 		elif isinstance(value, int):
 			return Vector2((self.data[0] + value, self.data[1] + value))
-	
+
+	def __mul__(self, other):
+		return Vector2((self.data[0] * other, self.data[1] * other))
+
 	def __truediv__(self, value):
 		"""
 		Overloads the division operator for two Vector2 - s
