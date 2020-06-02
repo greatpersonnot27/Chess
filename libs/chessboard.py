@@ -53,16 +53,10 @@ class ChessBoard:
         self.white_king_pos = Vector2((0, 4))
         self.black_king_pos = Vector2((7, 4))
 
-        self.white_in_check = False
-        self.black_in_check = False
-
-        self.depth = 4
+        self.max_depth = 4
         # Game history
         self.history = []
         self.dead_figures = []
-        self.number_possible_moves = 0
-        self.number_prunned_moves = [0, 0, 0, 0, 0, 0]
-        self.info_count = 0
 
         if chessboard is not None:
             self.board = copy.copy(chessboard.board)
@@ -122,7 +116,7 @@ class ChessBoard:
 
                 str: move in long algebraic notation. Example: C7C2
         """
-        utility, move = self.maximize(float("-inf"), float("inf"), self, self.depth, self)
+        utility, move = self.maximize(float("-inf"), float("inf"), self, self.max_depth, self)
         fro, to = move
         # print(self.draw_board())
         print(chr(ord('a') + fro[1]) + str(int(fro[0]) + 1) + chr(ord('a') + to[1]) + str(int(to[0]) + 1))
@@ -196,7 +190,8 @@ class ChessBoard:
                         moves.append((pos, (x, y)))
                         break
                 else:
-                    break
+                    if not str(figure).endswith("Pawn"):
+                        break
         return moves
 
     def __get_all_special_moves(self):
@@ -523,6 +518,24 @@ class ChessBoard:
         self.dead_figures.append(killee)
 
     def maximize(self, alpha, beta, board, depth, original_board):
+        """
+       Returns the value of the maximum utility and
+       the corresponding move
+           Parameters:
+               alpha (float): maximizing functions best
+               utility value for the current depth or above
+               beta (float): minimizing functions best
+               utility value for the current depth or above
+               board (ChessBoard): board to be copied
+               depth (str): the depth limit for the
+               recursive call of the function
+               original_board (ChessBoard): the original Chessboard object
+           Returns:
+               maximum_utility (float): value of the
+               maximum utility generated
+               move_with_max_utility (tuple): tuple of
+               two tuples each with two integers describing the move
+        """
         if depth == 0:
             return board.evaluate_board(), None
         maximum_utility = float('-inf')
@@ -537,11 +550,29 @@ class ChessBoard:
                     move_with_max_utility = move
                 alpha = max(alpha, utility)
                 if alpha >= beta:
-                    original_board.number_prunned_moves[depth - 1] += 1
                     return None, move_with_max_utility
         return maximum_utility, move_with_max_utility
 
     def minimize(self, alpha, beta, board, depth, original_board):
+        """
+        Returns the value of the minimum utility and
+        the corresponding move
+            Parameters:
+                alpha (float): maximizing functions best
+                utility value for the current depth or above
+                beta (float): minimizing functions best
+                utility value for the current depth or above
+                board (ChessBoard): board to be copied
+                depth (str): the depth limit for the
+                recursive call of the function
+                original_board (ChessBoard): the
+                original Chessboard object
+            Returns:
+                minimum_utility (float): value of the minimum utility
+                generated
+                move_with_min_utility (tuple): tuple of two
+                tuples each with two integers describing the move
+        """
         if depth == 0:
             return board.evaluate_board(), None
         minimum_utility = float('inf')
@@ -556,8 +587,7 @@ class ChessBoard:
                     move_with_min_utility = move
                 beta = min(beta, utility)
                 if alpha >= beta:
-                    original_board.number_prunned_moves[depth - 1] += 1
-                    return None, None
+                    return None, move_with_min_utility
         return minimum_utility, move_with_min_utility
 
     def evaluate_board(self):
