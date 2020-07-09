@@ -540,7 +540,8 @@ class ChessBoard:
             return board.evaluate_board(), None
         maximum_utility = float('-inf')
         move_with_max_utility = None
-        for move in board.get_all_legal_moves():
+        pos_moves = board.__get_all_legal_moves() if self.max_depth != depth else board.get_all_legal_moves()
+        for move in pos_moves:
             cb = ChessBoard(board)
             cb.move(move[0], move[1])
             utility, mv = self.minimize(alpha, beta, cb, depth - 1, original_board)
@@ -551,6 +552,8 @@ class ChessBoard:
                 alpha = max(alpha, utility)
                 if alpha >= beta:
                     return None, move_with_max_utility
+        if pos_moves == []:
+            return board.evaluate_board(), None
         return maximum_utility, move_with_max_utility
 
     def minimize(self, alpha, beta, board, depth, original_board):
@@ -577,7 +580,8 @@ class ChessBoard:
             return board.evaluate_board(), None
         minimum_utility = float('inf')
         move_with_min_utility = None
-        for move in board.get_all_legal_moves():
+        pos_moves = board.__get_all_legal_moves()
+        for move in pos_moves:
             cb = ChessBoard(board)
             cb.move(move[0], move[1])
             utility, mv = self.maximize(alpha, beta, cb, depth - 1, original_board)
@@ -588,6 +592,8 @@ class ChessBoard:
                 beta = min(beta, utility)
                 if alpha >= beta:
                     return None, move_with_min_utility
+        if pos_moves == []:
+            return board.evaluate_board(), None
         return minimum_utility, move_with_min_utility
 
     def evaluate_board(self):
