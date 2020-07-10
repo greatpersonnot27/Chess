@@ -15,6 +15,7 @@ class Figure:
             square_table_reversed (list): list of integer lists (reversed)
 
         """
+
     class Color:
         WHITE = 0
         BLACK = 1
@@ -142,6 +143,7 @@ class Pawn(Figure):
 
            of the board for the evaluation algorithm
     """
+
     def __init__(self, color):
         self.square_table = [[0, 0, 0, 0, 0, 0, 0, 0],
                              [50, 50, 50, 50, 50, 50, 50, 50],
@@ -164,35 +166,25 @@ class Pawn(Figure):
         if pos[0] in (0, 7):
             return []
         if self.color == Figure.Color.WHITE:
-            moves = [(pos[0] + 1, pos[1]), (pos[0] + 2, pos[1])]
-            kill_move1 = (pos[0] + 1, pos[1] + 1)
-            kill_move2 = (pos[0] + 1, pos[1] - 1)
-            valid_kill_moves = list()
+            kill_moves = list()
             if pos[1] == 0:
-                valid_kill_moves.append(kill_move1)
+                kill_moves = [(pos[0] + 1, pos[1] + 1)]
             elif pos[1] == 7:
-                valid_kill_moves.append(kill_move2)
+                kill_moves = [(pos[0] + 1, pos[1] - 1)]
             else:
-                valid_kill_moves.append(kill_move1)
-                valid_kill_moves.append(kill_move2)
-            if pos[0] != 1:
-                moves.pop()
-            return [moves] + [valid_kill_moves]
+                kill_moves = [(pos[0] + 1, pos[1] + 1), (pos[0] + 1, pos[1] - 1)]
+            return [(pos[0] + 1, pos[1]), (pos[0] + 2, pos[1])] + kill_moves if pos[0] == 1 else [(pos[0] + 1, pos[
+                1])] + kill_moves
         elif self.color == Figure.Color.BLACK:
-            moves = [(pos[0] - 1, pos[1]), (pos[0] - 2, pos[1])]
-            kill_move1 = (pos[0] - 1, pos[1] + 1)
-            kill_move2 = (pos[0] - 1, pos[1] - 1)
-            valid_kill_moves = list()
+            kill_moves = list()
             if pos[1] == 0:
-                valid_kill_moves.append(kill_move1)
+                kill_moves = [(pos[0] - 1, pos[1] + 1)]
             elif pos[1] == 7:
-                valid_kill_moves.append(kill_move2)
+                kill_moves = [(pos[0] - 1, pos[1] - 1)]
             else:
-                valid_kill_moves.append(kill_move1)
-                valid_kill_moves.append(kill_move2)
-            if pos[0] != 6:
-                moves.pop()
-            return [moves] + [valid_kill_moves]
+                kill_moves = [(pos[0] - 1, pos[1] + 1), (pos[0] - 1, pos[1] - 1)]
+            return [(pos[0] - 1, pos[1]), (pos[0] - 2, pos[1])] + kill_moves if pos[0] == 6 else [(pos[0] - 1,
+                                                                                                   pos[1])] + kill_moves
 
     def path(self, fro, to):
         """
@@ -238,6 +230,7 @@ class Knight(Figure):
 
            of the board for the evaluation algorithm
     """
+
     def __init__(self, color):
         self.square_table = [[-50, -40, -30, -30, -30, -30, -40, -50],
                              [-40, -20, 0, 0, 0, 0, -20, -40],
@@ -289,6 +282,7 @@ class Bishop(Figure):
 
            of the board for the evaluation algorithm
     """
+
     def __init__(self, color):
         self.square_table = [[-20, -10, -10, -10, -10, -10, -10, -20],
                              [-10, 0, 0, 0, 0, 0, 0, -10],
@@ -341,6 +335,7 @@ class Rook(Figure):
 
            of the board for the evaluation algorithm
     """
+
     def __init__(self, color):
         self.square_table = [[0, 0, 0, 0, 0, 0, 0, 0],
                              [5, 10, 10, 10, 10, 10, 10, 5],
@@ -393,6 +388,7 @@ class Queen(Figure):
 
            of the board for the evaluation algorithm
     """
+
     def __init__(self, color):
         self.square_table = [[-20, -10, -10, -5, -5, -10, -10, -20],
                              [-10, 0, 0, 0, 0, 0, 0, -10],
@@ -444,6 +440,7 @@ class King(Figure):
 
            of the board for the evaluation algorithm
     """
+
     def __init__(self, color):
         self.square_table = [[-30, -40, -40, -50, -50, -40, -40, -30],
                              [-30, -40, -40, -50, -50, -40, -40, -30],
