@@ -18,10 +18,6 @@ class ChessBoard:
 
         the color of the player whose turn it is to make a move
 
-    history: list
-
-        list of made moves (two tuples of two integers each)
-
     dead_figures: list
 
         list of figures that were killed
@@ -54,8 +50,6 @@ class ChessBoard:
         self.black_king_pos = Vector2((7, 4))
 
         self.max_depth = 4
-        # Game history
-        self.history = []
         self.dead_figures = []
 
         if chessboard is not None:
@@ -68,16 +62,8 @@ class ChessBoard:
 
     def __setup_first_row(self, color):
         """Receives the color attribute and Sets up a list of Figures on the first row, returns the list"""
-        row = [None] * 8
-        row[0] = Rook(color)
-        row[1] = Knight(color)
-        row[2] = Bishop(color)
-        row[3] = Queen(color)
-        row[4] = King(color)
-        row[5] = Bishop(color)
-        row[6] = Knight(color)
-        row[7] = Rook(color)
-        return row
+        return [Rook(color), Knight(color), Bishop(color), Queen(color), King(color), Bishop(color), Knight(color),
+                Rook(color)]
 
     def __setup_initial_board(self):
         """Populates the chessboard (list of lists) with figures"""
@@ -357,7 +343,7 @@ class ChessBoard:
             pos = king_position + Vector2(vector)
             if (0 <= pos.x <= 7) and (0 <= pos.y <= 7):
                 fig = self.get_piece_at((pos.x, pos.y))
-                if isinstance(fig , Knight) and fig.color != my_color:
+                if isinstance(fig, Knight) and fig.color != my_color:
                     return True
 
         for vector in [(1, 1), (1, -1), (-1, 1), (-1, -1)]:
@@ -385,7 +371,7 @@ class ChessBoard:
                         break
                 else:
                     break
-        pawn_vectors = [(-1 , 1), (-1, -1)] if my_color == Figure.Color.BLACK else [(1, 1), (1, -1)]
+        pawn_vectors = [(-1, 1), (-1, -1)] if my_color == Figure.Color.BLACK else [(1, 1), (1, -1)]
 
         for vector in pawn_vectors:
             vector = Vector2(vector)
@@ -610,7 +596,7 @@ class ChessBoard:
         """
         figure_count = self.get_figure_count()
         position_value = 20000 * (figure_count.get("White King", 0) - figure_count.get("Black King", 0)) + 900 * (
-                    figure_count.get("White Queen", 0) - figure_count.get("Black Queen", 0)) + 500 * (
+                figure_count.get("White Queen", 0) - figure_count.get("Black Queen", 0)) + 500 * (
                                  figure_count.get("White Rook", 0) - figure_count.get("Black Rook", 0)) + 330 * (
                                  figure_count.get("White Knight", 0) - figure_count.get("Black Knight", 0) +
                                  figure_count.get("White Bishop", 0) - figure_count.get("Black Bishop", 0)) + 100 * (

@@ -43,7 +43,6 @@ class GameEngine:
         for move in moves:
             fro = (int(move[:2][1]) - 1, ord(move[:2][0].lower()) - ord('a'))
             to = (int(move[2:4][1]) - 1, ord(move[2:4][0].lower()) - ord('a'))
-            self.board.history.append(move)
             self.board.move(fro, to)
         # all_moves = self.board.get_all_possible_moves()
         # for _from, to in all_moves:

@@ -16,8 +16,9 @@ from libs.figures import Figure, Queen, Knight, Bishop, Rook, Pawn, King
 
 """
 
+
 class test_figures(unittest.TestCase):
-    
+
     @classmethod
     def setUpClass(cls):
         return super().setUpClass()
@@ -30,13 +31,13 @@ class test_figures(unittest.TestCase):
         queen = Queen(Figure.Color.WHITE)
         # members of the path - 1. from 2. to 3. correct path
         paths = [
-            (Vector2([0,0]), Vector2([0,1]), []), 
-            (Vector2([0,0]), Vector2([7,0]), [(1,0), (2,0), (3,0), (4,0), (5,0), (6,0)]),
-            (Vector2([0,0]), Vector2([5,5]), [(1,1),(2,2),(3,3),(4,4)]),
-            (Vector2([5,5]), Vector2([0,0]), [(4,4), (3,3), (2,2), (1,1)])
-            ]
+            (Vector2([0, 0]), Vector2([0, 1]), []),
+            (Vector2([0, 0]), Vector2([7, 0]), [(1, 0), (2, 0), (3, 0), (4, 0), (5, 0), (6, 0)]),
+            (Vector2([0, 0]), Vector2([5, 5]), [(1, 1), (2, 2), (3, 3), (4, 4)]),
+            (Vector2([5, 5]), Vector2([0, 0]), [(4, 4), (3, 3), (2, 2), (1, 1)])
+        ]
 
-        [self.assertEqual(queen._return_path(path[0],path[1]), path[2]) for path in paths]
+        [self.assertEqual(queen._return_path(path[0], path[1]), path[2]) for path in paths]
 
     def test_return_path_pawn(self):
         pawn = Pawn(Figure.Color.WHITE)
@@ -62,21 +63,21 @@ class test_figures(unittest.TestCase):
         bishop = Bishop(Figure.Color.WHITE)
         # members of the path - 1. from 2. to 3. correct path
         paths = [
-            (Vector2([0,0]), Vector2([5,5]), [(1,1),(2,2),(3,3),(4,4)]),
-            (Vector2([5,5]), Vector2([0,0]), [(4,4), (3,3), (2,2), (1,1)])
-            ]
+            (Vector2([0, 0]), Vector2([5, 5]), [(1, 1), (2, 2), (3, 3), (4, 4)]),
+            (Vector2([5, 5]), Vector2([0, 0]), [(4, 4), (3, 3), (2, 2), (1, 1)])
+        ]
 
-        [self.assertEqual(bishop._return_path(path[0],path[1]), path[2]) for path in paths]
+        [self.assertEqual(bishop._return_path(path[0], path[1]), path[2]) for path in paths]
 
     def test_rook(self):
         rook = Rook(Figure.Color.WHITE)
         # members of the path - 1. from 2. to 3. correct path
         paths = [
-            (Vector2([0,0]), Vector2([0,1]), []),
-            (Vector2([0,0]), Vector2([7,0]), [(1,0), (2,0), (3,0), (4,0), (5,0), (6,0)])
-            ]
+            (Vector2([0, 0]), Vector2([0, 1]), []),
+            (Vector2([0, 0]), Vector2([7, 0]), [(1, 0), (2, 0), (3, 0), (4, 0), (5, 0), (6, 0)])
+        ]
 
-        [self.assertEqual(rook._return_path(path[0],path[1]), path[2]) for path in paths]
+        [self.assertEqual(rook._return_path(path[0], path[1]), path[2]) for path in paths]
 
     def test_king(self):
         king = King(Figure.Color.WHITE)
@@ -87,6 +88,7 @@ class test_figures(unittest.TestCase):
         ]
 
         [self.assertEqual(king.path(path[0], path[1]), path[2]) for path in paths]
+
 
 if __name__ == '__main__':
     unittest.main()
